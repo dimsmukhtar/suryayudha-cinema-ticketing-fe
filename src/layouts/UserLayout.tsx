@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth"
 import VerifyEmailBanner from "../components/VerifyEmailBanner"
 import { assets } from "../assets/assets"
 import { Bell, MenuIcon, SearchIcon, XIcon } from "lucide-react"
+import { getMyNotifications } from "../api/apiService"
 
 const UserProfileDropdown = () => {
   const { user, logout } = useAuth()
@@ -25,7 +26,7 @@ const UserProfileDropdown = () => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 focus:outline-none"
+        className="flex items-center gap-2 focus:outline-none cursor-pointer"
       >
         <img
           src={
@@ -71,6 +72,27 @@ const Navbar = () => {
   const { user } = useAuth()
 
   const navigate = useNavigate()
+
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  // Efek ini akan berjalan saat user login atau logout
+  useEffect(() => {
+    // Jika user ada (login berhasil atau sesi aktif), ambil notifikasi
+    if (user) {
+      getMyNotifications()
+        .then((notifications) => {
+          const count = notifications.filter((n: any) => !n.is_read).length
+          setUnreadCount(count)
+        })
+        .catch((err) => {
+          console.error("Gagal mengambil notifikasi di Navbar:", err)
+          setUnreadCount(0)
+        })
+    } else {
+      // Jika user null (logout atau sesi tidak ada), reset hitungan
+      setUnreadCount(0)
+    }
+  }, [user])
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     `text-sm font-medium ${
@@ -151,6 +173,11 @@ const Navbar = () => {
               className="relative p-1 rounded-full text-gray-400 hover:text-white focus:outline-none"
             >
               <Bell className="w-6 h-6 cursor-pointer" />
+              {unreadCount > 0 && (
+                <span className="absolute top-0 right-0 block h-5 w-5 rounded-full bg-red-600 text-white text-xs flex items-center justify-center ring-2 ring-gray-800">
+                  {unreadCount}
+                </span>
+              )}
             </Link>
             <UserProfileDropdown />
           </>

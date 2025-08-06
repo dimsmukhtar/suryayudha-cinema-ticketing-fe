@@ -10,7 +10,7 @@ import { Ticket, Tag, Loader2 } from "lucide-react"
 const BookingSummaryPage = () => {
   const { transactionId } = useParams()
   const navigate = useNavigate()
-  const { isAuthenticated } = useAuth()
+  const { user } = useAuth()
 
   const [transaction, setTransaction] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -59,7 +59,7 @@ const BookingSummaryPage = () => {
   }
 
   const handleInitiatePayment = async () => {
-    if (!isAuthenticated) {
+    if (!user) {
       toast.error("Sesi Anda telah berakhir. Silakan login kembali.")
       navigate("/login")
       return
@@ -72,6 +72,7 @@ const BookingSummaryPage = () => {
           toast.success("Pembayaran berhasil!")
           navigate("/my-tickets")
         },
+
         onPending: function (result: any) {
           toast("Menunggu pembayaran Anda.")
           navigate("/my-bookings")

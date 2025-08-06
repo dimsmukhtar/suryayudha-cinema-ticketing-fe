@@ -1,15 +1,12 @@
 const Seat = ({ seat, isSelected, onSelect }: any) => {
-  // Fungsi untuk menentukan kelas CSS berdasarkan status kursi
   const getSeatClass = () => {
-    // --- PERBAIKAN WARNA DI SINI ---
     if (seat.status === "booked" || seat.status === "reserved") {
-      return "bg-slate-800 text-slate-600 cursor-not-allowed" // Sangat gelap, tidak tersedia
+      return "bg-zinc-800 text-zinc-600 cursor-not-allowed"
     }
     if (isSelected) {
-      return "bg-primary text-white scale-110 shadow-lg shadow-primary/50" // Warna primer cerah
+      return "bg-primary text-white scale-110 shadow-lg shadow-primary/50"
     }
-    // 'available'
-    return "bg-slate-600 text-slate-200 hover:bg-slate-500 cursor-pointer" // Abu-abu terang, tersedia
+    return "bg-zinc-600 text-zinc-300 hover:bg-zinc-500 cursor-pointer"
   }
 
   const isDisabled = seat.status === "booked" || seat.status === "reserved"

@@ -148,3 +148,26 @@ export const initiatePayment = async (transactionId: string): Promise<any> => {
   const response = await api.post(`/transactions/${transactionId}/pay`)
   return response.data.data
 }
+
+export const getMyNotifications = async () => {
+  const response = await api.get("/notifications/my")
+  return response.data.data
+}
+
+export const markNotificationAsRead = async (notificationId: number) => {
+  const response = await api.post(`/notifications/${notificationId}/my/mark`)
+  return response.data
+}
+
+export const hideNotification = async (notificationId: number) => {
+  const response = await api.delete(`/notifications/${notificationId}/my/hide`)
+  return response.data
+}
+export const updateMyProfile = async (formData: FormData): Promise<any> => {
+  try {
+    const response = await api.patch("/users/update-profile", formData)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}

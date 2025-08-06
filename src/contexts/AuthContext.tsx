@@ -14,6 +14,7 @@ interface AuthContextType {
     passwordConfirmation: string
   }) => Promise<any>
   logout: () => void
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }: any) => {
     }
   }
 
-  const value = { user, login, register, isLoading, logout }
+  const value = { user, login, register, isLoading, logout, setUser }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
