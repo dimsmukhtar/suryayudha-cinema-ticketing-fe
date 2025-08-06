@@ -28,16 +28,16 @@ const VerifyEmailBanner = () => {
   }
 
   return (
-    <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 w-full text-center">
+    <div className="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 w-full text-center mt-20">
       <p className="font-bold">Verifikasi Email Anda</p>
       <p>
-        Email Anda belum terverifikasi. Silahkan periksa kotak masuk Anda atau{" "}
+        Email Anda belum terverifikasi. Silahkan periksa kotak masuk email Anda atau{" "}
         <button
           onClick={handleResendClick}
           disabled={isLoading}
-          className="font-bold underline hover:text-yellow-800 disabled:opacity-50"
+          className="font-bold underline hover:text-yellow-800 disabled:opacity-50 cursor-pointer"
         >
-          {isLoading ? "Loading..." : "kirim ulang token email verifikasi"}
+          {isLoading ? "Loading... sedang mengirim link verifikasi" : "kirim ulang link verifikasi"}
         </button>{" "}
         untuk bisa memesan tiket
       </p>

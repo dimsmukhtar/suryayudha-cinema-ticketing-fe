@@ -1,7 +1,8 @@
-import React from "react"
+import { useAuth } from "../../hooks/useAuth"
 
 const ProfilePage = () => {
-  return <div>ProfilePage</div>
+  const { user } = useAuth()
+  return <div>Nama: {user?.name}</div>
 }
 
 export default ProfilePage

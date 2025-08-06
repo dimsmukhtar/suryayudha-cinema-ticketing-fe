@@ -6,7 +6,7 @@ import { loginUser } from "../api/apiService"
 import { Eye, EyeOff } from "lucide-react"
 
 const LoginPage = () => {
-  const { setIsAuthenticated } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || "/"
@@ -20,11 +20,7 @@ const LoginPage = () => {
     e.preventDefault()
     setIsLoading(true)
     try {
-      const response = await loginUser({ email, password })
-
-      // Update state global
-      setIsAuthenticated(true)
-
+      const response = await login({ email, password })
       toast.success(response.message || "Login berhasil!")
       navigate(from, { replace: true })
     } catch (error: any) {

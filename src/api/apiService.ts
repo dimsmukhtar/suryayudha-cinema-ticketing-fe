@@ -7,14 +7,14 @@ const api = axios.create({
 
 export const getMyProfile = async () => {
   const response = await api.get("/users/profile")
-  return response.data
+  return response.data.data
 }
 
-export const loginUser = async (data: any) => {
+export const loginUser = async (credentials: { email: string; password: string }) => {
   try {
     const response = await api.post("/users/login", {
-      email: data.email,
-      password: data.password,
+      email: credentials.email,
+      password: credentials.password,
     })
     return response.data
   } catch (error: any) {
@@ -22,15 +22,20 @@ export const loginUser = async (data: any) => {
   }
 }
 
-export const registerUser = async (data: any) => {
+export const registerUser = async (credentials: {
+  name: string
+  email: string
+  password: string
+  passwordConfirmation: string
+}) => {
   try {
     const response = await api.post("/users/register", {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      passwordConfirmation: data.passwordConfirmation,
+      name: credentials.name,
+      email: credentials.email,
+      password: credentials.password,
+      passwordConfirmation: credentials.passwordConfirmation,
     })
-    return response.data // Mengembalikan response JSON dari API
+    return response.data
   } catch (error: any) {
     throw error.response?.data
   }
@@ -47,10 +52,7 @@ export const logout = async () => {
 
 export const resendVerificationTokenToEmail = async (email: string) => {
   const response = await api.post("users/resend-verification-token", { email })
-  if (response.status === 200) {
-    return true
-  }
-  return false
+  return response.data
 }
 
 export const getNowShowingMovies = async () => {
@@ -70,7 +72,6 @@ interface MovieFilters {
 }
 
 export const getAllMovies = async (filters: MovieFilters): Promise<any[]> => {
-  // Membuat query string dari objek filter
   const params = new URLSearchParams()
   if (filters.title) params.append("title", filters.title)
   if (filters.genre) params.append("genre", filters.genre)
@@ -119,4 +120,13 @@ export const createBooking = async (
 export const checkAuth = async () => {
   const response = await api.get("/users/check-auth")
   return response
+}
+
+export const verifyEmail = async (data: { email: string; token: string }) => {
+  try {
+    const response = await api.get(`/users/verify-email?token=${data.token}&email=${data.email}`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
 }

@@ -1,22 +1,36 @@
 import React, { createContext, useState, useEffect, type ReactNode, useContext } from "react"
-import { logout as apiLogoutUser, checkAuth } from "../api/apiService"
+import { logout as apiLogoutUser, getMyProfile, loginUser, registerUser } from "../api/apiService"
+import { type User } from "../types/user.types"
+import toast from "react-hot-toast"
 
-export const AuthContext = createContext({} as any)
+interface AuthContextType {
+  user: User | null
+  isLoading: boolean
+  login: (credentials: { email: string; password: string }) => Promise<any>
+  register: (credentials: {
+    name: string
+    email: string
+    password: string
+    passwordConfirmation: string
+  }) => Promise<any>
+  logout: () => void
+}
+
+export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: any) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
-        const response = await checkAuth()
-        if (response.status === 200) {
-          setIsAuthenticated(true)
-        }
+        const profile = await getMyProfile()
+        setUser(profile)
+        console.log(profile)
       } catch (error) {
         console.log("Tidak ada sesi login yang aktif.")
-        setIsAuthenticated(false)
+        setUser(null)
       } finally {
         setIsLoading(false)
       }
@@ -24,17 +38,44 @@ export const AuthProvider = ({ children }: any) => {
     checkUserStatus()
   }, [])
 
-  const logout = async () => {
+  const login = async (credentials: { email: string; password: string }) => {
     try {
-      await apiLogoutUser()
+      const response = await loginUser(credentials)
+      const profile = await getMyProfile()
+      setUser(profile)
+      return response
     } catch (error) {
-      console.error("Logout gagal:", error)
-    } finally {
-      setIsAuthenticated(false)
+      setUser(null)
+      throw error
     }
   }
 
-  const value = { isAuthenticated, setIsAuthenticated, isLoading, logout }
+  const register = async (credentials: {
+    name: string
+    email: string
+    password: string
+    passwordConfirmation: string
+  }) => {
+    try {
+      const response = await registerUser(credentials)
+      return response
+    } catch (error) {
+      throw error
+    }
+  }
+
+  const logout = async () => {
+    try {
+      await apiLogoutUser()
+      toast.success("Logout berhasil!")
+    } catch (error) {
+      console.error("Logout gagal:", error)
+    } finally {
+      setUser(null)
+    }
+  }
+
+  const value = { user, login, register, isLoading, logout }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

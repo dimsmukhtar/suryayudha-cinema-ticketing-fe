@@ -3,8 +3,10 @@ import { useNavigate, Link } from "react-router-dom"
 import toast from "react-hot-toast"
 import { Eye, EyeOff } from "lucide-react"
 import { registerUser } from "../api/apiService"
+import { useAuth } from "../hooks/useAuth"
 
 const RegisterPage = () => {
+  const { register } = useAuth()
   const navigate = useNavigate()
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
@@ -21,11 +23,11 @@ const RegisterPage = () => {
     }
     setIsLoading(true)
     try {
-      const response = await registerUser({ name, email, password, passwordConfirmation })
+      const response = await register({ name, email, password, passwordConfirmation })
       toast.success(
         response.message || "Pendaftaran berhasil! Silakan cek email Anda untuk verifikasi."
       )
-      navigate("/check-email")
+      navigate("/login")
     } catch (error: any) {
       const errorMessage = error.message || "Pendaftaran gagal. Silakan coba lagi."
       toast.error(errorMessage)

@@ -68,7 +68,7 @@ const UserProfileDropdown = () => {
 }
 
 const Navbar = () => {
-  const { isAuthenticated } = useAuth()
+  const { user } = useAuth()
 
   const navigate = useNavigate()
 
@@ -144,7 +144,7 @@ const Navbar = () => {
         </NavLink>
       </div>
       <div className="flex items-center gap-8">
-        {isAuthenticated ? (
+        {user ? (
           <>
             <Link
               to="/my-notifications"
@@ -223,9 +223,6 @@ const UserLayout = () => {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <VerifyEmailBanner />
-      </div>
       <Outlet />
       <Footer />
     </>
