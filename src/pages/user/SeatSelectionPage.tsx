@@ -8,14 +8,10 @@ import { useAuth } from "../../hooks/useAuth"
 import { ArrowRight } from "lucide-react"
 
 const SeatSelectionPage = () => {
-  const { id: scheduleId } = useParams<{ id: string }>()
+  const { id: scheduleId } = useParams()
   const navigate = useNavigate()
   const location = useLocation()
-
-  // Ambil 'isAuthenticated' dari context yang sudah disederhanakan
-  const { isAuthenticated, isLoading: isAuthLoading } = useAuth()
-
-  // Ambil jumlah tiket dari halaman sebelumnya, default 1 jika tidak ada
+  const { user, isLoading: isAuthLoading } = useAuth()
   const ticketCount = location.state?.ticketCount || 1
 
   const [scheduleInfo, setScheduleInfo] = useState<any>(null)
@@ -34,7 +30,6 @@ const SeatSelectionPage = () => {
         setSeatLayout(data.seatLayout)
       } catch (error) {
         toast.error("Gagal memuat denah kursi.")
-        console.error(error)
       } finally {
         setIsLoading(false)
       }
@@ -43,26 +38,19 @@ const SeatSelectionPage = () => {
   }, [scheduleId])
 
   const handleSeatSelect = (seat: any) => {
-    // --- PERBAIKAN UTAMA DI SINI ---
-    // Cek 'isAuthenticated' dari context, bukan 'user'
-    if (!isAuthenticated) {
+    if (!user) {
       toast.error("Anda harus login untuk memilih kursi.")
       navigate("/login", { state: { from: location } })
       return
     }
 
-    // Anda bisa menambahkan kembali pengecekan is_verified jika user object ada di context
-    // if (!user.is_verified) { ... }
-
-    setSelectedSeats((prev) => {
+    setSelectedSeats((prev: any[]) => {
       const isSelected = prev.some((s) => s.seatId === seat.seatId)
       if (isSelected) {
         return prev.filter((s) => s.seatId !== seat.seatId)
       } else {
-        // Batasi jumlah kursi yang bisa dipilih
         if (prev.length >= ticketCount) {
           toast.error(`Anda hanya dapat memilih ${ticketCount} kursi.`)
-          // Ganti kursi terakhir dengan yang baru
           return [...prev.slice(1), seat]
         }
         return [...prev, seat]
@@ -78,7 +66,7 @@ const SeatSelectionPage = () => {
     setIsBooking(true)
     const loadingToast = toast.loading("Membuat booking...")
     try {
-      const scheduleSeatIds = selectedSeats.map((s) => s.scheduleSeatId)
+      const scheduleSeatIds = selectedSeats.map((s: any) => s.scheduleSeatId)
       const newTransaction = await createBooking(parseInt(scheduleId!), scheduleSeatIds)
       toast.dismiss(loadingToast)
       toast.success("Booking berhasil dibuat! Lanjutkan ke pembayaran.")
@@ -99,7 +87,7 @@ const SeatSelectionPage = () => {
   }
 
   return (
-    <div className="bg-background text-white min-h-screen pt-24 pb-32">
+    <div className="bg-background text-white min-h-screen pt-24 pb-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
           <h1 className="text-3xl md:text-4xl font-bold">{scheduleInfo?.movieTitle}</h1>
@@ -122,7 +110,6 @@ const SeatSelectionPage = () => {
         />
       </div>
 
-      {/* Booking Summary Bar */}
       <div
         className={`fixed bottom-0 left-0 w-full bg-gray-900/80 backdrop-blur-sm border-t border-gray-700 shadow-lg transform transition-transform duration-300 ${
           selectedSeats.length > 0 ? "translate-y-0" : "translate-y-full"
@@ -134,7 +121,7 @@ const SeatSelectionPage = () => {
               Kursi Dipilih ({selectedSeats.length}/{ticketCount})
             </p>
             <p className="font-semibold text-lg truncate max-w-xs sm:max-w-md">
-              {selectedSeats.map((s) => s.label).join(", ") || "Pilih kursi Anda"}
+              {selectedSeats.map((s: any) => s.label).join(", ") || "Pilih kursi Anda"}
             </p>
           </div>
           <div className="flex items-center gap-4 w-full sm:w-auto">

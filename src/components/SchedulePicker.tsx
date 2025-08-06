@@ -1,18 +1,14 @@
 import React, { useState, useMemo, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-// import { type Schedule } from '../types/movie.types'; // Tipe dinonaktifkan
 import { formatRupiah } from "../utils/formatters"
 import { Ticket, Minus, Plus } from "lucide-react"
 
 const SchedulePicker = ({ schedules }: any) => {
-  // Props diubah ke any
   const navigate = useNavigate()
-  // --- PERBAIKAN DI SINI: Beri tahu useState tipe apa saja yang diizinkan ---
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [selectedSchedule, setSelectedSchedule] = useState<any | null>(null)
   const [ticketCount, setTicketCount] = useState(1)
 
-  // 1. Kelompokkan jadwal berdasarkan tanggal
   const groupedSchedules = useMemo(() => {
     if (!schedules) return {}
     const groups: Record<string, any[]> = {}
@@ -28,7 +24,6 @@ const SchedulePicker = ({ schedules }: any) => {
 
   const availableDates = Object.keys(groupedSchedules).sort()
 
-  // 2. Set tanggal pertama sebagai default saat komponen dimuat
   useEffect(() => {
     if (availableDates.length > 0 && !selectedDate) {
       setSelectedDate(availableDates[0])
@@ -37,7 +32,7 @@ const SchedulePicker = ({ schedules }: any) => {
 
   const handleDateSelect = (date: string) => {
     setSelectedDate(date)
-    setSelectedSchedule(null) // Reset pilihan jam saat tanggal berubah
+    setSelectedSchedule(null)
   }
 
   const handleScheduleSelect = (schedule: any) => {
@@ -45,13 +40,14 @@ const SchedulePicker = ({ schedules }: any) => {
   }
 
   const handleTicketCountChange = (amount: number) => {
-    setTicketCount((prev) => Math.max(1, Math.min(10, prev + amount))) // Min 1, Max 10 tiket
+    setTicketCount((prev) => Math.max(1, Math.min(10, prev + amount)))
   }
 
   const handleBooking = () => {
     if (selectedSchedule) {
-      // Navigasi ke halaman pemilihan kursi dengan membawa ID jadwal
-      navigate(`/schedules/${selectedSchedule.id}/seats`)
+      // --- PERBAIKAN DI SINI ---
+      // Kirim 'ticketCount' di dalam state navigasi
+      navigate(`/schedules/${selectedSchedule.id}/seats`, { state: { ticketCount: ticketCount } })
     }
   }
 
@@ -67,7 +63,6 @@ const SchedulePicker = ({ schedules }: any) => {
     <div className="bg-gray-800 p-6 rounded-lg">
       <h3 className="text-xl font-bold text-white mb-4">Pilih Jadwal</h3>
 
-      {/* Pemilihan Tanggal */}
       <div className="flex space-x-2 mb-6 border-b border-gray-700 pb-4 overflow-x-auto">
         {availableDates.map((date) => (
           <button
@@ -88,7 +83,6 @@ const SchedulePicker = ({ schedules }: any) => {
         ))}
       </div>
 
-      {/* Pemilihan Jam Tayang */}
       {selectedDate && (
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 mb-6">
           {groupedSchedules[selectedDate].map((schedule: any) => (
@@ -114,7 +108,6 @@ const SchedulePicker = ({ schedules }: any) => {
         </div>
       )}
 
-      {/* Pemilihan Jumlah Tiket & Tombol Booking */}
       {selectedSchedule && (
         <div className="bg-gray-900/50 p-4 rounded-lg flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">

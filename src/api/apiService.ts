@@ -130,3 +130,21 @@ export const verifyEmail = async (data: { email: string; token: string }) => {
     throw error.response?.data || error
   }
 }
+
+export const getTransactionById = async (transactionId: string): Promise<any> => {
+  const response = await api.get(`/transactions/${transactionId}`)
+  return response.data.data
+}
+
+export const applyVoucher = async (transactionId: string, voucherCode: string): Promise<any> => {
+  const response = await api.patch(`/transactions/${transactionId}/apply-voucher`, {
+    voucher_code: voucherCode,
+  })
+
+  return response.data.data
+}
+
+export const initiatePayment = async (transactionId: string): Promise<any> => {
+  const response = await api.post(`/transactions/${transactionId}/pay`)
+  return response.data.data
+}

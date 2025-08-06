@@ -74,13 +74,10 @@ const AllMoviesPage = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {isLoading ? (
-            // Tampilkan 10 skeleton saat loading
             Array.from({ length: 10 }).map((_, index) => <MovieCardSkeleton key={index} />)
           ) : movies.length > 0 ? (
-            // Tampilkan data film jika ada
             movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
           ) : (
-            // Tampilkan pesan jika tidak ada hasil
             <div className="col-span-full text-center py-20 text-gray-400">
               <h3 className="text-2xl font-semibold">Tidak ada film yang ditemukan</h3>
               <p>Coba ubah filter pencarian Anda.</p>
