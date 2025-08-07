@@ -4,6 +4,7 @@ import googlePlay from "./googlePlay.svg"
 import appStore from "./appStore.svg"
 import screenImage from "./screenImage.svg"
 import profile from "./profile.png"
+import logoSyd from "../../public/logosyd.png"
 
 export const assets = {
   logo,
@@ -12,6 +13,7 @@ export const assets = {
   appStore,
   screenImage,
   profile,
+  logoSyd,
 }
 
 export const dummyTrailers = [

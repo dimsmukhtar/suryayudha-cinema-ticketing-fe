@@ -45,7 +45,7 @@ const MovieDetailPage = () => {
     <>
       <div className="bg-background text-white min-h-screen">
         {/* Hero Section with Background */}
-        <div className="relative h-[60vh] md:h-[70vh] w-full">
+        <div className="relative h-[80vh] md:h-[70vh] w-full">
           <img
             src={movie.poster_url}
             alt={movie.title}
@@ -53,26 +53,26 @@ const MovieDetailPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
           <div className="absolute bottom-0 left-0 w-full container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row items-end gap-8">
-              <div className="w-48 md:w-64 flex-shrink-0 -mb-16 rounded-lg overflow-hidden shadow-2xl">
+            {/* --- PERBAIKAN RESPONSIVE DI SINI --- */}
+            <div className="flex flex-col items-center md:flex-row md:items-end gap-8">
+              <div className="w-48 md:w-64 flex-shrink-0 -mb-8 md:-mb-16 rounded-lg overflow-hidden shadow-2xl">
                 <img
                   src={movie.poster_url}
                   alt={movie.title}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="pb-8 flex-grow">
+              <div className="pb-8 flex-grow text-center md:text-left">
                 <h1 className="text-4xl md:text-6xl font-black tracking-tight">{movie.title}</h1>
-                <div className="flex items-center mt-3 text-gray-300 gap-4 flex-wrap">
+                <div className="flex items-center justify-center md:justify-start mt-3 text-gray-300 gap-4 flex-wrap">
                   {movie.movie_genres &&
                     movie.movie_genres.map(
                       (mg: any) => mg.genre && <span key={mg.genre.id}>{mg.genre.name}</span>
                     )}
                 </div>
-                {/* --- TOMBOL TRAILER BARU --- */}
                 <button
                   onClick={() => setIsTrailerOpen(true)}
-                  className="mt-6 flex items-center gap-2 px-6 py-3 text-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm transition rounded-full font-semibold cursor-pointer"
+                  className="mt-6 flex items-center gap-2 mx-auto md:mx-0 px-6 py-3 text-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm transition rounded-full font-semibold cursor-pointer"
                 >
                   <PlayCircle />
                   Tonton Trailer
@@ -87,7 +87,7 @@ const MovieDetailPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             {/* Left Column: Details */}
             <div className="lg:col-span-2">
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 mb-8 text-center">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8 text-center">
                 <InfoBox
                   icon={<Star className="text-yellow-400" />}
                   label="Rating"
@@ -96,7 +96,6 @@ const MovieDetailPage = () => {
                 <InfoBox icon={<Clock />} label="Durasi" value={formatDuration(movie.duration)} />
                 <InfoBox icon={<Calendar />} label="Rilis" value={formatDate(movie.release_date)} />
                 <InfoBox icon={<Film />} label="Sutradara" value={movie.director} />
-                {/* --- INFO BOX BARU --- */}
                 <InfoBox icon={<Languages />} label="Bahasa" value={movie.language} />
                 <InfoBox icon={<Captions />} label="Subtitle" value={movie.subtitle} />
               </div>

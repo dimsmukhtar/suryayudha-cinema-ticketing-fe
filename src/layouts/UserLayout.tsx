@@ -100,7 +100,7 @@ const Navbar = () => {
   return (
     <div className="fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5">
       <Link to="/" className="max-md:flex-1">
-        <img src={assets.logo} alt="" className="w-36 h-auto" />
+        <img src={assets.logoSyd} alt="" className="w-15 h-15" />
       </Link>
       <div
         className={`max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium max-md:text-lg z-50 flex flex-col md:flex-row items-center max-md:justify-center gap-8 min-md:px-8 py-3 max-md:h-screen min-md:rounded-full backdrop-blur bg-black/70 md:bg-white/10 md:border border-gray-300/20 overflow-hidden transition-[width] duration-300 ${
@@ -196,53 +196,66 @@ const Navbar = () => {
     </div>
   )
 }
-
 const Footer = () => {
   return (
-    <footer className="px-6 pt-8 md:px-16 lg:px-36 mt-40 w-full text-gray-300">
-      <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500 pb-14">
-        <div className="md:max-w-96">
-          <img alt="" className="h-11" src={assets.logo} />
-          <p className="mt-6 text-sm">
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an
-            unknown printer took a galley of type and scrambled it to make a type specimen book.
-          </p>
-        </div>
-        <div className="flex-1 flex items-start md:justify-end gap-20 md:gap-40">
-          <div>
-            <h2 className="font-semibold mb-5">Company</h2>
-            <ul className="text-sm space-y-2">
-              <li>
-                <a href="#">Home</a>
-              </li>
-              <li>
-                <a href="#">About us</a>
-              </li>
-              <li>
-                <a href="#">Contact us</a>
-              </li>
-              <li>
-                <a href="#">Privacy policy</a>
-              </li>
-            </ul>
+    <footer className="px-6 pt-8 md:px-16 lg:px-36 mt-40 w-full text-gray-300 bg-background border-t border-gray-800">
+      <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-700 pb-14">
+          <div className="md:max-w-96">
+            <img src={assets.logoSyd} alt="Surya Yudha Cinema" className="h-11" />
+            <p className="mt-6 text-sm text-gray-400">
+              Menghadirkan pengalaman menonton film terbaik dengan teknologi terkini dan kenyamanan
+              tak tertandingi di Banjarnegara.
+            </p>
           </div>
-          <div>
-            <h2 className="font-semibold mb-5">Get in touch</h2>
-            <div className="text-sm space-y-2">
-              <p>+1-234-567-890</p>
-              <p>contact@example.com</p>
+          <div className="flex-1 flex items-start md:justify-end gap-20 md:gap-40">
+            <div>
+              <h2 className="font-semibold mb-5 text-white">Perusahaan</h2>
+              <ul className="text-sm space-y-2 text-gray-400">
+                <li>
+                  <Link to="/" className="hover:text-primary">
+                    Beranda
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/about" className="hover:text-primary">
+                    Tentang Kami
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact" className="hover:text-primary">
+                    Hubungi Kami
+                  </Link>
+                </li>
+                <li>
+                  {/* Anda bisa membuat halaman ini nanti */}
+                  <Link to="/privacy-policy" className="hover:text-primary">
+                    Kebijakan Privasi
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h2 className="font-semibold mb-5 text-white">Hubungi Kami</h2>
+              <div className="text-sm space-y-2 text-gray-400">
+                <p>Jl. Raya Rejasa No.KM. 1, Banjarnegara</p>
+                <p>(0286) 597-123</p>
+                <p>info@suryayudhacinema.com</p>
+              </div>
             </div>
           </div>
         </div>
+        <p className="pt-4 text-center text-sm text-gray-500 pb-5">
+          Copyright {new Date().getFullYear()} ©{" "}
+          <a href="#" className="hover:text-primary">
+            Surya Yudha Cinema
+          </a>
+          . All Rights Reserved.
+        </p>
       </div>
-      <p className="pt-4 text-center text-sm pb-5">
-        Copyright {new Date().getFullYear()} © <a href="#">Surya Yudha Cinema</a>. All Right
-        Reserved.
-      </p>
     </footer>
   )
 }
-
 const UserLayout = () => {
   return (
     <>
