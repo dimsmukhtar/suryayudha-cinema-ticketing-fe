@@ -5,14 +5,14 @@ import { getMovieById } from "../../api/apiService"
 import { formatDuration, formatDate } from "../../utils/formatters"
 import { Star, Clock, Calendar, Film, PlayCircle, Languages, Captions } from "lucide-react"
 import SchedulePicker from "../../components/SchedulePicker"
-import TrailerModal from "../../components/TrailerModal" // <-- Impor modal trailer
+import TrailerModal from "../../components/TrailerModal"
 
 const MovieDetailPage = () => {
   const { id } = useParams<{ id: string }>()
   const [movie, setMovie] = useState<any | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isTrailerOpen, setIsTrailerOpen] = useState(false) // <-- State untuk modal
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false)
 
   useEffect(() => {
     if (!id) return

@@ -77,6 +77,12 @@ const LoginPage = () => {
             {isLoading ? "Loading..." : "Login"}
           </button>
         </div>
+        <Link
+          to="/forgot-password"
+          className="text-sm font-medium text-primary hover:text-primary-light"
+        >
+          Lupa Password?
+        </Link>
         <p className="mt-6 text-center text-sm text-gray-400">
           Belum punya akun?{" "}
           <Link to="/register" className="font-medium text-primary hover:text-primary-light">

@@ -19,7 +19,6 @@ const BookingSummaryPage = () => {
   const [isInitiatingPayment, setIsInitiatingPayment] = useState(false)
   const [isExpired, setIsExpired] = useState(false)
 
-  // Bungkus fetchTransaction di dalam useCallback agar bisa dipanggil ulang dengan aman.
   const fetchTransaction = useCallback(async () => {
     if (!transactionId) return
     try {
@@ -84,11 +83,9 @@ const BookingSummaryPage = () => {
           },
         })
       } else {
-        // Jika belum, beri pesan error yang jelas.
         throw new Error("Layanan pembayaran gagal dimuat. Periksa koneksi Anda dan coba lagi.")
       }
     } catch (error: any) {
-      // Sekarang 'error.message' akan berisi pesan yang benar dari backend atau dari pengecekan 'window.snap'
       toast.error(error.message || "Gagal memulai pembayaran.")
     } finally {
       setIsInitiatingPayment(false)

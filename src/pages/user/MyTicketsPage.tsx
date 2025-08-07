@@ -13,7 +13,6 @@ const MyTicketsPage = () => {
     const fetchAndDetailTickets = async () => {
       setIsLoading(true)
       try {
-        // 1. Ambil daftar tiket sederhana (hanya berisi ID)
         const simpleTickets = await getMyTickets()
 
         if (simpleTickets.length === 0) {
@@ -21,7 +20,6 @@ const MyTicketsPage = () => {
           return
         }
 
-        // 2. Ambil detail lengkap untuk setiap tiket secara bersamaan
         const ticketDetailPromises = simpleTickets.map((ticket) => getTicketById(ticket.id))
         const resolvedTickets = await Promise.all(ticketDetailPromises)
 

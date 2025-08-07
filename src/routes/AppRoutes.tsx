@@ -33,6 +33,7 @@ import RegisterPage from "../pages/RegisterPage"
 import VerifyEmailWithTokenPage from "../pages/VerifyEmailWithTokenPage"
 import ResetPasswordPage from "../pages/ResetPasswordPage"
 import NotFoundPage from "../pages/NotFoundPage"
+import ForgotPasswordPage from "../pages/ForgotPasswordPage"
 
 const AppRoutes = () => {
   return (
@@ -82,6 +83,7 @@ const AppRoutes = () => {
         <Route path="register" element={<RegisterPage />} />
         <Route path="verify-email" element={<VerifyEmailWithTokenPage />} />
         <Route path="reset-password" element={<ResetPasswordPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

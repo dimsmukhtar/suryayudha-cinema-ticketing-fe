@@ -24,7 +24,7 @@ const ProfilePage = () => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0]
       setProfileImage(file)
-      // Buat URL sementara untuk pratinjau gambar
+
       setPreviewImage(URL.createObjectURL(file))
     }
   }
@@ -34,7 +34,6 @@ const ProfilePage = () => {
     setIsSubmitting(true)
     const loadingToast = toast.loading("Menyimpan perubahan...")
 
-    // FormData digunakan untuk mengirim file dan teks bersamaan
     const formData = new FormData()
     formData.append("name", name)
     formData.append("email", email)
@@ -44,7 +43,6 @@ const ProfilePage = () => {
 
     try {
       await updateMyProfile(formData)
-      // Ambil profil terbaru untuk memperbarui context secara global
       const updatedProfile = await getMyProfile()
       setUser(updatedProfile)
       toast.dismiss(loadingToast)

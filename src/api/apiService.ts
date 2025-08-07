@@ -220,3 +220,21 @@ export const changePassword = async (data: any) => {
     throw error.response?.data || error
   }
 }
+
+export const forgotPassword = async (data: { email: string }) => {
+  try {
+    const response = await api.post("/users/forgot-password", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const resetPassword = async (data: any) => {
+  try {
+    const response = await api.post("/users/reset-password", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}

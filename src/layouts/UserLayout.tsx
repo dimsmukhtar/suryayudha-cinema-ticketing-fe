@@ -75,9 +75,7 @@ const Navbar = () => {
 
   const [unreadCount, setUnreadCount] = useState(0)
 
-  // Efek ini akan berjalan saat user login atau logout
   useEffect(() => {
-    // Jika user ada (login berhasil atau sesi aktif), ambil notifikasi
     if (user) {
       getMyNotifications()
         .then((notifications) => {
@@ -89,7 +87,6 @@ const Navbar = () => {
           setUnreadCount(0)
         })
     } else {
-      // Jika user null (logout atau sesi tidak ada), reset hitungan
       setUnreadCount(0)
     }
   }, [user])

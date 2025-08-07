@@ -7,17 +7,14 @@ import { MailCheck, AlertTriangle, Loader } from "lucide-react"
 type VerificationStatus = "verifying" | "success" | "error"
 
 const VerifyEmailWithTokenPage = () => {
-  // useSearchParams adalah hook dari react-router-dom untuk membaca query URL
   const [searchParams] = useSearchParams()
   const [status, setStatus] = useState<VerificationStatus>("verifying")
   const [message, setMessage] = useState("Sedang memverifikasi akun Anda...")
 
   useEffect(() => {
-    // Ambil 'email' dan 'token' dari URL
     const email = searchParams.get("email")
     const token = searchParams.get("token")
 
-    // Validasi awal
     if (!email || !token) {
       setStatus("error")
       setMessage("Link verifikasi tidak valid atau tidak lengkap.")
@@ -26,7 +23,6 @@ const VerifyEmailWithTokenPage = () => {
 
     const performVerification = async () => {
       try {
-        // Nama properti di sini diubah menjadi 'token' agar cocok dengan API service
         const response = await verifyEmail({ email, token })
         setStatus("success")
         setMessage(response.message || "Email Anda berhasil diverifikasi!")
@@ -40,15 +36,13 @@ const VerifyEmailWithTokenPage = () => {
       }
     }
 
-    // Beri sedikit jeda agar animasi loading terlihat
     const timer = setTimeout(() => {
       performVerification()
     }, 1500)
 
-    return () => clearTimeout(timer) // Bersihkan timer jika komponen di-unmount
+    return () => clearTimeout(timer)
   }, [searchParams])
 
-  // Fungsi untuk menampilkan konten yang berbeda berdasarkan status
   const renderContent = () => {
     switch (status) {
       case "verifying":

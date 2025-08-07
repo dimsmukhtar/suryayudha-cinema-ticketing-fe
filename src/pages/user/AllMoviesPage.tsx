@@ -11,17 +11,13 @@ const AllMoviesPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  // Gunakan useSearchParams untuk membaca dan menulis filter ke URL
   const [searchParams, setSearchParams] = useSearchParams()
 
-  // State untuk filter, diinisialisasi dari URL
   const [filters, setFilters] = useState({
     title: searchParams.get("title") || "",
     genre: searchParams.get("genre") || "",
-    status: searchParams.get("status") || "now_showing", // Default 'now_showing'
+    status: searchParams.get("status") || "now_showing",
   })
-
-  // Efek untuk mengambil data genre (hanya sekali)
   useEffect(() => {
     const fetchGenres = async () => {
       try {
@@ -35,7 +31,6 @@ const AllMoviesPage = () => {
     fetchGenres()
   }, [])
 
-  // Efek untuk mengambil data film setiap kali filter berubah
   useEffect(() => {
     const fetchMovies = async () => {
       setIsLoading(true)
@@ -52,15 +47,13 @@ const AllMoviesPage = () => {
       }
     }
 
-    // Update URL saat filter berubah
     setSearchParams(filters, { replace: true })
 
-    // Tambahkan debounce untuk pencarian judul agar tidak memanggil API di setiap ketikan
     const debounceTimer = setTimeout(() => {
       fetchMovies()
-    }, 300) // Tunggu 300ms setelah user berhenti mengetik
+    }, 300)
 
-    return () => clearTimeout(debounceTimer) // Bersihkan timer
+    return () => clearTimeout(debounceTimer)
   }, [filters, setSearchParams])
 
   return (

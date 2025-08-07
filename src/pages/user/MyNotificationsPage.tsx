@@ -12,10 +12,8 @@ const MyNotificationsPage = () => {
   const fetchNotifications = async () => {
     setIsLoading(true)
     try {
-      // --- PERBAIKAN UTAMA DI SINI ---
-      // Karena API sudah memberikan 'is_read', kita bisa langsung menggunakan datanya.
       const fetchedNotifications = await getMyNotifications()
-      setNotifications(fetchedNotifications || []) // Pastikan selalu array
+      setNotifications(fetchedNotifications || [])
     } catch (err) {
       setError("Gagal memuat notifikasi.")
       console.error(err)
@@ -53,7 +51,6 @@ const MyNotificationsPage = () => {
             className="ml-4 font-bold text-primary"
             onClick={() => {
               toast.dismiss(t.id)
-              // Kembalikan notifikasi ke state jika "Undo" diklik
               setNotifications((prev) =>
                 [notificationToHide, ...prev].sort(
                   (a, b) => +new Date(b.created_at) - +new Date(a.created_at)
@@ -74,7 +71,6 @@ const MyNotificationsPage = () => {
       await hideNotification(id)
     } catch (err) {
       toast.error("Gagal menyembunyikan notifikasi di server.")
-      // Jika gagal di server, kembalikan notifikasi ke UI
       setNotifications((prev) =>
         [notificationToHide, ...prev].sort(
           (a, b) => +new Date(b.created_at) - +new Date(a.created_at)
