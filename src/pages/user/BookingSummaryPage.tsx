@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { getTransactionById, applyVoucher, initiatePayment } from "../../api/apiService"
 import { useAuth } from "../../hooks/useAuth"
-import { formatRupiah, formatDate } from "../../utils/formatters"
+import { formatRupiah } from "../../utils/formatters"
 import CountdownTimer from "../../components/CountdownTimer"
 import { Ticket, Tag, Loader2 } from "lucide-react"
 
@@ -19,13 +19,12 @@ const BookingSummaryPage = () => {
   const [isInitiatingPayment, setIsInitiatingPayment] = useState(false)
   const [isExpired, setIsExpired] = useState(false)
 
-  // Fungsi untuk memuat ulang data transaksi
-  const fetchTransaction = async () => {
+  // Bungkus fetchTransaction di dalam useCallback agar bisa dipanggil ulang dengan aman.
+  const fetchTransaction = useCallback(async () => {
     if (!transactionId) return
     try {
       const data = await getTransactionById(transactionId)
       setTransaction(data)
-      // Cek apakah sudah kadaluarsa saat memuat
       const expiryDate = new Date(data.payment_expires_at || data.booking_expires_at)
       if (expiryDate < new Date()) {
         setIsExpired(true)
@@ -33,26 +32,25 @@ const BookingSummaryPage = () => {
     } catch (error) {
       toast.error("Gagal memuat detail booking.")
       navigate("/")
-    } finally {
-      setIsLoading(false)
     }
-  }
+  }, [transactionId, navigate])
 
   useEffect(() => {
-    fetchTransaction()
-  }, [transactionId])
+    setIsLoading(true)
+    fetchTransaction().finally(() => setIsLoading(false))
+  }, [fetchTransaction])
 
   const handleApplyVoucher = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!voucherCode) return
     setIsApplyingVoucher(true)
     try {
-      const updatedTransaction = await applyVoucher(transactionId!, voucherCode)
-      setTransaction(updatedTransaction)
+      await applyVoucher(transactionId!, voucherCode)
       toast.success("Voucher berhasil diterapkan!")
       setVoucherCode("")
+      await fetchTransaction()
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Gagal menerapkan voucher.")
+      toast.error(error.message || "Gagal menerapkan voucher.")
     } finally {
       setIsApplyingVoucher(false)
     }
@@ -67,25 +65,31 @@ const BookingSummaryPage = () => {
     setIsInitiatingPayment(true)
     try {
       const { snapToken } = await initiatePayment(transactionId!)
-      window.snap.pay(snapToken, {
-        onSuccess: function (result: any) {
-          toast.success("Pembayaran berhasil!")
-          navigate("/my-tickets")
-        },
 
-        onPending: function (result: any) {
-          toast("Menunggu pembayaran Anda.")
-          navigate("/my-bookings")
-        },
-        onError: function (result: any) {
-          toast.error("Pembayaran gagal.")
-        },
-        onClose: function () {
-          toast("Anda menutup jendela pembayaran.")
-        },
-      })
+      if (window.snap) {
+        window.snap.pay(snapToken, {
+          onSuccess: function (result: any) {
+            toast.success("Pembayaran berhasil!")
+            navigate("/my-tickets")
+          },
+          onPending: function (result: any) {
+            toast("Menunggu pembayaran Anda.")
+            navigate("/my-bookings")
+          },
+          onError: function (result: any) {
+            toast.error("Pembayaran gagal.")
+          },
+          onClose: function () {
+            toast("Anda menutup jendela pembayaran.")
+          },
+        })
+      } else {
+        // Jika belum, beri pesan error yang jelas.
+        throw new Error("Layanan pembayaran gagal dimuat. Periksa koneksi Anda dan coba lagi.")
+      }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Gagal memulai pembayaran.")
+      // Sekarang 'error.message' akan berisi pesan yang benar dari backend atau dari pengecekan 'window.snap'
+      toast.error(error.message || "Gagal memulai pembayaran.")
     } finally {
       setIsInitiatingPayment(false)
     }
@@ -96,9 +100,16 @@ const BookingSummaryPage = () => {
     toast.error("Waktu booking Anda telah habis.")
   }
 
-  if (isLoading) return <div className="text-white text-center py-40">Memuat ringkasan...</div>
-  if (!transaction) return null
-
+  if (isLoading) {
+    return <div className="text-white text-center py-40">Memuat ringkasan...</div>
+  }
+  if (
+    !transaction ||
+    !transaction.transaction_items ||
+    transaction.transaction_items.length === 0
+  ) {
+    return <div className="text-white text-center py-40">Gagal memuat data transaksi.</div>
+  }
   const schedule = transaction.transaction_items[0]?.schedule_seat.schedule
   const movie = schedule?.movie
   const expiryTime = transaction.payment_expires_at || transaction.booking_expires_at

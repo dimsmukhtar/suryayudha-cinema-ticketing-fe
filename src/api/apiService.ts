@@ -145,8 +145,12 @@ export const applyVoucher = async (transactionId: string, voucherCode: string): 
 }
 
 export const initiatePayment = async (transactionId: string): Promise<any> => {
-  const response = await api.post(`/transactions/${transactionId}/pay`)
-  return response.data.data
+  try {
+    const response = await api.post(`/transactions/${transactionId}/pay`)
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
 }
 
 export const getMyNotifications = async () => {
@@ -166,6 +170,51 @@ export const hideNotification = async (notificationId: number) => {
 export const updateMyProfile = async (formData: FormData): Promise<any> => {
   try {
     const response = await api.patch("/users/update-profile", formData)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getMyTickets = async (): Promise<any[]> => {
+  try {
+    const response = await api.get("/tickets/my")
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getTicketById = async (id: number): Promise<any> => {
+  try {
+    const response = await api.get(`/tickets/${id}`)
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getMyBookings = async (): Promise<any[]> => {
+  try {
+    const response = await api.get("/transactions/my?type=booking")
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getMyTransactionHistory = async (): Promise<any[]> => {
+  try {
+    const response = await api.get("/transactions/my?type=payment")
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const changePassword = async (data: any) => {
+  try {
+    const response = await api.patch("/users/change-password", data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error

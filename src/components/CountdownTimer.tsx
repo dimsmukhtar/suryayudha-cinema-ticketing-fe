@@ -3,30 +3,33 @@ import React, { useState, useEffect } from "react"
 const CountdownTimer = ({ expiryTime, onExpire }: { expiryTime: string; onExpire: () => void }) => {
   const calculateTimeLeft = () => {
     const difference = +new Date(expiryTime) - +new Date()
-    let timeLeft = { minutes: 0, seconds: 0 }
-
     if (difference > 0) {
-      timeLeft = {
+      return {
         minutes: Math.floor((difference / 1000 / 60) % 60),
         seconds: Math.floor((difference / 1000) % 60),
       }
     }
-    return timeLeft
+    return { minutes: 0, seconds: 0 }
   }
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    // Set interval yang akan berjalan setiap detik
+    const interval = setInterval(() => {
       const newTimeLeft = calculateTimeLeft()
       setTimeLeft(newTimeLeft)
+
       if (newTimeLeft.minutes === 0 && newTimeLeft.seconds === 0) {
         onExpire()
+        clearInterval(interval) // Hentikan interval saat waktu habis
       }
     }, 1000)
 
-    return () => clearTimeout(timer)
-  })
+    // Fungsi cleanup: Hapus interval saat komponen di-unmount
+    // Ini sangat penting untuk mencegah memory leak.
+    return () => clearInterval(interval)
+  }, [expiryTime, onExpire]) // <-- Dependency array yang benar
 
   const isTimeRunningOut = timeLeft.minutes < 1
 

@@ -1,5 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
+import toast from "react-hot-toast"
 
 interface ProtectedRouteProps {
   allowedRoles: ("admin" | "user")[]
@@ -16,6 +17,7 @@ const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
     return <Outlet />
   }
 
+  toast.error("Anda tidak memiliki akses ke halaman ini. Login terlebih dahulu")
   return <Navigate to="/" replace />
 }
 
