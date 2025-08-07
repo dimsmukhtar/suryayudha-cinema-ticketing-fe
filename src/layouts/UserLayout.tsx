@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { Outlet, Link, NavLink, useNavigate } from "react-router-dom"
 import { useAuth } from "../hooks/useAuth"
-import VerifyEmailBanner from "../components/VerifyEmailBanner"
 import { assets } from "../assets/assets"
 import { Bell, MenuIcon, SearchIcon, XIcon } from "lucide-react"
 import { getMyNotifications } from "../api/apiService"
