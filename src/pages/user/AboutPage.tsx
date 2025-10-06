@@ -4,7 +4,6 @@ import { Award, Film, Users } from "lucide-react"
 const AboutPage = () => {
   return (
     <div className="bg-background text-white min-h-screen pt-16">
-      {/* Hero Section */}
       <div className="relative bg-gray-800 py-20 md:py-32">
         <div className="absolute inset-0">
           <img
@@ -24,7 +23,6 @@ const AboutPage = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center mb-16">
           <Feature

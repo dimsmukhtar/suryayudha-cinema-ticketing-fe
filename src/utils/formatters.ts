@@ -9,7 +9,7 @@ export const formatDate = (dateString: string) => {
 }
 
 export const formatDuration = (durationString: string): string => {
-  if (!durationString) return ""
+  if (!durationString) return "N/A"
   const hoursMatch = durationString.match(/(\d+)\s*h/i)
   const minutesMatch = durationString.match(/(\d+)\s*m/i)
 
@@ -26,4 +26,13 @@ export const formatRupiah = (amount: number): string => {
     currency: "IDR",
     minimumFractionDigits: 0,
   }).format(amount)
+}
+
+export const formatTime = (dateString: string) => {
+  if (!dateString) return "N/A"
+  return new Date(dateString).toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Asia/Jakarta",
+  })
 }

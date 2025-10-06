@@ -41,9 +41,16 @@ export const registerUser = async (credentials: {
   }
 }
 
-export const loginAdmin = async (data: any) => {
-  const response = await api.post("/auths/admin/login", data)
-  return response.data
+export const loginAdmin = async (credentials: { email: string; password: string }) => {
+  try {
+    const response = await api.post("/users/login-admin", {
+      email: credentials.email,
+      password: credentials.password,
+    })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
 }
 
 export const logout = async () => {
@@ -233,6 +240,138 @@ export const forgotPassword = async (data: { email: string }) => {
 export const resetPassword = async (data: any) => {
   try {
     const response = await api.post("/users/reset-password", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+export const getAdminDashboardStats = async (): Promise<any> => {
+  try {
+    const response = await api.get("/users/dashboard/admin")
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const createGenre = async (data: { name: string }): Promise<any> => {
+  try {
+    const response = await api.post("/genres", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const updateGenre = async (id: number, data: { name: string }): Promise<any> => {
+  try {
+    const response = await api.patch(`/genres/${id}`, data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteGenre = async (id: number): Promise<any> => {
+  try {
+    const response = await api.delete(`/genres/${id}`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getAllMoviesAdmin = async (filters: any): Promise<any> => {
+  const params = new URLSearchParams()
+  if (filters.title) params.append("title", filters.title)
+  const response = await api.get(`/movies?${params.toString()}`)
+  return response.data
+}
+
+export const createMovie = async (formData: FormData): Promise<any> => {
+  const response = await api.post("/movies", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+  return response.data
+}
+
+export const updateMovie = async (id: number, formData: FormData): Promise<any> => {
+  const response = await api.patch(`/movies/${id}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+  return response.data
+}
+
+export const deleteMovie = async (id: number): Promise<any> => {
+  const response = await api.delete(`/movies/${id}`)
+  return response.data
+}
+
+export const createCast = async (formData: FormData): Promise<any> => {
+  const response = await api.post("/casts", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+  return response.data
+}
+
+export const updateCast = async (id: number, formData: FormData): Promise<any> => {
+  const response = await api.patch(`/casts/${id}`, formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  })
+  return response.data
+}
+
+export const deleteCast = async (id: number): Promise<any> => {
+  const response = await api.delete(`/casts/${id}`)
+  return response.data
+}
+
+export const addGenreToMovie = async (data: { movie_id: number; genre_id: number }) => {
+  const response = await api.post("/genres/movie-genre", data)
+  return response.data
+}
+
+export const removeGenreFromMovie = async (movieGenreId: number) => {
+  const response = await api.delete(`/genres/movie-genre/${movieGenreId}`)
+  return response.data
+}
+
+export const validateTicket = async (code: string) => {
+  try {
+    const response = await api.patch("/tickets/validate", { code })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+export const getAllTicketsAdmin = async (filters: { code?: string } = {}) => {
+  const params = new URLSearchParams()
+  if (filters.code) params.append("code", filters.code)
+  const response = await api.get(`/tickets?${params.toString()}`)
+  return response.data
+}
+
+export const getTicketByCodeAdmin = async (code: string) => {
+  try {
+    const response = await api.get(`/tickets/${code}/find-code`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteTicketAdmin = async (id: number) => {
+  try {
+    const response = await api.delete(`/tickets/${id}`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getTicketByIdAdmin = async (id: number) => {
+  try {
+    const response = await api.get(`/tickets/${id}`)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error

@@ -25,7 +25,6 @@ import ManageTicketsPage from "../pages/admin/ManageTicketsPage"
 import ManageUsersPage from "../pages/admin/ManageUsersPage"
 import ManageVouchersPage from "../pages/admin/ManageVouchersPage"
 import TransactionsListPage from "../pages/admin/TransactionsListPage"
-import BookingsListPage from "../pages/admin/BookingsListPage"
 import ManageNotifications from "../pages/admin/ManageNotifications"
 import LoginPage from "../pages/LoginPage"
 import AdminLoginPage from "../pages/AdminLoginPage"
@@ -34,6 +33,7 @@ import VerifyEmailWithTokenPage from "../pages/VerifyEmailWithTokenPage"
 import ResetPasswordPage from "../pages/ResetPasswordPage"
 import NotFoundPage from "../pages/NotFoundPage"
 import ForgotPasswordPage from "../pages/ForgotPasswordPage"
+import TicketDetailPage from "../pages/admin/TicketDetailPage"
 
 const AppRoutes = () => {
   return (
@@ -72,8 +72,8 @@ const AppRoutes = () => {
             <Route path="users" element={<ManageUsersPage />} />
             <Route path="vouchers" element={<ManageVouchersPage />} />
             <Route path="transactions" element={<TransactionsListPage />} />
-            <Route path="bookings" element={<BookingsListPage />} />
             <Route path="tickets" element={<ManageTicketsPage />} />
+            <Route path="tickets/:id" element={<TicketDetailPage/>} />
           </Route>
         </Route>
 

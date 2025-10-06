@@ -29,7 +29,7 @@ const MyNotificationsPage = () => {
   const handleMarkAsRead = async (id: number) => {
     try {
       await markNotificationAsRead(id)
-      // Update state di UI secara optimis
+
       setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)))
       toast.success("Notifikasi ditandai sebagai dibaca.")
     } catch (err) {
@@ -38,9 +38,8 @@ const MyNotificationsPage = () => {
   }
 
   const handleHide = async (id: number) => {
-    // Simpan notifikasi yang akan dihapus untuk fitur "Undo"
     const notificationToHide = notifications.find((n) => n.id === id)
-    // Hapus notifikasi dari UI secara optimis
+
     setNotifications((prev) => prev.filter((n) => n.id !== id))
 
     toast(

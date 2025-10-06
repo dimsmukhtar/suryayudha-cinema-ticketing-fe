@@ -23,7 +23,7 @@ const ForgotPasswordPage = () => {
       setIsSubmitted(true) // Tampilkan pesan sukses
     } catch (error: any) {
       toast.dismiss(loadingToast)
-      // Tampilkan pesan sukses generik untuk keamanan (tidak memberitahu jika email ada/tidak)
+
       toast.success("Jika email Anda terdaftar, kami telah mengirimkan instruksi reset password.")
       setIsSubmitted(true)
       console.error("Forgot password error:", error)
@@ -43,9 +43,7 @@ const ForgotPasswordPage = () => {
               Kami telah mengirimkan instruksi untuk mereset password Anda ke{" "}
               <strong>{email}</strong>. Silakan periksa kotak masuk (dan folder spam) Anda.
             </p>
-            {/* --- PERBAIKAN DI SINI --- */}
-            {/* Kita tidak lagi mengarahkan ke halaman login, tapi langsung ke reset password */}
-            {/* dengan menyertakan email di URL. */}
+
             <Link
               to={`/reset-password?email=${encodeURIComponent(email)}`}
               className="mt-6 inline-block text-primary hover:text-primary-light"

@@ -11,11 +11,9 @@ const ContactUs = () => {
           </p>
         </div>
 
-        {/* Kontainer baru untuk menengahkan konten */}
         <div className="max-w-4xl mx-auto">
           <div className="bg-gray-800/50 p-8 rounded-lg shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              {/* Informasi Kontak */}
               <div className="space-y-8">
                 <ContactInfo
                   icon={<MapPin />}
@@ -33,7 +31,7 @@ const ContactUs = () => {
                   isEmail={true}
                 />
               </div>
-              {/* Peta Google Maps */}
+
               <div className="rounded-lg overflow-hidden h-80 w-full">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3956.973959141973!2d109.67388837588386!3d-7.35682617235281!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7aa964d3596795%3A0x1d3315231aa8a52!2sSurya%20Yudha%20Park!5e0!3m2!1sen!2sid!4v1722356715893!5m2!1sen!2sid"

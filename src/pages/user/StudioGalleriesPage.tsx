@@ -31,18 +31,14 @@ const StudioGalleriesPage = () => {
   useEffect(() => {
     const fetchAndProcessData = async () => {
       setIsLoading(true)
-      const loadingToast = toast.loading("Memuat data galeri...")
       try {
-        // 1. Ambil data studio dan data foto secara bersamaan
         const [studiosData, photosData] = await Promise.all([getAllStudios(), getAllStudioPhotos()])
 
-        // 2. Proses dan gabungkan data di frontend
         const processedData = studiosData.map((studio) => {
-          // Filter semua foto yang cocok dengan ID studio saat ini
           const galleriesForThisStudio = photosData.filter(
             (photo: any) => photo.studio_id === studio.id
           )
-          // Kembalikan objek studio yang sudah lengkap dengan galerinya
+
           return {
             ...studio,
             galleries: galleriesForThisStudio,
@@ -50,9 +46,7 @@ const StudioGalleriesPage = () => {
         })
 
         setStudiosWithGalleries(processedData)
-        toast.dismiss(loadingToast)
       } catch (err) {
-        toast.dismiss(loadingToast)
         toast.error("Gagal memuat data studio.")
         console.error(err)
       } finally {

@@ -15,17 +15,18 @@ const MovieDetailPage = () => {
   const [isTrailerOpen, setIsTrailerOpen] = useState(false)
 
   useEffect(() => {
-    if (!id) return
+    if (!id) {
+      setIsLoading(false)
+      setError("ID film tidak valid.")
+      return
+    }
     const fetchMovieDetail = async () => {
       setIsLoading(true)
       setError(null)
-      const loadingToast = toast.loading("Memuat detail film...")
       try {
         const data = await getMovieById(id)
         setMovie(data)
-        toast.dismiss(loadingToast)
       } catch (err: any) {
-        toast.dismiss(loadingToast)
         const errorMessage =
           err.response?.data?.message || "Film tidak ditemukan atau terjadi kesalahan."
         toast.error(errorMessage)
@@ -44,7 +45,6 @@ const MovieDetailPage = () => {
   return (
     <>
       <div className="bg-background text-white min-h-screen">
-        {/* Hero Section with Background */}
         <div className="relative h-[80vh] md:h-[70vh] w-full">
           <img
             src={movie.poster_url}
@@ -53,7 +53,6 @@ const MovieDetailPage = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
           <div className="absolute bottom-0 left-0 w-full container mx-auto px-4 sm:px-6 lg:px-8">
-            {/* --- PERBAIKAN RESPONSIVE DI SINI --- */}
             <div className="flex flex-col items-center md:flex-row md:items-end gap-8">
               <div className="w-48 md:w-64 flex-shrink-0 -mb-8 md:-mb-16 rounded-lg overflow-hidden shadow-2xl">
                 <img
@@ -82,10 +81,8 @@ const MovieDetailPage = () => {
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Left Column: Details */}
             <div className="lg:col-span-2">
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mb-8 text-center">
                 <InfoBox
@@ -121,7 +118,6 @@ const MovieDetailPage = () => {
               </Section>
             </div>
 
-            {/* Right Column: Schedule Picker */}
             <div className="lg:col-span-1">
               <SchedulePicker schedules={movie.schedules} />
             </div>
@@ -129,7 +125,6 @@ const MovieDetailPage = () => {
         </div>
       </div>
 
-      {/* Render Modal Trailer jika isTrailerOpen adalah true */}
       {isTrailerOpen && (
         <TrailerModal trailerUrl={movie.trailer_url} onClose={() => setIsTrailerOpen(false)} />
       )}
@@ -137,7 +132,6 @@ const MovieDetailPage = () => {
   )
 }
 
-// Helper components for MovieDetailPage
 const Section = ({ title, children }: any) => (
   <div className="mb-10">
     <h2 className="text-2xl font-bold text-white border-l-4 border-primary pl-4 mb-4">{title}</h2>

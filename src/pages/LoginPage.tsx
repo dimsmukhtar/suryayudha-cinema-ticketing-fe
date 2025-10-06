@@ -2,7 +2,6 @@ import React, { useState } from "react"
 import { useAuth } from "../hooks/useAuth"
 import { useNavigate, Link, useLocation } from "react-router-dom"
 import toast from "react-hot-toast"
-import { loginUser } from "../api/apiService"
 import { Eye, EyeOff } from "lucide-react"
 
 const LoginPage = () => {

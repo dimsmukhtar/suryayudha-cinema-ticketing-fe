@@ -34,13 +34,8 @@ const ChangePasswordPage = () => {
       toast.dismiss(loadingToast)
       toast.success(response.message || "Password berhasil diubah! Silakan login kembali.")
 
-      // --- PERBAIKAN UTAMA DI SINI ---
-      // 1. Arahkan pengguna ke halaman login TERLEBIH DAHULU.
-      //    Halaman login adalah rute publik, jadi ProtectedRoute tidak akan aktif.
       navigate("/login")
 
-      // 2. BARU setelah itu, panggil fungsi logout untuk membersihkan state.
-      //    Ini tidak akan menyebabkan redirect yang tidak diinginkan.
       await logout()
     } catch (error: any) {
       toast.dismiss(loadingToast)

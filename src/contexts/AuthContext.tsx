@@ -1,5 +1,11 @@
 import React, { createContext, useState, useEffect, type ReactNode, useContext } from "react"
-import { logout as apiLogoutUser, getMyProfile, loginUser, registerUser } from "../api/apiService"
+import {
+  logout as apiLogoutUser,
+  getMyProfile,
+  loginUser,
+  registerUser,
+  loginAdmin as apiLoginAdmin,
+} from "../api/apiService"
 import { type User } from "../types/user.types"
 import toast from "react-hot-toast"
 
@@ -7,6 +13,7 @@ interface AuthContextType {
   user: User | null
   isLoading: boolean
   login: (credentials: { email: string; password: string }) => Promise<any>
+  adminLogin: (credentials: { email: string; password: string }) => Promise<any>
   register: (credentials: {
     name: string
     email: string
@@ -51,6 +58,17 @@ export const AuthProvider = ({ children }: any) => {
     }
   }
 
+  const adminLogin = async (credentials: any) => {
+    try {
+      const response = await apiLoginAdmin(credentials)
+      const profile = await getMyProfile()
+      setUser(profile)
+      return response
+    } catch (error) {
+      setUser(null)
+      throw error
+    }
+  }
   const register = async (credentials: {
     name: string
     email: string
@@ -76,7 +94,7 @@ export const AuthProvider = ({ children }: any) => {
     }
   }
 
-  const value = { user, login, register, isLoading, logout, setUser }
+  const value = { user, login, adminLogin, register, isLoading, logout, setUser }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
