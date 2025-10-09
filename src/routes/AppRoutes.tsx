@@ -19,7 +19,7 @@ import AdminLayout from "../layouts/AdminLayout"
 import DashboardPage from "../pages/admin/DashboardPage"
 import ManageMoviesPage from "../pages/admin/ManageMoviesPage"
 import ManageGenresPage from "../pages/admin/ManageGenresPage"
-import ManageSchedules from "../pages/admin/ManageSchedules"
+import ManageSchedulesPage from "../pages/admin/ManageSchedulesPage"
 import ManageStudiosPage from "../pages/admin/ManageStudiosPage"
 import ManageTicketsPage from "../pages/admin/ManageTicketsPage"
 import ManageUsersPage from "../pages/admin/ManageUsersPage"
@@ -66,14 +66,14 @@ const AppRoutes = () => {
             <Route index element={<DashboardPage />} />
             <Route path="movies" element={<ManageMoviesPage />} />
             <Route path="genres" element={<ManageGenresPage />} />
-            <Route path="schedules" element={<ManageSchedules />} />
+            <Route path="schedules" element={<ManageSchedulesPage />} />
             <Route path="studios" element={<ManageStudiosPage />} />
             <Route path="notifications" element={<ManageNotifications />} />
             <Route path="users" element={<ManageUsersPage />} />
             <Route path="vouchers" element={<ManageVouchersPage />} />
             <Route path="transactions" element={<TransactionsListPage />} />
             <Route path="tickets" element={<ManageTicketsPage />} />
-            <Route path="tickets/:id" element={<TicketDetailPage/>} />
+            <Route path="tickets/:id" element={<TicketDetailPage />} />
           </Route>
         </Route>
 

@@ -1,26 +1,40 @@
-const Seat = ({ seat, isSelected, onSelect }: any) => {
-  const getSeatClass = () => {
-    if (seat.status === "booked" || seat.status === "reserved") {
-      return "bg-slate-800 text-slate-600 cursor-not-allowed"
-    }
-    if (isSelected) {
-      return "bg-primary text-white scale-110 shadow-lg shadow-primary/50"
-    }
-    return "bg-slate-600 text-slate-200 hover:bg-slate-500 cursor-pointer"
+const Seat = ({ seat, isSelected, onSelect, isAdmin = false }: any) => {
+  if (!seat) {
+    return <div className="w-6 h-6 md:w-8 md:h-8" /> // Lorong
   }
 
-  const isDisabled = seat.status === "booked" || seat.status === "reserved"
+  const { label, status } = seat
+
+  const getSeatClass = () => {
+    // Logika warna dari implementasi terakhir yang sudah disetujui
+    if (isSelected && !isAdmin) {
+      return "bg-primary text-white scale-110 shadow-lg shadow-primary/50"
+    }
+    switch (status) {
+      case "available":
+        return "bg-slate-600 text-slate-200 hover:bg-slate-500 cursor-pointer"
+      case "reserved":
+        return "bg-yellow-600 text-yellow-100 cursor-not-allowed"
+      case "booked":
+        return "bg-red-600 text-red-100 cursor-not-allowed"
+      default:
+        return "bg-gray-900 cursor-not-allowed"
+    }
+  }
+
+  // User tidak bisa klik kursi yang sudah dipesan/direservasi.
+  const isUserDisabled = !isAdmin && (status === "booked" || status === "reserved")
+  // Admin hanya bisa klik kursi yang tersedia.
+  const isAdminDisabled = isAdmin && status !== "available"
 
   return (
     <button
-      onClick={() => !isDisabled && onSelect(seat)}
-      disabled={isDisabled}
+      onClick={() => onSelect(seat)}
+      disabled={isUserDisabled || isAdminDisabled}
       className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-[10px] sm:text-xs font-semibold rounded-md transition-all duration-200 ${getSeatClass()}`}
-      aria-label={`Kursi ${seat.label}`}
+      aria-label={`Kursi ${label}`}
     >
-      {/* --- PERBAIKAN DI SINI --- */}
-      {/* Class 'hidden sm:inline' dihapus agar label selalu terlihat */}
-      <span>{seat.label}</span>
+      <span>{label}</span>
     </button>
   )
 }

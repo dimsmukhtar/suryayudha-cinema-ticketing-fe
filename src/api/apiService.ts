@@ -377,3 +377,93 @@ export const getTicketByIdAdmin = async (id: number) => {
     throw error.response?.data || error
   }
 }
+
+export const getAllSchedulesAdmin = async (filters: any = {}) => {
+  const params = new URLSearchParams()
+  if (filters.date) params.append("date", filters.date)
+  const response = await api.get(`/schedules?${params.toString()}`)
+  return response.data
+}
+
+export const createSchedule = async (data: any) => {
+  try {
+    const response = await api.post("/schedules", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteSchedule = async (id: number) => {
+  try {
+    const response = await api.delete(`/schedules/${id}`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getAllMoviesAdminSimple = async () => {
+  const response = await api.get("/movies")
+  return response.data
+}
+export const updateScheduleSeatStatus = async (scheduleSeatId: number, status: string) => {
+  try {
+    const response = await api.put(`/schedules/seats/${scheduleSeatId}`, { status })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const createStudio = async (data: any) => {
+  try {
+    const response = await api.post("/studios", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const updateStudio = async (id: string, data: any) => {
+  try {
+    const response = await api.put(`/studios/${id}`, data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteStudio = async (id: string) => {
+  try {
+    const response = await api.delete(`/studios/${id}`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const uploadStudioPhotos = async (id: string, formData: FormData) => {
+  try {
+    const response = await api.post(`/studios/${id}/upload`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteStudioPhoto = async (photoId: number) => {
+  try {
+    const response = await api.delete(`/studios/photos/${photoId}/delete`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getStudioById = async (id: string) => {
+  const response = await api.get(`/studios/${id}`)
+  return response.data.data
+}
