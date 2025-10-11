@@ -16,9 +16,9 @@ const VerifyEmailBanner = () => {
     try {
       const response = await resendVerificationTokenToEmail(user.email)
       if (response) {
-        toast.success("Token verifikasi berhasil dikirim ke email Anda")
+        toast.success("Link verifikasi berhasil dikirim ke email Anda")
       } else {
-        toast.error("Token verifikasi gagal dikirim ke email Anda")
+        toast.error("Link verifikasi gagal dikirim ke email Anda")
       }
     } catch (error) {
       toast.error("Gagal mengirim email. Silakan coba lagi nanti.")
