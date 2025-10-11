@@ -41,7 +41,6 @@ const AdminSidebar = ({ isMobileOpen, setIsMobileOpen }: any) => {
     { name: "Daftar Transaksi", path: "/admin/transactions", icon: <Ticket size={20} /> },
     { name: "Manajemen Tiket", path: "/admin/tickets", icon: <Ticket size={20} /> },
     { name: "Manajemen User", path: "/admin/users", icon: <Users size={20} /> },
-    { name: "Kirim Notifikasi", path: "/admin/notifications", icon: <Bell size={20} /> },
   ]
 
   return (

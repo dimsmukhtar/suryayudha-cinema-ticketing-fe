@@ -64,14 +64,11 @@ const ManageUsersPage = () => {
   }, [currentPage, debouncedName])
 
   const handleOpenDetailModal = async (userId: number) => {
-    const loadingToast = toast.loading("Mengambil detail pengguna...")
     try {
       const userDetails = await getUserByIdAdmin(userId)
-      toast.dismiss(loadingToast)
       setUserToView(userDetails)
       setIsDetailModalOpen(true)
     } catch (error) {
-      toast.dismiss(loadingToast)
       toast.error("Gagal mengambil detail pengguna.")
     }
   }

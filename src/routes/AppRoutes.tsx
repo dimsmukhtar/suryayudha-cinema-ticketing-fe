@@ -25,7 +25,6 @@ import ManageTicketsPage from "../pages/admin/ManageTicketsPage"
 import ManageUsersPage from "../pages/admin/ManageUsersPage"
 import ManageVouchersPage from "../pages/admin/ManageVouchersPage"
 import TransactionsListPage from "../pages/admin/TransactionsListPage"
-import ManageNotifications from "../pages/admin/ManageNotifications"
 import LoginPage from "../pages/LoginPage"
 import AdminLoginPage from "../pages/AdminLoginPage"
 import RegisterPage from "../pages/RegisterPage"
@@ -68,7 +67,6 @@ const AppRoutes = () => {
             <Route path="genres" element={<ManageGenresPage />} />
             <Route path="schedules" element={<ManageSchedulesPage />} />
             <Route path="studios" element={<ManageStudiosPage />} />
-            <Route path="notifications" element={<ManageNotifications />} />
             <Route path="users" element={<ManageUsersPage />} />
             <Route path="vouchers" element={<ManageVouchersPage />} />
             <Route path="transactions" element={<TransactionsListPage />} />
