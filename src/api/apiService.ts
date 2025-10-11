@@ -542,3 +542,12 @@ export const sendNotificationToUser = async (data: any) => {
     throw error.response?.data || error
   }
 }
+
+export const getAllTransactionsAdmin = async (params: any) => {
+  try {
+    const response = await api.get("/transactions", { params })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
