@@ -2,40 +2,35 @@ import React, { useState, useEffect, useMemo, useCallback } from "react"
 import toast from "react-hot-toast"
 import { getAllTransactionsAdmin } from "../../api/apiService"
 import { formatRupiah, formatDate, formatTime } from "../../utils/formatters"
-import { Loader2, X } from "lucide-react"
+import { Loader2, X, Eye } from "lucide-react"
 import useDebounce from "../../hooks/useDebounce"
 import Pagination from "../../components/admin/Pagination"
+import TransactionDetailModal from "../../components/admin/TransactionDetailModal" // Impor baru
 
 const TransactionsListPage = () => {
   const [transactions, setTransactions] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [meta, setMeta] = useState<any>({}) // Untuk data paginasi
+  const [meta, setMeta] = useState<any>({})
 
-  // State untuk filter
-  const [filters, setFilters] = useState({
-    email: "",
-    orderId: "",
-    status: "",
-    date: "",
-  })
+  const [filters, setFilters] = useState({ email: "", orderId: "", status: "", date: "" })
   const [currentPage, setCurrentPage] = useState(1)
 
-  // Gunakan debounce untuk input teks agar tidak memanggil API setiap ketikan
   const debouncedEmail = useDebounce(filters.email, 500)
   const debouncedOrderId = useDebounce(filters.orderId, 500)
 
-  // Memoize params untuk mencegah re-fetch yang tidak perlu
+  const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
+  const [selectedTransactionId, setSelectedTransactionId] = useState<number | null>(null)
+
   const queryParams = useMemo(
     () => ({
       email: debouncedEmail,
-      order_id: debouncedOrderId, // Sesuaikan dengan key di backend
+      order_id: debouncedOrderId,
       status: filters.status,
       date: filters.date,
     }),
     [debouncedEmail, debouncedOrderId, filters.status, filters.date]
   )
 
-  // Gunakan useCallback agar fungsi tidak dibuat ulang setiap render
   const fetchTransactions = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -51,12 +46,12 @@ const TransactionsListPage = () => {
 
   useEffect(() => {
     fetchTransactions()
-  }, [fetchTransactions]) // Re-fetch hanya jika fungsi fetchTransactions berubah
+  }, [fetchTransactions])
 
   const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target
     setFilters((prev) => ({ ...prev, [name]: value }))
-    setCurrentPage(1) // Kembali ke halaman 1 setiap kali filter diubah
+    setCurrentPage(1)
   }
 
   const resetFilters = () => {
@@ -66,6 +61,11 @@ const TransactionsListPage = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
+  }
+
+  const handleOpenDetailModal = (transactionId: number) => {
+    setSelectedTransactionId(transactionId)
+    setIsDetailModalOpen(true)
   }
 
   return (
@@ -114,7 +114,8 @@ const TransactionsListPage = () => {
             onClick={resetFilters}
             className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 flex items-center justify-center gap-2"
           >
-            <X size={16} /> Reset
+            {" "}
+            <X size={16} /> Reset{" "}
           </button>
         </div>
       </div>
@@ -140,12 +141,15 @@ const TransactionsListPage = () => {
                 <th scope="col" className="px-6 py-3">
                   Waktu
                 </th>
+                <th scope="col" className="px-6 py-3 text-right">
+                  Aksi
+                </th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={5} className="text-center py-10">
+                  <td colSpan={6} className="text-center py-10">
                     <Loader2 className="animate-spin mx-auto text-primary" />
                   </td>
                 </tr>
@@ -180,11 +184,19 @@ const TransactionsListPage = () => {
                       <br />
                       {formatTime(trx.transaction_time)}
                     </td>
+                    <td className="px-6 py-4 text-right">
+                      <button
+                        onClick={() => handleOpenDetailModal(trx.id)}
+                        className="text-primary hover:underline text-xs font-semibold flex items-center gap-1"
+                      >
+                        <Eye size={14} /> Detail
+                      </button>
+                    </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="text-center py-10 text-gray-500">
+                  <td colSpan={6} className="text-center py-10 text-gray-500">
                     Tidak ada transaksi yang cocok dengan filter.
                   </td>
                 </tr>
@@ -200,6 +212,14 @@ const TransactionsListPage = () => {
           />
         </div>
       </div>
+
+      {selectedTransactionId && (
+        <TransactionDetailModal
+          isOpen={isDetailModalOpen}
+          onClose={() => setIsDetailModalOpen(false)}
+          transactionId={selectedTransactionId}
+        />
+      )}
     </div>
   )
 }

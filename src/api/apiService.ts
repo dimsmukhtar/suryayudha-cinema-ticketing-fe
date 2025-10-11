@@ -139,8 +139,12 @@ export const verifyEmail = async (data: { email: string; token: string }) => {
 }
 
 export const getTransactionById = async (transactionId: string): Promise<any> => {
-  const response = await api.get(`/transactions/${transactionId}`)
-  return response.data.data
+  try {
+    const response = await api.get(`/transactions/${transactionId}`)
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
 }
 
 export const applyVoucher = async (transactionId: string, voucherCode: string): Promise<any> => {
@@ -546,6 +550,42 @@ export const sendNotificationToUser = async (data: any) => {
 export const getAllTransactionsAdmin = async (params: any) => {
   try {
     const response = await api.get("/transactions", { params })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getAllVouchers = async () => {
+  try {
+    const response = await api.get("/vouchers")
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const createVoucher = async (data: any) => {
+  try {
+    const response = await api.post("/vouchers", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const updateVoucher = async (id: number, data: any) => {
+  try {
+    const response = await api.patch(`/vouchers/${id}`, data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteVoucher = async (id: number) => {
+  try {
+    const response = await api.delete(`/vouchers/${id}`)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
