@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import toast from "react-hot-toast"
 import { getAllGenres, createGenre, updateGenre, deleteGenre } from "../../api/apiService"
-import { Plus, Edit, Trash2 } from "lucide-react"
+import { Plus, Edit, Trash2, Loader2 } from "lucide-react"
 import GenreFormModal from "../../components/admin/GenreFormModal"
 import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
 
@@ -107,8 +107,8 @@ const ManageGenresPage = () => {
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={3} className="text-center py-10">
-                    Loading...
+                  <td colSpan={6} className="text-center py-10">
+                    <Loader2 className="animate-spin mx-auto text-primary" />
                   </td>
                 </tr>
               ) : (

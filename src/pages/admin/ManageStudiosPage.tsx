@@ -113,11 +113,11 @@ const ManageStudiosPage = () => {
       </div>
 
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[...Array(3)].map((_, i) => (
-            <div key={i} className="bg-gray-200 h-48 rounded-lg animate-pulse"></div>
-          ))}
-        </div>
+        <tr>
+          <td colSpan={6} className="text-center py-10">
+            <Loader2 className="animate-spin mx-auto text-primary" />
+          </td>
+        </tr>
       ) : studios.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {studios.map((studio) => (

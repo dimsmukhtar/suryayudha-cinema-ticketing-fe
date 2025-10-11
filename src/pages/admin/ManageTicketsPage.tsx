@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import { validateTicket, getAllTicketsAdmin } from "../../api/apiService"
 import { Search, Loader2, CheckCircle, XCircle, Ticket, Eye } from "lucide-react"
-import { formatDate } from "../../utils/formatters"
+import useDebounce from "../../hooks/useDebounce"
+import Pagination from "../../components/admin/Pagination"
 
 const ManageTicketsPage = () => {
   const [activeTab, setActiveTab] = useState("validate")
@@ -90,7 +91,7 @@ const TicketValidator = () => {
             <div className="flex items-center gap-4">
               <CheckCircle size={40} />
               <div>
-                <h3 className="text-xl font-bold">Tiket Valid & Berhasil Divalidasi!</h3>
+                <h3 className="text-xl font-bold">Tiket Valid & Telah Digunakan</h3>
                 <p>
                   Kode:{" "}
                   <span className="font-mono bg-green-200 px-1 rounded">
@@ -148,14 +149,20 @@ const TicketValidator = () => {
 const TicketList = () => {
   const [tickets, setTickets] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [meta, setMeta] = useState<any>({})
   const navigate = useNavigate()
+
+  const [searchTerm, setSearchTerm] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const debouncedSearch = useDebounce(searchTerm, 500)
 
   useEffect(() => {
     const fetchTickets = async () => {
       setIsLoading(true)
       try {
-        const response = await getAllTicketsAdmin()
+        const response = await getAllTicketsAdmin({ page: currentPage, code: debouncedSearch })
         setTickets(response.data)
+        setMeta(response.meta)
       } catch (error) {
         toast.error("Gagal memuat daftar tiket.")
       } finally {
@@ -163,10 +170,26 @@ const TicketList = () => {
       }
     }
     fetchTickets()
-  }, [])
+  }, [currentPage, debouncedSearch]) // Re-fetch saat halaman atau search term berubah
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page)
+  }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-white rounded-lg shadow-md">
+      <div className="p-4 border-b">
+        <div className="relative w-full md:w-1/3">
+          <input
+            type="text"
+            placeholder="Cari kode tiket..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value.toUpperCase())}
+            className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-black"
+          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+        </div>
+      </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -192,10 +215,10 @@ const TicketList = () => {
             {isLoading ? (
               <tr>
                 <td colSpan={5} className="text-center py-10">
-                  Memuat daftar tiket...
+                  <Loader2 className="animate-spin mx-auto text-primary" />
                 </td>
               </tr>
-            ) : (
+            ) : tickets.length > 0 ? (
               tickets.map((ticket) => (
                 <tr key={ticket.id} className="bg-white border-b hover:bg-gray-50">
                   <th scope="row" className="px-6 py-4 font-mono text-gray-900">
@@ -219,16 +242,29 @@ const TicketList = () => {
                   <td className="px-6 py-4">
                     <button
                       onClick={() => navigate(`/admin/tickets/${ticket.id}`)}
-                      className="text-primary hover:underline text-xs font-semibold"
+                      className="text-primary hover:underline text-xs font-semibold flex items-center gap-1"
                     >
-                      Lihat Detail
+                      <Eye size={14} /> Detail
                     </button>
                   </td>
                 </tr>
               ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="text-center py-10 text-gray-500">
+                  Tidak ada tiket ditemukan.
+                </td>
+              </tr>
             )}
           </tbody>
         </table>
+      </div>
+      <div className="p-4 border-t">
+        <Pagination
+          currentPage={meta.page}
+          totalPages={meta.totalPages}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   )

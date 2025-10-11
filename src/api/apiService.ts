@@ -247,7 +247,19 @@ export const resetPassword = async (data: any) => {
 }
 export const getAdminDashboardStats = async (): Promise<any> => {
   try {
-    const response = await api.get("/users/dashboard/admin")
+    const response = await api.get("/users/dashboard/admin-stats")
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getAdminDashboardChartData = async (params: {
+  startDate?: string
+  endDate?: string
+}): Promise<any> => {
+  try {
+    const response = await api.get("/users/dashboard/admin-chart", { params })
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -344,13 +356,14 @@ export const validateTicket = async (code: string) => {
     throw error.response?.data || error
   }
 }
-export const getAllTicketsAdmin = async (filters: { code?: string } = {}) => {
-  const params = new URLSearchParams()
-  if (filters.code) params.append("code", filters.code)
-  const response = await api.get(`/tickets?${params.toString()}`)
-  return response.data
+export const getAllTicketsAdmin = async (params: any) => {
+  try {
+    const response = await api.get("/tickets", { params })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
 }
-
 export const getTicketByCodeAdmin = async (code: string) => {
   try {
     const response = await api.get(`/tickets/${code}/find-code`)
@@ -466,4 +479,66 @@ export const deleteStudioPhoto = async (photoId: number) => {
 export const getStudioById = async (id: string) => {
   const response = await api.get(`/studios/${id}`)
   return response.data.data
+}
+export const getAllUsersAdmin = async (params: any) => {
+  try {
+    const response = await api.get("/users", { params })
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getUserByIdAdmin = async (id: number) => {
+  try {
+    const response = await api.get(`/users/${id}`)
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const getTicketsForUser = async (userId: number) => {
+  try {
+    const response = await api.get(`/users/${userId}/tickets`)
+    return response.data.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const createUserAdmin = async (data: any) => {
+  try {
+    const response = await api.post("/users", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const updateUserAdmin = async (id: number, data: any) => {
+  try {
+    const response = await api.patch(`/users/${id}`, data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const deleteUserAdmin = async (id: number) => {
+  try {
+    const response = await api.delete(`/users/${id}`)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
+}
+
+export const sendNotificationToUser = async (data: any) => {
+  try {
+    const response = await api.post("/notifications", data)
+    return response.data
+  } catch (error: any) {
+    throw error.response?.data || error
+  }
 }
