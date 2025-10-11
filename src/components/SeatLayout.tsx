@@ -6,6 +6,7 @@ const SeatLayout = ({
   onSeatSelect,
   screenPlacement,
   isAdmin = false,
+  isTemplateView = false,
 }: any) => {
   // Menggunakan logika layout Anda yang sudah sangat baik
   const layoutContainerClass = () => {
@@ -56,9 +57,10 @@ const SeatLayout = ({
                     <Seat
                       key={seat.seatId || `seat-${rowIndex}-${seatIndex}`}
                       seat={seat}
-                      isSelected={isSelected}
+                      isSelected={!isAdmin && !isTemplateView && isSelected}
                       onSelect={onSeatSelect}
                       isAdmin={isAdmin} // Teruskan prop 'isAdmin'
+                      isTemplateView={isTemplateView}
                     />
                   )
                 }
@@ -72,26 +74,28 @@ const SeatLayout = ({
       </div>
 
       {/* --- LEGENDA STATUS KURSI (Dengan Warna Baru) --- */}
-      <div className="w-full flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm text-gray-300 border-t border-gray-700 pt-6">
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-slate-600"></div>
-          <span>Tersedia</span>
-        </div>
-        {!isAdmin && (
+      {!isTemplateView && (
+        <div className="w-full flex flex-wrap justify-center gap-x-6 gap-y-2 mt-4 text-sm text-gray-300 border-t border-gray-700 pt-6">
           <div className="flex items-center gap-2">
-            <div className="w-5 h-5 rounded-md bg-primary"></div>
-            <span>Pilihan Anda</span>
+            <div className="w-5 h-5 rounded-md bg-slate-600"></div>
+            <span>Tersedia</span>
           </div>
-        )}
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-yellow-600"></div>
-          <span>Reserved</span>
+          {!isAdmin && (
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-md bg-primary"></div>
+              <span>Pilihan Anda</span>
+            </div>
+          )}
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-yellow-600"></div>
+            <span>Reserved</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-5 h-5 rounded-md bg-red-600"></div>
+            <span>Sudah Dipesan</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-5 h-5 rounded-md bg-red-600"></div>
-          <span>Sudah Dipesan</span>
-        </div>
-      </div>
+      )}
     </div>
   )
 }

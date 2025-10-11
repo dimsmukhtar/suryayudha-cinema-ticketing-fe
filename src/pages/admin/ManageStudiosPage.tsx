@@ -7,10 +7,11 @@ import {
   deleteStudio,
   getStudioById,
 } from "../../api/apiService"
-import { Plus, Edit, Trash2, Camera, Loader2 } from "lucide-react"
+import { Plus, Edit, Trash2, Camera, Loader2, Armchair } from "lucide-react"
 import StudioFormModal from "../../components/admin/StudioFormModal"
 import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
 import StudioGalleryModal from "../../components/admin/StudioGalleryModal"
+import StudioSeatLayoutModal from "../../components/admin/StudioSeatLayoutModal"
 
 const ManageStudiosPage = () => {
   const [studios, setStudios] = useState<any[]>([])
@@ -19,10 +20,12 @@ const ManageStudiosPage = () => {
   const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isGalleryModalOpen, setIsGalleryModalOpen] = useState(false)
+  const [isSeatLayoutModalOpen, setIsSeatLayoutModalOpen] = useState(false)
 
   const [studioToEdit, setStudioToEdit] = useState<any | null>(null)
   const [studioToDelete, setStudioToDelete] = useState<any | null>(null)
   const [studioForGallery, setStudioForGallery] = useState<any | null>(null)
+  const [studioForSeatLayout, setStudioForSeatLayout] = useState<any | null>(null)
 
   const fetchStudios = useCallback(async () => {
     setIsLoading(true)
@@ -60,6 +63,11 @@ const ManageStudiosPage = () => {
   const handleOpenGalleryModal = (studio: any) => {
     setStudioForGallery(studio)
     setIsGalleryModalOpen(true)
+  }
+
+  const handleOpenSeatLayoutModal = (studio: any) => {
+    setStudioForSeatLayout(studio)
+    setIsSeatLayoutModalOpen(true)
   }
 
   const handleSaveStudio = async (data: any) => {
@@ -126,6 +134,13 @@ const ManageStudiosPage = () => {
               </div>
               <div className="bg-gray-50 px-5 py-3 flex justify-end gap-3">
                 <button
+                  onClick={() => handleOpenSeatLayoutModal(studio)}
+                  className="text-gray-500 hover:text-purple-600"
+                  title="Lihat Denah Kursi"
+                >
+                  <Armchair size={18} />
+                </button>
+                <button
                   onClick={() => handleOpenGalleryModal(studio)}
                   className="text-gray-500 hover:text-green-600"
                   title="Galeri Foto"
@@ -175,6 +190,13 @@ const ManageStudiosPage = () => {
         studio={studioForGallery}
         onDataChange={fetchStudios} // Refresh data saat ada perubahan
       />
+      {studioForSeatLayout && (
+        <StudioSeatLayoutModal
+          isOpen={isSeatLayoutModalOpen}
+          onClose={() => setIsSeatLayoutModalOpen(false)}
+          studio={studioForSeatLayout}
+        />
+      )}
     </div>
   )
 }

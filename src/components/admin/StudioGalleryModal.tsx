@@ -1,12 +1,15 @@
 import React, { useState, useCallback } from "react"
 import { X, Loader2, UploadCloud, Trash2, Camera } from "lucide-react"
-import { uploadStudioPhotos, deleteStudioPhoto, getStudioById } from "../../api/apiService"
+import { uploadStudioPhotos, deleteStudioPhoto } from "../../api/apiService"
+import DeleteConfirmationModal from "./DeleteConfirmationModal"
 import toast from "react-hot-toast"
 
 const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
   const [photosToUpload, setPhotosToUpload] = useState<File[]>([])
   const [previews, setPreviews] = useState<string[]>([])
   const [isUploading, setIsUploading] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [galleryToDelete, setGalleryToDelete] = useState<any | null>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -45,18 +48,23 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
       .finally(() => setIsUploading(false))
   }
 
-  const handleDeletePhoto = (photoId: number) => {
-    if (window.confirm("Anda yakin ingin menghapus foto ini?")) {
-      const actionPromise = deleteStudioPhoto(photoId)
-      toast.promise(actionPromise, {
-        loading: "Menghapus foto...",
-        success: (res) => {
-          onDataChange()
-          return res.message || "Foto berhasil dihapus!"
-        },
-        error: (err) => err.message || "Gagal menghapus foto.",
-      })
-    }
+  const handleOpenDeleteModal = (photoId: any) => {
+    setGalleryToDelete(photoId)
+    setIsDeleteModalOpen(true)
+  }
+
+  const handleDeletePhoto = () => {
+    if (!galleryToDelete) return
+    const actionPromise = deleteStudioPhoto(galleryToDelete)
+    toast.promise(actionPromise, {
+      loading: "Menghapus foto...",
+      success: (res) => {
+        onDataChange()
+        setIsDeleteModalOpen(false)
+        return res.message || "Foto berhasil dihapus!"
+      },
+      error: (err) => err.message || "Gagal menghapus foto.",
+    })
   }
 
   if (!isOpen) return null
@@ -138,9 +146,9 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
                       alt={`Studio photo ${photo.id}`}
                       className="w-full h-32 object-cover rounded-lg"
                     />
-                    <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center">
+                    <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center">
                       <button
-                        onClick={() => handleDeletePhoto(photo.id)}
+                        onClick={() => handleOpenDeleteModal(photo.id)}
                         className="p-2 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         <Trash2 size={18} />
@@ -158,6 +166,12 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
           </div>
         </div>
       </div>
+      <DeleteConfirmationModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDeletePhoto}
+        itemName={"foto ini"}
+      />
     </div>
   )
 }
