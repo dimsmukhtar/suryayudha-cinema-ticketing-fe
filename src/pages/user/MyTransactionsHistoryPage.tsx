@@ -62,6 +62,7 @@ const MyTransactionsHistoryPage = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-8">Riwayat Transaksi Saya</h1>
+          <p className="text-sm text-red-400">*transaksi yang batal otomatis akan hilang</p>
           {renderContent()}
         </div>
       </div>
