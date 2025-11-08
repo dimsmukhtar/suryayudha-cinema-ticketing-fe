@@ -11,10 +11,23 @@ const TransactionHistoryCard = ({ transaction }: any) => {
   const isPending = transaction.status === "pending" && !isExpired
   const isSettlement = transaction.status === "settlement"
 
-  // Fallback jika transaction_items tidak ada (untuk transaksi cancelled)
   if (!transaction.transaction_items || transaction.transaction_items.length === 0) {
-    // Anda bisa membuat tampilan khusus untuk transaksi 'cancelled' di sini jika mau
-    return null
+    return (
+      <div className="bg-gray-800/50 rounded-lg shadow-lg flex items-center p-4 border-l-4 border-red-500">
+        <div className="flex-grow ml-2">
+          <h3 className="font-bold text-lg text-white">Transaksi Dibatalkan</h3>
+          <p className="text-sm text-gray-400">Order ID: {transaction.order_id}</p>
+          <p className="text-sm text-gray-400 mt-1">
+            Total: {formatRupiah(transaction.final_amount)}
+          </p>
+        </div>
+        <div className="text-right flex-shrink-0">
+          <div className="flex items-center justify-end gap-2 text-xs font-semibold px-3 py-1 rounded-full bg-red-900 text-red-200">
+            <span>Dibatalkan</span>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   const movie = transaction.transaction_items[0]?.schedule_seat.schedule.movie

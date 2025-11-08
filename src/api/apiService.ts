@@ -149,7 +149,7 @@ export const getTransactionById = async (transactionId: string): Promise<any> =>
 
 export const applyVoucher = async (transactionId: string, voucherCode: string): Promise<any> => {
   try {
-    const response = await api.patch(`/transactions/${transactionId}/apply-voucher`, {
+    const response = await api.patch(`/vouchers/${transactionId}/apply`, {
       voucher_code: voucherCode,
     })
 

@@ -79,7 +79,9 @@ const BookingSummaryPage = () => {
             toast.error("Pembayaran gagal.")
           },
           onClose: function () {
-            toast("Anda menutup jendela pembayaran.")
+            toast(
+              "Anda menutup jendela pembayaran, lihat menu riwayat transaksi untuk melihat pembayaran Anda."
+            )
           },
         })
       } else {
