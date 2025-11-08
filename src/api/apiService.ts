@@ -255,7 +255,7 @@ export const resetPassword = async (data: any) => {
 }
 export const getAdminDashboardStats = async (): Promise<any> => {
   try {
-    const response = await api.get("/users/dashboard/admin-stats")
+    const response = await api.get("/dashboard/admin-stats")
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -267,7 +267,7 @@ export const getAdminDashboardChartData = async (params: {
   endDate?: string
 }): Promise<any> => {
   try {
-    const response = await api.get("/users/dashboard/admin-chart", { params })
+    const response = await api.get("/dashboard/admin-chart", { params })
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
