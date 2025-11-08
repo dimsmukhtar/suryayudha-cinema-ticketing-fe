@@ -6,13 +6,13 @@ const api = axios.create({
 })
 
 export const getMyProfile = async () => {
-  const response = await api.get("/users/profile")
+  const response = await api.get("/auth/profile")
   return response.data.data
 }
 
 export const loginUser = async (credentials: { email: string; password: string }) => {
   try {
-    const response = await api.post("/users/login", {
+    const response = await api.post("/auth/login", {
       email: credentials.email,
       password: credentials.password,
     })
@@ -29,7 +29,7 @@ export const registerUser = async (credentials: {
   passwordConfirmation: string
 }) => {
   try {
-    const response = await api.post("/users/register", {
+    const response = await api.post("/auth/register", {
       name: credentials.name,
       email: credentials.email,
       password: credentials.password,
@@ -43,7 +43,7 @@ export const registerUser = async (credentials: {
 
 export const loginAdmin = async (credentials: { email: string; password: string }) => {
   try {
-    const response = await api.post("/users/login-admin", {
+    const response = await api.post("/auth/login-admin", {
       email: credentials.email,
       password: credentials.password,
     })
@@ -54,11 +54,11 @@ export const loginAdmin = async (credentials: { email: string; password: string 
 }
 
 export const logout = async () => {
-  await api.post("/users/logout")
+  await api.post("/auth/logout")
 }
 
 export const resendVerificationTokenToEmail = async (email: string) => {
-  const response = await api.post("users/resend-verification-token", { email })
+  const response = await api.post("/auth/resend-verification-token", { email })
   return response.data
 }
 
@@ -125,13 +125,13 @@ export const createBooking = async (
 }
 
 export const checkAuth = async () => {
-  const response = await api.get("/users/check-auth")
+  const response = await api.get("/auth/check-auth")
   return response
 }
 
 export const verifyEmail = async (data: { email: string; token: string }) => {
   try {
-    const response = await api.get(`/users/verify-email?token=${data.token}&email=${data.email}`)
+    const response = await api.get(`/auth/verify-email?token=${data.token}&email=${data.email}`)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -184,7 +184,7 @@ export const hideNotification = async (notificationId: number) => {
 }
 export const updateMyProfile = async (formData: FormData): Promise<any> => {
   try {
-    const response = await api.patch("/users/update-profile", formData)
+    const response = await api.patch("/auth/update-profile", formData)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -229,7 +229,7 @@ export const getMyTransactionHistory = async (): Promise<any[]> => {
 
 export const changePassword = async (data: any) => {
   try {
-    const response = await api.patch("/users/change-password", data)
+    const response = await api.patch("/auth/change-password", data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -238,7 +238,7 @@ export const changePassword = async (data: any) => {
 
 export const forgotPassword = async (data: { email: string }) => {
   try {
-    const response = await api.post("/users/forgot-password", data)
+    const response = await api.post("/auth/forgot-password", data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -247,7 +247,7 @@ export const forgotPassword = async (data: { email: string }) => {
 
 export const resetPassword = async (data: any) => {
   try {
-    const response = await api.post("/users/reset-password", data)
+    const response = await api.post("/auth/reset-password", data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error

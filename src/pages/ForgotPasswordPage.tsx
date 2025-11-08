@@ -40,7 +40,7 @@ const ForgotPasswordPage = () => {
             <Mail className="mx-auto h-16 w-16 text-green-400" />
             <h1 className="text-3xl font-bold mt-4">Periksa Email Anda</h1>
             <p className="text-gray-300 mt-2">
-              Kami telah mengirimkan instruksi untuk mereset password Anda ke{" "}
+              Kami telah mengirimkan token atau kode unik untuk mereset password Anda ke{" "}
               <strong>{email}</strong>. Silakan periksa kotak masuk (dan folder spam) Anda.
             </p>
 
@@ -48,15 +48,15 @@ const ForgotPasswordPage = () => {
               to={`/reset-password?email=${encodeURIComponent(email)}`}
               className="mt-6 inline-block text-primary hover:text-primary-light"
             >
-              Ke Halaman Reset Password
+              Sudah cek? klik aku untuk mereset password
             </Link>
           </>
         ) : (
           <>
             <h1 className="text-3xl font-bold text-primary">Lupa Password?</h1>
             <p className="text-gray-400 mt-2 mb-6">
-              Jangan khawatir. Masukkan email Anda dan kami akan mengirimkan instruksi untuk mereset
-              password Anda.
+              Jangan khawatir. Masukkan email Anda dan kami akan mengirimkan token atau kode unik
+              untuk mereset password Anda.
             </p>
             <form onSubmit={handleSubmit} className="space-y-6 text-left">
               <div>
@@ -75,7 +75,7 @@ const ForgotPasswordPage = () => {
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
               >
                 {isSubmitting && <Loader2 className="animate-spin mr-2" size={20} />}
-                {isSubmitting ? "Mengirim..." : "Kirim Instruksi"}
+                {isSubmitting ? "Mengirim..." : "Kirim"}
               </button>
             </form>
           </>
