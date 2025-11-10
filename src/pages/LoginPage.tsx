@@ -71,10 +71,47 @@ const LoginPage = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
+            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 cursor-pointer"
           >
             {isLoading ? "Loading..." : "Login"}
           </button>
+          {/* Tambahkan di bawah tombol login utama */}
+          <div className="mt-6">
+            <div className="flex items-center justify-center mb-4">
+              <span className="text-gray-400 text-sm">Atau masuk dengan</span>
+            </div>
+            <div className="flex flex-col gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/google`)
+                }
+                className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-md bg-white text-gray-800 font-medium hover:bg-gray-200 transition-colors cursor-pointer"
+              >
+                <img
+                  src="https://www.svgrepo.com/show/475656/google-color.svg"
+                  alt="Google"
+                  className="w-5 h-5"
+                />
+                Masuk dengan Google
+              </button>
+
+              <button
+                type="button"
+                onClick={() =>
+                  (window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/facebook`)
+                }
+                className="w-full flex items-center justify-center gap-2 py-2 px-4 rounded-md bg-[#1877F2] text-white font-medium hover:bg-[#0f5ad0] transition-colors cursor-pointer"
+              >
+                <img
+                  src="https://www.svgrepo.com/show/448224/facebook.svg"
+                  alt="Facebook"
+                  className="w-5 h-5"
+                />
+                Masuk dengan Facebook
+              </button>
+            </div>
+          </div>
         </div>
         <Link
           to="/forgot-password"

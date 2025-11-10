@@ -57,7 +57,7 @@ const UserProfileDropdown = () => {
           <div className="border-t border-gray-200 my-1"></div>
           <button
             onClick={logout}
-            className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+            className="w-full text-left block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
           >
             Logout
           </button>
