@@ -1,9 +1,4 @@
-import axios from "axios"
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true,
-})
+import api from "./axiosClient"
 
 export const getMyProfile = async () => {
   const response = await api.get("/auth/profile")
@@ -54,7 +49,7 @@ export const loginAdmin = async (credentials: { email: string; password: string 
 }
 
 export const logout = async () => {
-  await api.post("/auth/logout")
+  return await api.post("/auth/logout")
 }
 
 export const resendVerificationTokenToEmail = async (email: string) => {
