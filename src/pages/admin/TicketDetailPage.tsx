@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react"
-import { useParams, Link } from "react-router-dom"
-import { getTicketByIdAdmin } from "../../api/apiService"
-import toast from "react-hot-toast"
+import { useState, useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
+import { getTicketByIdAdmin } from '../../api/apiService'
+import toast from 'react-hot-toast'
 import {
   Loader2,
   ArrowLeft,
@@ -11,9 +11,9 @@ import {
   Clock,
   Ticket as TicketIcon,
   User,
-  Hash,
-} from "lucide-react"
-import { formatDate, formatTime } from "../../utils/formatters"
+  Hash
+} from 'lucide-react'
+import { formatDate, formatTime } from '../../utils/formatters'
 
 const TicketDetailPage = () => {
   const { id } = useParams()
@@ -28,7 +28,7 @@ const TicketDetailPage = () => {
           const response = await getTicketByIdAdmin(parseInt(id))
           setTicket(response.data)
         } catch (error) {
-          toast.error("Gagal memuat detail tiket.")
+          toast.error('Gagal memuat detail tiket.')
         } finally {
           setIsLoading(false)
         }
@@ -46,7 +46,11 @@ const TicketDetailPage = () => {
   }
 
   if (!ticket) {
-    return <div className="text-center py-10 text-gray-700">Tiket tidak ditemukan.</div>
+    return (
+      <div className="text-center py-10 text-gray-700">
+        Tiket tidak ditemukan.
+      </div>
+    )
   }
 
   return (
@@ -60,11 +64,20 @@ const TicketDetailPage = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Detail Tiket</h1>
       <div className="bg-white p-6 rounded-lg shadow-md">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <InfoItem icon={<Hash />} label="Kode Tiket" value={ticket.code} isMono />
+          <InfoItem
+            icon={<Hash />}
+            label="Kode Tiket"
+            value={ticket.code}
+            isMono
+          />
           <InfoItem icon={<User />} label="Nama Pemilik" value={ticket.user} />
           <InfoItem icon={<Film />} label="Film" value={ticket.movie_title} />
           <InfoItem icon={<Armchair />} label="Studio" value={ticket.studio} />
-          <InfoItem icon={<TicketIcon />} label="Kursi" value={ticket.seat_label} />
+          <InfoItem
+            icon={<TicketIcon />}
+            label="Kursi"
+            value={ticket.seat_label}
+          />
           <InfoItem
             icon={<Calendar />}
             label="Jadwal Tayang"
@@ -85,11 +98,11 @@ const TicketDetailPage = () => {
           <p className="text-sm text-gray-500">Status Tiket:</p>
           <span
             className={`px-3 py-1.5 text-base font-semibold rounded-full ${
-              ticket.status === "active"
-                ? "bg-blue-100 text-blue-800"
-                : ticket.status === "used"
-                ? "bg-green-100 text-green-800"
-                : "bg-gray-100 text-gray-800"
+              ticket.status === 'active'
+                ? 'bg-blue-100 text-blue-800'
+                : ticket.status === 'used'
+                  ? 'bg-green-100 text-green-800'
+                  : 'bg-gray-100 text-gray-800'
             }`}
           >
             {ticket.status.charAt(0).toUpperCase() + ticket.status.slice(1)}
@@ -105,7 +118,9 @@ const InfoItem = ({ icon, label, value, isMono = false }: any) => (
     <div className="text-primary mt-1">{icon}</div>
     <div>
       <p className="text-sm text-gray-500">{label}</p>
-      <p className={`font-semibold text-gray-800 ${isMono ? "font-mono" : ""}`}>{value || "N/A"}</p>
+      <p className={`font-semibold text-gray-800 ${isMono ? 'font-mono' : ''}`}>
+        {value || 'N/A'}
+      </p>
     </div>
   </div>
 )

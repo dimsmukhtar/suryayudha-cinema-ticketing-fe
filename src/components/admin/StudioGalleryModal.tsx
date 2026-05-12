@@ -1,8 +1,8 @@
-import React, { useState, useCallback } from "react"
-import { X, Loader2, UploadCloud, Trash2, Camera } from "lucide-react"
-import { uploadStudioPhotos, deleteStudioPhoto } from "../../api/apiService"
-import DeleteConfirmationModal from "./DeleteConfirmationModal"
-import toast from "react-hot-toast"
+import React, { useState } from 'react'
+import { X, Loader2, UploadCloud, Trash2, Camera } from 'lucide-react'
+import { uploadStudioPhotos, deleteStudioPhoto } from '../../api/apiService'
+import DeleteConfirmationModal from './DeleteConfirmationModal'
+import toast from 'react-hot-toast'
 
 const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
   const [photosToUpload, setPhotosToUpload] = useState<File[]>([])
@@ -27,23 +27,23 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
 
   const handleUpload = async () => {
     if (photosToUpload.length === 0) {
-      toast.error("Pilih setidaknya satu foto untuk diunggah.")
+      toast.error('Pilih setidaknya satu foto untuk diunggah.')
       return
     }
     setIsUploading(true)
     const formData = new FormData()
-    photosToUpload.forEach((photo) => formData.append("photos", photo))
+    photosToUpload.forEach((photo) => formData.append('photos', photo))
 
     const actionPromise = uploadStudioPhotos(studio.id, formData)
     toast
       .promise(actionPromise, {
-        loading: "Mengunggah foto...",
+        loading: 'Mengunggah foto...',
         success: (res) => {
           resetForm()
           onDataChange() // Beri tahu halaman utama untuk refresh data
-          return res.message || "Foto berhasil diunggah!"
+          return res.message || 'Foto berhasil diunggah!'
         },
-        error: (err) => err.message || "Gagal mengunggah foto.",
+        error: (err) => err.message || 'Gagal mengunggah foto.'
       })
       .finally(() => setIsUploading(false))
   }
@@ -57,13 +57,13 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
     if (!galleryToDelete) return
     const actionPromise = deleteStudioPhoto(galleryToDelete)
     toast.promise(actionPromise, {
-      loading: "Menghapus foto...",
+      loading: 'Menghapus foto...',
       success: (res) => {
         onDataChange()
         setIsDeleteModalOpen(false)
-        return res.message || "Foto berhasil dihapus!"
+        return res.message || 'Foto berhasil dihapus!'
       },
-      error: (err) => err.message || "Gagal menghapus foto.",
+      error: (err) => err.message || 'Gagal menghapus foto.'
     })
   }
 
@@ -73,7 +73,9 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col">
         <div className="flex justify-between items-center mb-4 border-b pb-4">
-          <h2 className="text-xl font-bold text-gray-800">Galeri Foto: {studio.name}</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            Galeri Foto: {studio.name}
+          </h2>
           <button onClick={onClose}>
             <X className="text-gray-500 hover:text-gray-800" />
           </button>
@@ -82,7 +84,9 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
         <div className="overflow-y-auto flex-grow space-y-6">
           {/* Bagian Unggah Foto */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Tambah Foto Baru</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Tambah Foto Baru
+            </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
                 <UploadCloud className="mx-auto h-12 w-12 text-gray-400" />
@@ -102,7 +106,9 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
                     />
                   </label>
                 </div>
-                <p className="text-xs text-gray-500">Bisa pilih lebih dari satu</p>
+                <p className="text-xs text-gray-500">
+                  Bisa pilih lebih dari satu
+                </p>
               </div>
             </div>
             {previews.length > 0 && (
@@ -125,8 +131,12 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
                   disabled={isUploading}
                   className="mt-4 w-full bg-primary text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-primary-dark disabled:opacity-50"
                 >
-                  {isUploading ? <Loader2 className="animate-spin" /> : <UploadCloud size={18} />}
-                  {isUploading ? "Mengunggah..." : "Unggah Foto"}
+                  {isUploading ? (
+                    <Loader2 className="animate-spin" />
+                  ) : (
+                    <UploadCloud size={18} />
+                  )}
+                  {isUploading ? 'Mengunggah...' : 'Unggah Foto'}
                 </button>
               </div>
             )}
@@ -170,7 +180,7 @@ const StudioGalleryModal = ({ isOpen, onClose, studio, onDataChange }: any) => {
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDeletePhoto}
-        itemName={"foto ini"}
+        itemName={'foto ini'}
       />
     </div>
   )

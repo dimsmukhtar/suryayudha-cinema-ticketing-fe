@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getMyBookings } from "../../api/apiService"
-import BookingHistoryCard from "../../components/BookingHistoryCard"
-import { FileText } from "lucide-react"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { getMyBookings } from '../../api/apiService'
+import BookingHistoryCard from '../../components/BookingHistoryCard'
+import { FileText } from 'lucide-react'
 
 const MyBookingsHistoryPage = () => {
   const [bookings, setBookings] = useState<any[]>([])
@@ -16,8 +16,8 @@ const MyBookingsHistoryPage = () => {
         const data = await getMyBookings()
         setBookings(data)
       } catch (err) {
-        setError("Gagal memuat riwayat booking Anda.")
-        toast.error("Gagal memuat riwayat booking Anda.")
+        setError('Gagal memuat riwayat booking Anda.')
+        toast.error('Gagal memuat riwayat booking Anda.')
         console.error(err)
       } finally {
         setIsLoading(false)

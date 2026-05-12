@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getAllSchedulesAdmin, createSchedule, deleteSchedule } from "../../api/apiService"
-import { Plus, Trash2, Calendar, Clock, Loader2, Eye } from "lucide-react"
-import ScheduleFormModal from "../../components/admin/ScheduleFormModal"
-import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
-import { formatDate, formatTime, formatRupiah } from "../../utils/formatters"
-import ScheduleDetailModal from "../../components/admin/ScheduleDetailModal"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import {
+  getAllSchedulesAdmin,
+  createSchedule,
+  deleteSchedule
+} from '../../api/apiService'
+import { Plus, Trash2, Calendar, Clock, Loader2, Eye } from 'lucide-react'
+import ScheduleFormModal from '../../components/admin/ScheduleFormModal'
+import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
+import { formatTime, formatRupiah } from '../../utils/formatters'
+import ScheduleDetailModal from '../../components/admin/ScheduleDetailModal'
 
 const ManageSchedulesPage = () => {
   const [schedules, setSchedules] = useState<any[]>([])
@@ -15,7 +19,9 @@ const ManageSchedulesPage = () => {
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
   const [scheduleToDelete, setScheduleToDelete] = useState<any | null>(null)
   const [scheduleToView, setScheduleToView] = useState<any | null>(null)
-  const [filterDate, setFilterDate] = useState(new Date().toISOString().split("T")[0])
+  const [filterDate, setFilterDate] = useState(
+    new Date().toISOString().split('T')[0]
+  )
 
   const fetchSchedules = async () => {
     setIsLoading(true)
@@ -23,7 +29,7 @@ const ManageSchedulesPage = () => {
       const data = await getAllSchedulesAdmin({ date: filterDate })
       setSchedules(data.data)
     } catch (error) {
-      toast.error("Gagal memuat data jadwal.")
+      toast.error('Gagal memuat data jadwal.')
     } finally {
       setIsLoading(false)
     }
@@ -36,13 +42,13 @@ const ManageSchedulesPage = () => {
   const handleSaveSchedule = async (payload: any) => {
     const actionPromise = createSchedule(payload)
     toast.promise(actionPromise, {
-      loading: "Menyimpan jadwal...",
+      loading: 'Menyimpan jadwal...',
       success: (res: any) => {
         fetchSchedules()
         setIsFormModalOpen(false)
-        return res.message || "Jadwal berhasil ditambahkan!"
+        return res.message || 'Jadwal berhasil ditambahkan!'
       },
-      error: (err: any) => err.message || "Gagal menyimpan jadwal.",
+      error: (err: any) => err.message || 'Gagal menyimpan jadwal.'
     })
   }
 
@@ -50,13 +56,13 @@ const ManageSchedulesPage = () => {
     if (!scheduleToDelete) return
     const actionPromise = deleteSchedule(scheduleToDelete.id)
     toast.promise(actionPromise, {
-      loading: "Menghapus jadwal...",
+      loading: 'Menghapus jadwal...',
       success: (res: any) => {
         fetchSchedules()
         setIsDeleteModalOpen(false)
-        return res.message || "Jadwal berhasil dihapus!"
+        return res.message || 'Jadwal berhasil dihapus!'
       },
-      error: (err: any) => err.message || "Gagal menghapus jadwal.",
+      error: (err: any) => err.message || 'Gagal menghapus jadwal.'
     })
   }
 
@@ -121,7 +127,10 @@ const ManageSchedulesPage = () => {
                 </tr>
               ) : schedules.length > 0 ? (
                 schedules.map((schedule: any) => (
-                  <tr key={schedule.id} className="bg-white border-b hover:bg-gray-50">
+                  <tr
+                    key={schedule.id}
+                    className="bg-white border-b hover:bg-gray-50"
+                  >
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -132,8 +141,12 @@ const ManageSchedulesPage = () => {
                     <td className="px-6 py-4 flex items-center gap-2">
                       <Clock size={14} /> {formatTime(schedule.start_time)}
                     </td>
-                    <td className="px-6 py-4">{formatTime(schedule.finished_time)}</td>
-                    <td className="px-6 py-4">{formatRupiah(schedule.price)}</td>
+                    <td className="px-6 py-4">
+                      {formatTime(schedule.finished_time)}
+                    </td>
+                    <td className="px-6 py-4">
+                      {formatRupiah(schedule.price)}
+                    </td>
                     <td className="px-6 py-4 text-right flex justify-end gap-4">
                       <button
                         onClick={() => {

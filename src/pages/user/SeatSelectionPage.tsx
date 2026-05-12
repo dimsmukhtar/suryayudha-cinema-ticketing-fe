@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
-import { useParams, useNavigate, useLocation } from "react-router-dom"
-import toast from "react-hot-toast"
-import { getScheduleLayout, createBooking } from "../../api/apiService"
-import SeatLayout from "../../components/SeatLayout"
-import { formatRupiah } from "../../utils/formatters"
-import { useAuth } from "../../hooks/useAuth"
-import { ArrowRight } from "lucide-react"
+import { useState, useEffect } from 'react'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { getScheduleLayout, createBooking } from '../../api/apiService'
+import SeatLayout from '../../components/SeatLayout'
+import { formatRupiah } from '../../utils/formatters'
+import { useAuth } from '../../hooks/useAuth'
+import { ArrowRight } from 'lucide-react'
 
 const SeatSelectionPage = () => {
   const { id: scheduleId } = useParams()
@@ -29,7 +29,7 @@ const SeatSelectionPage = () => {
         setScheduleInfo(data.schedule)
         setSeatLayout(data.seatLayout)
       } catch (error) {
-        toast.error("Gagal memuat denah kursi.")
+        toast.error('Gagal memuat denah kursi.')
       } finally {
         setIsLoading(false)
       }
@@ -39,8 +39,8 @@ const SeatSelectionPage = () => {
 
   const handleSeatSelect = (seat: any) => {
     if (!user) {
-      toast.error("Anda harus login untuk memilih kursi.")
-      navigate("/login", { state: { from: location } })
+      toast.error('Anda harus login untuk memilih kursi.')
+      navigate('/login', { state: { from: location } })
       return
     }
 
@@ -64,16 +64,20 @@ const SeatSelectionPage = () => {
       return
     }
     setIsBooking(true)
-    const loadingToast = toast.loading("Membuat booking...")
+    const loadingToast = toast.loading('Membuat booking...')
     try {
       const scheduleSeatIds = selectedSeats.map((s: any) => s.scheduleSeatId)
-      const newTransaction = await createBooking(parseInt(scheduleId!), scheduleSeatIds)
+      const newTransaction = await createBooking(
+        parseInt(scheduleId!),
+        scheduleSeatIds
+      )
       toast.dismiss(loadingToast)
-      toast.success("Booking berhasil dibuat! Lanjutkan ke pembayaran.")
+      toast.success('Booking berhasil dibuat! Lanjutkan ke pembayaran.')
       navigate(`/booking-summary/${newTransaction.id}`)
     } catch (error: any) {
       toast.dismiss(loadingToast)
-      const errorMessage = error.response?.data?.message || "Gagal membuat booking."
+      const errorMessage =
+        error.response?.data?.message || 'Gagal membuat booking.'
       toast.error(errorMessage)
     } finally {
       setIsBooking(false)
@@ -83,21 +87,25 @@ const SeatSelectionPage = () => {
   const totalPrice = (scheduleInfo?.price || 0) * selectedSeats.length
 
   if (isLoading || isAuthLoading) {
-    return <div className="text-white text-center py-40">Memuat denah kursi...</div>
+    return (
+      <div className="text-white text-center py-40">Memuat denah kursi...</div>
+    )
   }
 
   return (
     <div className="bg-background text-white min-h-screen pt-24 pb-40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold">{scheduleInfo?.movieTitle}</h1>
+          <h1 className="text-3xl md:text-4xl font-bold">
+            {scheduleInfo?.movieTitle}
+          </h1>
           <p className="text-lg text-gray-400 mt-2">
-            {new Date(scheduleInfo?.startTime).toLocaleString("id-ID", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-              hour: "2-digit",
-              minute: "2-digit",
+            {new Date(scheduleInfo?.startTime).toLocaleString('id-ID', {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'long',
+              hour: '2-digit',
+              minute: '2-digit'
             })}
           </p>
         </div>
@@ -112,7 +120,7 @@ const SeatSelectionPage = () => {
 
       <div
         className={`fixed bottom-0 left-0 w-full bg-gray-900/80 backdrop-blur-sm border-t border-gray-700 shadow-lg transform transition-transform duration-300 ${
-          selectedSeats.length > 0 ? "translate-y-0" : "translate-y-full"
+          selectedSeats.length > 0 ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -121,20 +129,23 @@ const SeatSelectionPage = () => {
               Kursi Dipilih ({selectedSeats.length}/{ticketCount})
             </p>
             <p className="font-semibold text-lg truncate max-w-xs sm:max-w-md">
-              {selectedSeats.map((s: any) => s.label).join(", ") || "Pilih kursi Anda"}
+              {selectedSeats.map((s: any) => s.label).join(', ') ||
+                'Pilih kursi Anda'}
             </p>
           </div>
           <div className="flex items-center gap-4 w-full sm:w-auto">
             <div className="text-right">
               <p className="text-sm text-gray-400">Total Harga</p>
-              <p className="font-bold text-2xl text-primary">{formatRupiah(totalPrice)}</p>
+              <p className="font-bold text-2xl text-primary">
+                {formatRupiah(totalPrice)}
+              </p>
             </div>
             <button
               onClick={handleCreateBooking}
               disabled={isBooking || selectedSeats.length !== ticketCount}
               className="flex-grow sm:flex-grow-0 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isBooking ? "Memproses..." : "Lanjutkan"}
+              {isBooking ? 'Memproses...' : 'Lanjutkan'}
               <ArrowRight size={20} />
             </button>
           </div>

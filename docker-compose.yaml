@@ -1,0 +1,23 @@
+services:
+  surya-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+        VITE_MIDTRANS_CLIENT_KEY: ${VITE_MIDTRANS_CLIENT_KEY}
+    image: surya-frontend
+    container_name: surya-frontend
+
+    ports:
+      - '5173:80'
+
+    restart: unless-stopped
+
+    networks:
+      - surya-network
+
+networks:
+  surya-network:
+    name: surya-network
+    external: true

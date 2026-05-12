@@ -1,6 +1,12 @@
-import { X, Loader2, AlertTriangle } from "lucide-react"
+import { Loader2, AlertTriangle } from 'lucide-react'
 
-const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, isDeleting, itemName }: any) => {
+const DeleteConfirmationModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  isDeleting,
+  itemName
+}: any) => {
   if (!isOpen) return null
 
   return (
@@ -9,8 +15,8 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, isDeleting, itemN
         <AlertTriangle className="mx-auto h-12 w-12 text-red-500" />
         <h2 className="text-xl font-bold text-gray-800 mt-4">Anda Yakin?</h2>
         <p className="text-gray-600 mt-2">
-          Apakah Anda yakin ingin menghapus <strong>{itemName}</strong>? Tindakan ini tidak dapat
-          diurungkan.
+          Apakah Anda yakin ingin menghapus <strong>{itemName}</strong>?
+          Tindakan ini tidak dapat diurungkan.
         </p>
         <div className="flex justify-center gap-4 mt-6">
           <button
@@ -25,7 +31,7 @@ const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm, isDeleting, itemN
             className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 flex items-center gap-2 disabled:opacity-50"
           >
             {isDeleting && <Loader2 className="animate-spin" size={16} />}
-            {isDeleting ? "Menghapus..." : "Ya, Hapus"}
+            {isDeleting ? 'Menghapus...' : 'Ya, Hapus'}
           </button>
         </div>
       </div>

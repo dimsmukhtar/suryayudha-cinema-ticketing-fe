@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
-import { getTransactionById, applyVoucher, initiatePayment } from "../../api/apiService"
-import { useAuth } from "../../hooks/useAuth"
-import { formatRupiah } from "../../utils/formatters"
-import CountdownTimer from "../../components/CountdownTimer"
-import { Ticket, Tag, Loader2 } from "lucide-react"
+import React, { useState, useEffect, useCallback } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import {
+  getTransactionById,
+  applyVoucher,
+  initiatePayment
+} from '../../api/apiService'
+import { useAuth } from '../../hooks/useAuth'
+import { formatRupiah } from '../../utils/formatters'
+import CountdownTimer from '../../components/CountdownTimer'
+import { Ticket, Tag, Loader2 } from 'lucide-react'
 
 const BookingSummaryPage = () => {
   const { transactionId } = useParams()
@@ -14,7 +18,7 @@ const BookingSummaryPage = () => {
 
   const [transaction, setTransaction] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [voucherCode, setVoucherCode] = useState("")
+  const [voucherCode, setVoucherCode] = useState('')
   const [isApplyingVoucher, setIsApplyingVoucher] = useState(false)
   const [isInitiatingPayment, setIsInitiatingPayment] = useState(false)
   const [isExpired, setIsExpired] = useState(false)
@@ -24,13 +28,15 @@ const BookingSummaryPage = () => {
     try {
       const data = await getTransactionById(transactionId)
       setTransaction(data)
-      const expiryDate = new Date(data.payment_expires_at || data.booking_expires_at)
+      const expiryDate = new Date(
+        data.payment_expires_at || data.booking_expires_at
+      )
       if (expiryDate < new Date()) {
         setIsExpired(true)
       }
     } catch (error) {
-      toast.error("Gagal memuat detail booking.")
-      navigate("/")
+      toast.error('Gagal memuat detail booking.')
+      navigate('/')
     }
   }, [transactionId, navigate])
 
@@ -45,11 +51,11 @@ const BookingSummaryPage = () => {
     setIsApplyingVoucher(true)
     try {
       await applyVoucher(transactionId!, voucherCode)
-      toast.success("Voucher berhasil diterapkan!")
-      setVoucherCode("")
+      toast.success('Voucher berhasil diterapkan!')
+      setVoucherCode('')
       await fetchTransaction()
     } catch (error: any) {
-      toast.error(error.message || "Gagal menerapkan voucher.")
+      toast.error(error.message || 'Gagal menerapkan voucher.')
     } finally {
       setIsApplyingVoucher(false)
     }
@@ -57,8 +63,8 @@ const BookingSummaryPage = () => {
 
   const handleInitiatePayment = async () => {
     if (!user) {
-      toast.error("Sesi Anda telah berakhir. Silakan login kembali.")
-      navigate("/login")
+      toast.error('Sesi Anda telah berakhir. Silakan login kembali.')
+      navigate('/login')
       return
     }
     setIsInitiatingPayment(true)
@@ -67,28 +73,30 @@ const BookingSummaryPage = () => {
 
       if (window.snap) {
         window.snap.pay(snapToken, {
-          onSuccess: function (result: any) {
-            toast.success("Pembayaran berhasil!")
-            navigate("/my-tickets")
+          onSuccess: function () {
+            toast.success('Pembayaran berhasil!')
+            navigate('/my-tickets')
           },
-          onPending: function (result: any) {
-            toast("Menunggu pembayaran Anda.")
-            navigate("/my-bookings")
+          onPending: function () {
+            toast('Menunggu pembayaran Anda.')
+            navigate('/my-bookings')
           },
-          onError: function (result: any) {
-            toast.error("Pembayaran gagal.")
+          onError: function () {
+            toast.error('Pembayaran gagal.')
           },
           onClose: function () {
             toast(
-              "Anda menutup jendela pembayaran, lihat menu riwayat transaksi untuk melihat pembayaran Anda."
+              'Anda menutup jendela pembayaran, lihat menu riwayat transaksi untuk melihat pembayaran Anda.'
             )
-          },
+          }
         })
       } else {
-        throw new Error("Layanan pembayaran gagal dimuat. Periksa koneksi Anda dan coba lagi.")
+        throw new Error(
+          'Layanan pembayaran gagal dimuat. Periksa koneksi Anda dan coba lagi.'
+        )
       }
     } catch (error: any) {
-      toast.error(error.message || "Gagal memulai pembayaran.")
+      toast.error(error.message || 'Gagal memulai pembayaran.')
     } finally {
       setIsInitiatingPayment(false)
     }
@@ -96,22 +104,29 @@ const BookingSummaryPage = () => {
 
   const handleExpire = () => {
     setIsExpired(true)
-    toast.error("Waktu booking Anda telah habis.")
+    toast.error('Waktu booking Anda telah habis.')
   }
 
   if (isLoading) {
-    return <div className="text-white text-center py-40">Memuat ringkasan...</div>
+    return (
+      <div className="text-white text-center py-40">Memuat ringkasan...</div>
+    )
   }
   if (
     !transaction ||
     !transaction.transaction_items ||
     transaction.transaction_items.length === 0
   ) {
-    return <div className="text-white text-center py-40">Gagal memuat data transaksi.</div>
+    return (
+      <div className="text-white text-center py-40">
+        Gagal memuat data transaksi.
+      </div>
+    )
   }
   const schedule = transaction.transaction_items[0]?.schedule_seat.schedule
   const movie = schedule?.movie
-  const expiryTime = transaction.payment_expires_at || transaction.booking_expires_at
+  const expiryTime =
+    transaction.payment_expires_at || transaction.booking_expires_at
 
   return (
     <div className="bg-background text-white min-h-screen pt-24 pb-12">
@@ -119,7 +134,9 @@ const BookingSummaryPage = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold">Ringkasan Pemesanan</h1>
-            <p className="text-gray-400 mt-2">Selesaikan pembayaran Anda sebelum waktu habis.</p>
+            <p className="text-gray-400 mt-2">
+              Selesaikan pembayaran Anda sebelum waktu habis.
+            </p>
           </div>
 
           <div className="bg-gray-800/50 p-6 rounded-lg shadow-lg">
@@ -129,9 +146,14 @@ const BookingSummaryPage = () => {
                 Sisa Waktu Pembayaran
               </p>
               {isExpired ? (
-                <p className="font-mono text-2xl font-bold text-red-500">Waktu Habis</p>
+                <p className="font-mono text-2xl font-bold text-red-500">
+                  Waktu Habis
+                </p>
               ) : (
-                <CountdownTimer expiryTime={expiryTime} onExpire={handleExpire} />
+                <CountdownTimer
+                  expiryTime={expiryTime}
+                  onExpire={handleExpire}
+                />
               )}
             </div>
 
@@ -146,12 +168,12 @@ const BookingSummaryPage = () => {
                 <h2 className="text-2xl font-bold">{movie?.title}</h2>
                 <p className="text-gray-400">{schedule?.studio.name}</p>
                 <p className="text-gray-300 mt-2">
-                  {new Date(schedule?.start_time).toLocaleString("id-ID", {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                    hour: "2-digit",
-                    minute: "2-digit",
+                  {new Date(schedule?.start_time).toLocaleString('id-ID', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long',
+                    hour: '2-digit',
+                    minute: '2-digit'
                   })}
                 </p>
               </div>
@@ -164,7 +186,10 @@ const BookingSummaryPage = () => {
                   <Ticket size={18} /> Detail Tiket
                 </h3>
                 {transaction.transaction_items.map((item: any) => (
-                  <div key={item.id} className="flex justify-between items-center text-gray-300">
+                  <div
+                    key={item.id}
+                    className="flex justify-between items-center text-gray-300"
+                  >
                     <span>Kursi {item.seat_label}</span>
                     <span>{formatRupiah(item.price)}</span>
                   </div>
@@ -221,7 +246,9 @@ const BookingSummaryPage = () => {
                 disabled={isInitiatingPayment || isExpired}
                 className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-lg transition-colors text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isInitiatingPayment ? "Memproses..." : "Lanjutkan ke Pembayaran"}
+                {isInitiatingPayment
+                  ? 'Memproses...'
+                  : 'Lanjutkan ke Pembayaran'}
               </button>
             </div>
           </div>

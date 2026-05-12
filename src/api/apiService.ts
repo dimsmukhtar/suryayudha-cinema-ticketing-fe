@@ -1,15 +1,18 @@
-import api from "./axiosClient"
+import api from './axiosClient'
 
 export const getMyProfile = async () => {
-  const response = await api.get("/auth/profile")
+  const response = await api.get('/auth/profile')
   return response.data.data
 }
 
-export const loginUser = async (credentials: { email: string; password: string }) => {
+export const loginUser = async (credentials: {
+  email: string
+  password: string
+}) => {
   try {
-    const response = await api.post("/auth/login", {
+    const response = await api.post('/auth/login', {
       email: credentials.email,
-      password: credentials.password,
+      password: credentials.password
     })
     return response.data
   } catch (error: any) {
@@ -24,11 +27,11 @@ export const registerUser = async (credentials: {
   passwordConfirmation: string
 }) => {
   try {
-    const response = await api.post("/auth/register", {
+    const response = await api.post('/auth/register', {
       name: credentials.name,
       email: credentials.email,
       password: credentials.password,
-      passwordConfirmation: credentials.passwordConfirmation,
+      passwordConfirmation: credentials.passwordConfirmation
     })
     return response.data
   } catch (error: any) {
@@ -36,11 +39,14 @@ export const registerUser = async (credentials: {
   }
 }
 
-export const loginAdmin = async (credentials: { email: string; password: string }) => {
+export const loginAdmin = async (credentials: {
+  email: string
+  password: string
+}) => {
   try {
-    const response = await api.post("/auth/login-admin", {
+    const response = await api.post('/auth/login-admin', {
       email: credentials.email,
-      password: credentials.password,
+      password: credentials.password
     })
     return response.data
   } catch (error: any) {
@@ -49,16 +55,16 @@ export const loginAdmin = async (credentials: { email: string; password: string 
 }
 
 export const logout = async () => {
-  return await api.post("/auth/logout")
+  return await api.post('/auth/logout')
 }
 
 export const resendVerificationTokenToEmail = async (email: string) => {
-  const response = await api.post("/auth/resend-verification-token", { email })
+  const response = await api.post('/auth/resend-verification-token', { email })
   return response.data
 }
 
 export const getNowShowingMovies = async () => {
-  const response = await api.get("movies?status=now_showing")
+  const response = await api.get('movies?status=now_showing')
   return response.data.data
 }
 
@@ -75,31 +81,31 @@ interface MovieFilters {
 
 export const getAllMovies = async (filters: MovieFilters): Promise<any[]> => {
   const params = new URLSearchParams()
-  if (filters.title) params.append("title", filters.title)
-  if (filters.genre) params.append("genre", filters.genre)
-  if (filters.status) params.append("status", filters.status)
+  if (filters.title) params.append('title', filters.title)
+  if (filters.genre) params.append('genre', filters.genre)
+  if (filters.status) params.append('status', filters.status)
 
   const response = await api.get(`/movies?${params.toString()}`)
   return response.data.data
 }
 
 export const getAllGenres = async (): Promise<any[]> => {
-  const response = await api.get("/genres")
+  const response = await api.get('/genres')
   return response.data.data
 }
 
 export const getComingSoonMovies = async (): Promise<any[]> => {
-  const response = await api.get("/movies?status=coming_soon")
+  const response = await api.get('/movies?status=coming_soon')
   return response.data.data
 }
 
 export const getAllStudios = async (): Promise<any[]> => {
-  const response = await api.get("/studios")
+  const response = await api.get('/studios')
   return response.data.data
 }
 
 export const getAllStudioPhotos = async (): Promise<any[]> => {
-  const response = await api.get("/studios/photos")
+  const response = await api.get('/studios/photos')
   return response.data.data
 }
 
@@ -112,28 +118,32 @@ export const createBooking = async (
   scheduleId: number,
   scheduleSeatIds: number[]
 ): Promise<any> => {
-  const response = await api.post("/transactions", {
+  const response = await api.post('/transactions', {
     schedule_id: scheduleId,
-    schedule_seat_ids: scheduleSeatIds.join(","), // Kirim sebagai string dipisah koma
+    schedule_seat_ids: scheduleSeatIds.join(',') // Kirim sebagai string dipisah koma
   })
   return response.data.data
 }
 
 export const checkAuth = async () => {
-  const response = await api.get("/auth/check-auth")
+  const response = await api.get('/auth/check-auth')
   return response
 }
 
 export const verifyEmail = async (data: { email: string; token: string }) => {
   try {
-    const response = await api.get(`/auth/verify-email?token=${data.token}&email=${data.email}`)
+    const response = await api.get(
+      `/auth/verify-email?token=${data.token}&email=${data.email}`
+    )
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
   }
 }
 
-export const getTransactionById = async (transactionId: string): Promise<any> => {
+export const getTransactionById = async (
+  transactionId: string
+): Promise<any> => {
   try {
     const response = await api.get(`/transactions/${transactionId}`)
     return response.data.data
@@ -142,10 +152,13 @@ export const getTransactionById = async (transactionId: string): Promise<any> =>
   }
 }
 
-export const applyVoucher = async (transactionId: string, voucherCode: string): Promise<any> => {
+export const applyVoucher = async (
+  transactionId: string,
+  voucherCode: string
+): Promise<any> => {
   try {
     const response = await api.patch(`/vouchers/${transactionId}/apply`, {
-      voucher_code: voucherCode,
+      voucher_code: voucherCode
     })
 
     return response.data.data
@@ -164,7 +177,7 @@ export const initiatePayment = async (transactionId: string): Promise<any> => {
 }
 
 export const getMyNotifications = async () => {
-  const response = await api.get("/notifications/my")
+  const response = await api.get('/notifications/my')
   return response.data.data
 }
 
@@ -179,7 +192,7 @@ export const hideNotification = async (notificationId: number) => {
 }
 export const updateMyProfile = async (formData: FormData): Promise<any> => {
   try {
-    const response = await api.patch("/auth/update-profile", formData)
+    const response = await api.patch('/auth/update-profile', formData)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -188,7 +201,7 @@ export const updateMyProfile = async (formData: FormData): Promise<any> => {
 
 export const getMyTickets = async (): Promise<any[]> => {
   try {
-    const response = await api.get("/tickets/my")
+    const response = await api.get('/tickets/my')
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -206,7 +219,7 @@ export const getTicketById = async (id: number): Promise<any> => {
 
 export const getMyBookings = async (): Promise<any[]> => {
   try {
-    const response = await api.get("/transactions/my?type=booking")
+    const response = await api.get('/transactions/my?type=booking')
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -215,7 +228,7 @@ export const getMyBookings = async (): Promise<any[]> => {
 
 export const getMyTransactionHistory = async (): Promise<any[]> => {
   try {
-    const response = await api.get("/transactions/my?type=payment")
+    const response = await api.get('/transactions/my?type=payment')
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -224,7 +237,7 @@ export const getMyTransactionHistory = async (): Promise<any[]> => {
 
 export const changePassword = async (data: any) => {
   try {
-    const response = await api.patch("/auth/change-password", data)
+    const response = await api.patch('/auth/change-password', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -233,7 +246,7 @@ export const changePassword = async (data: any) => {
 
 export const forgotPassword = async (data: { email: string }) => {
   try {
-    const response = await api.post("/auth/forgot-password", data)
+    const response = await api.post('/auth/forgot-password', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -242,7 +255,7 @@ export const forgotPassword = async (data: { email: string }) => {
 
 export const resetPassword = async (data: any) => {
   try {
-    const response = await api.post("/auth/reset-password", data)
+    const response = await api.post('/auth/reset-password', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -250,7 +263,7 @@ export const resetPassword = async (data: any) => {
 }
 export const getAdminDashboardStats = async (): Promise<any> => {
   try {
-    const response = await api.get("/dashboard/admin-stats")
+    const response = await api.get('/dashboard/admin-stats')
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -262,7 +275,7 @@ export const getAdminDashboardChartData = async (params: {
   endDate?: string
 }): Promise<any> => {
   try {
-    const response = await api.get("/dashboard/admin-chart", { params })
+    const response = await api.get('/dashboard/admin-chart', { params })
     return response.data.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -271,14 +284,17 @@ export const getAdminDashboardChartData = async (params: {
 
 export const createGenre = async (data: { name: string }): Promise<any> => {
   try {
-    const response = await api.post("/genres", data)
+    const response = await api.post('/genres', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
   }
 }
 
-export const updateGenre = async (id: number, data: { name: string }): Promise<any> => {
+export const updateGenre = async (
+  id: number,
+  data: { name: string }
+): Promise<any> => {
   try {
     const response = await api.patch(`/genres/${id}`, data)
     return response.data
@@ -298,21 +314,24 @@ export const deleteGenre = async (id: number): Promise<any> => {
 
 export const getAllMoviesAdmin = async (filters: any): Promise<any> => {
   const params = new URLSearchParams()
-  if (filters.title) params.append("title", filters.title)
+  if (filters.title) params.append('title', filters.title)
   const response = await api.get(`/movies?${params.toString()}`)
   return response.data
 }
 
 export const createMovie = async (formData: FormData): Promise<any> => {
-  const response = await api.post("/movies", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+  const response = await api.post('/movies', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
   })
   return response.data
 }
 
-export const updateMovie = async (id: number, formData: FormData): Promise<any> => {
+export const updateMovie = async (
+  id: number,
+  formData: FormData
+): Promise<any> => {
   const response = await api.patch(`/movies/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { 'Content-Type': 'multipart/form-data' }
   })
   return response.data
 }
@@ -323,15 +342,18 @@ export const deleteMovie = async (id: number): Promise<any> => {
 }
 
 export const createCast = async (formData: FormData): Promise<any> => {
-  const response = await api.post("/casts", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+  const response = await api.post('/casts', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
   })
   return response.data
 }
 
-export const updateCast = async (id: number, formData: FormData): Promise<any> => {
+export const updateCast = async (
+  id: number,
+  formData: FormData
+): Promise<any> => {
   const response = await api.patch(`/casts/${id}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { 'Content-Type': 'multipart/form-data' }
   })
   return response.data
 }
@@ -341,8 +363,11 @@ export const deleteCast = async (id: number): Promise<any> => {
   return response.data
 }
 
-export const addGenreToMovie = async (data: { movie_id: number; genre_id: number }) => {
-  const response = await api.post("/genres/movie-genre", data)
+export const addGenreToMovie = async (data: {
+  movie_id: number
+  genre_id: number
+}) => {
+  const response = await api.post('/genres/movie-genre', data)
   return response.data
 }
 
@@ -353,7 +378,7 @@ export const removeGenreFromMovie = async (movieGenreId: number) => {
 
 export const validateTicket = async (code: string) => {
   try {
-    const response = await api.patch("/tickets/validate", { code })
+    const response = await api.patch('/tickets/validate', { code })
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -361,7 +386,7 @@ export const validateTicket = async (code: string) => {
 }
 export const getAllTicketsAdmin = async (params: any) => {
   try {
-    const response = await api.get("/tickets", { params })
+    const response = await api.get('/tickets', { params })
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -396,14 +421,14 @@ export const getTicketByIdAdmin = async (id: number) => {
 
 export const getAllSchedulesAdmin = async (filters: any = {}) => {
   const params = new URLSearchParams()
-  if (filters.date) params.append("date", filters.date)
+  if (filters.date) params.append('date', filters.date)
   const response = await api.get(`/schedules?${params.toString()}`)
   return response.data
 }
 
 export const createSchedule = async (data: any) => {
   try {
-    const response = await api.post("/schedules", data)
+    const response = await api.post('/schedules', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -420,12 +445,17 @@ export const deleteSchedule = async (id: number) => {
 }
 
 export const getAllMoviesAdminSimple = async () => {
-  const response = await api.get("/movies")
+  const response = await api.get('/movies')
   return response.data
 }
-export const updateScheduleSeatStatus = async (scheduleSeatId: number, status: string) => {
+export const updateScheduleSeatStatus = async (
+  scheduleSeatId: number,
+  status: string
+) => {
   try {
-    const response = await api.put(`/schedules/seats/${scheduleSeatId}`, { status })
+    const response = await api.put(`/schedules/seats/${scheduleSeatId}`, {
+      status
+    })
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -434,7 +464,7 @@ export const updateScheduleSeatStatus = async (scheduleSeatId: number, status: s
 
 export const createStudio = async (data: any) => {
   try {
-    const response = await api.post("/studios", data)
+    const response = await api.post('/studios', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -462,7 +492,7 @@ export const deleteStudio = async (id: string) => {
 export const uploadStudioPhotos = async (id: string, formData: FormData) => {
   try {
     const response = await api.post(`/studios/${id}/upload`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' }
     })
     return response.data
   } catch (error: any) {
@@ -485,7 +515,7 @@ export const getStudioById = async (id: string) => {
 }
 export const getAllUsersAdmin = async (params: any) => {
   try {
-    const response = await api.get("/users", { params })
+    const response = await api.get('/users', { params })
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -512,7 +542,7 @@ export const getTicketsForUser = async (userId: number) => {
 
 export const createUserAdmin = async (data: any) => {
   try {
-    const response = await api.post("/users", data)
+    const response = await api.post('/users', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -539,7 +569,7 @@ export const deleteUserAdmin = async (id: number) => {
 
 export const sendNotificationToUser = async (data: any) => {
   try {
-    const response = await api.post("/notifications", data)
+    const response = await api.post('/notifications', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -548,7 +578,7 @@ export const sendNotificationToUser = async (data: any) => {
 
 export const getAllTransactionsAdmin = async (params: any) => {
   try {
-    const response = await api.get("/transactions", { params })
+    const response = await api.get('/transactions', { params })
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -557,7 +587,7 @@ export const getAllTransactionsAdmin = async (params: any) => {
 
 export const getAllVouchers = async () => {
   try {
-    const response = await api.get("/vouchers")
+    const response = await api.get('/vouchers')
     return response.data
   } catch (error: any) {
     throw error.response?.data || error
@@ -566,7 +596,7 @@ export const getAllVouchers = async () => {
 
 export const createVoucher = async (data: any) => {
   try {
-    const response = await api.post("/vouchers", data)
+    const response = await api.post('/vouchers', data)
     return response.data
   } catch (error: any) {
     throw error.response?.data || error

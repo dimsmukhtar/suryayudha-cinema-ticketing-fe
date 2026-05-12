@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getMyTransactionHistory } from "../../api/apiService"
-import TransactionHistoryCard from "../../components/TransactionHistoryCard"
-import { History } from "lucide-react"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { getMyTransactionHistory } from '../../api/apiService'
+import TransactionHistoryCard from '../../components/TransactionHistoryCard'
+import { History } from 'lucide-react'
 
 const MyTransactionsHistoryPage = () => {
   const [transactions, setTransactions] = useState<any[]>([])
@@ -16,8 +16,8 @@ const MyTransactionsHistoryPage = () => {
         const data = await getMyTransactionHistory()
         setTransactions(data)
       } catch (err) {
-        setError("Gagal memuat riwayat transaksi Anda.")
-        toast.error("Gagal memuat riwayat transaksi Anda.")
+        setError('Gagal memuat riwayat transaksi Anda.')
+        toast.error('Gagal memuat riwayat transaksi Anda.')
         console.error(err)
       } finally {
         setIsLoading(false)
@@ -43,7 +43,10 @@ const MyTransactionsHistoryPage = () => {
       return (
         <div className="space-y-4">
           {transactions.map((transaction) => (
-            <TransactionHistoryCard key={transaction.id} transaction={transaction} />
+            <TransactionHistoryCard
+              key={transaction.id}
+              transaction={transaction}
+            />
           ))}
         </div>
       )

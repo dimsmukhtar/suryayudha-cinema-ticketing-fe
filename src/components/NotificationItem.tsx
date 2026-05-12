@@ -1,6 +1,5 @@
-import React from "react"
-import { formatDate } from "../utils/formatters" // Asumsi Anda punya ini
-import { Info, CheckCircle } from "lucide-react"
+import { formatDate } from '../utils/formatters' // Asumsi Anda punya ini
+import { Info, CheckCircle } from 'lucide-react'
 
 const NotificationItem = ({ notification, onMarkAsRead, onHide }: any) => {
   const isRead = notification.is_read
@@ -8,7 +7,9 @@ const NotificationItem = ({ notification, onMarkAsRead, onHide }: any) => {
   return (
     <div
       className={`p-4 border-l-4 ${
-        isRead ? "bg-gray-800/50 border-gray-700" : "bg-blue-900/30 border-primary"
+        isRead
+          ? 'bg-gray-800/50 border-gray-700'
+          : 'bg-blue-900/30 border-primary'
       } rounded-md shadow-sm flex items-start gap-4 transition-colors`}
     >
       <div className="flex-shrink-0 mt-1">
@@ -20,10 +21,14 @@ const NotificationItem = ({ notification, onMarkAsRead, onHide }: any) => {
       </div>
       <div className="flex-grow">
         <div className="flex justify-between items-center">
-          <h3 className={`font-semibold ${isRead ? "text-gray-400" : "text-white"}`}>
+          <h3
+            className={`font-semibold ${isRead ? 'text-gray-400' : 'text-white'}`}
+          >
             {notification.title}
           </h3>
-          <span className="text-xs text-gray-500">{formatDate(notification.created_at)}</span>
+          <span className="text-xs text-gray-500">
+            {formatDate(notification.created_at)}
+          </span>
         </div>
         <p className="text-sm text-gray-300 mt-1">{notification.description}</p>
         <div className="mt-3 flex gap-4">

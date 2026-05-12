@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react"
-import { useForm } from "react-hook-form"
-import toast from "react-hot-toast"
-import { X, Loader2 } from "lucide-react"
-import { getAllMoviesAdminSimple, getAllStudios } from "../../api/apiService"
+import { useState, useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import toast from 'react-hot-toast'
+import { X, Loader2 } from 'lucide-react'
+import { getAllMoviesAdminSimple, getAllStudios } from '../../api/apiService'
 
 const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm()
   const [movies, setMovies] = useState<any[]>([])
   const [studios, setStudios] = useState<any[]>([])
@@ -21,12 +21,12 @@ const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
         try {
           const [moviesRes, studiosRes] = await Promise.all([
             getAllMoviesAdminSimple(),
-            getAllStudios(),
+            getAllStudios()
           ])
           setMovies(moviesRes.data)
           setStudios(studiosRes)
         } catch (error) {
-          toast.error("Gagal memuat data film atau studio.")
+          toast.error('Gagal memuat data film atau studio.')
         }
       }
       fetchData()
@@ -43,7 +43,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
       ...data,
       movie_id: parseInt(data.movie_id, 10),
       start_time: isoDateTime,
-      price: parseInt(data.price, 10), // Pastikan harga adalah angka
+      price: parseInt(data.price, 10) // Pastikan harga adalah angka
     }
     onSave(payload)
   }
@@ -54,16 +54,20 @@ const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
     <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-800">Tambah Jadwal Baru</h2>
+          <h2 className="text-xl font-bold text-gray-800">
+            Tambah Jadwal Baru
+          </h2>
           <button onClick={onClose}>
             <X className="text-gray-500 hover:text-gray-800" />
           </button>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Film</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Film
+            </label>
             <select
-              {...register("movie_id", { required: "Film harus dipilih" })}
+              {...register('movie_id', { required: 'Film harus dipilih' })}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="">Pilih Film</option>
@@ -74,14 +78,18 @@ const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
               ))}
             </select>
             {errors.movie_id && (
-              <p className="text-red-500 text-xs mt-1">{errors.movie_id.message as string}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.movie_id.message as string}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Studio</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Studio
+            </label>
             <select
-              {...register("studio_id", { required: "Studio harus dipilih" })}
+              {...register('studio_id', { required: 'Studio harus dipilih' })}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="">Pilih Studio</option>
@@ -92,31 +100,46 @@ const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
               ))}
             </select>
             {errors.studio_id && (
-              <p className="text-red-500 text-xs mt-1">{errors.studio_id.message as string}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.studio_id.message as string}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Waktu Mulai Tayang</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Waktu Mulai Tayang
+            </label>
             <input
               type="datetime-local"
-              {...register("start_time", { required: "Waktu mulai harus diisi" })}
+              {...register('start_time', {
+                required: 'Waktu mulai harus diisi'
+              })}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.start_time && (
-              <p className="text-red-500 text-xs mt-1">{errors.start_time.message as string}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.start_time.message as string}
+              </p>
             )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Harga Tiket (Rp)</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Harga Tiket (Rp)
+            </label>
             <input
               type="number"
-              {...register("price", { required: "Harga harus diisi", valueAsNumber: true })}
+              {...register('price', {
+                required: 'Harga harus diisi',
+                valueAsNumber: true
+              })}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.price && (
-              <p className="text-red-500 text-xs mt-1">{errors.price.message as string}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.price.message as string}
+              </p>
             )}
           </div>
 
@@ -134,7 +157,7 @@ const ScheduleFormModal = ({ isOpen, onClose, onSave }: any) => {
               className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark flex items-center gap-2 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="animate-spin" size={16} />}
-              {isSubmitting ? "Menyimpan..." : "Simpan Jadwal"}
+              {isSubmitting ? 'Menyimpan...' : 'Simpan Jadwal'}
             </button>
           </div>
         </form>

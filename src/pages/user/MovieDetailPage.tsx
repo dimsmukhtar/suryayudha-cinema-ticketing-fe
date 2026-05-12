@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from "react"
-import { useParams } from "react-router-dom"
-import toast from "react-hot-toast"
-import { getMovieById } from "../../api/apiService"
-import { formatDuration, formatDate } from "../../utils/formatters"
-import { Star, Clock, Calendar, Film, PlayCircle, Languages, Captions } from "lucide-react"
-import SchedulePicker from "../../components/SchedulePicker"
-import TrailerModal from "../../components/TrailerModal"
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { getMovieById } from '../../api/apiService'
+import { formatDuration, formatDate } from '../../utils/formatters'
+import {
+  Star,
+  Clock,
+  Calendar,
+  Film,
+  PlayCircle,
+  Languages,
+  Captions
+} from 'lucide-react'
+import SchedulePicker from '../../components/SchedulePicker'
+import TrailerModal from '../../components/TrailerModal'
 
 const MovieDetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -17,7 +25,7 @@ const MovieDetailPage = () => {
   useEffect(() => {
     if (!id) {
       setIsLoading(false)
-      setError("ID film tidak valid.")
+      setError('ID film tidak valid.')
       return
     }
     const fetchMovieDetail = async () => {
@@ -28,7 +36,8 @@ const MovieDetailPage = () => {
         setMovie(data)
       } catch (err: any) {
         const errorMessage =
-          err.response?.data?.message || "Film tidak ditemukan atau terjadi kesalahan."
+          err.response?.data?.message ||
+          'Film tidak ditemukan atau terjadi kesalahan.'
         toast.error(errorMessage)
         setError(errorMessage)
       } finally {
@@ -62,11 +71,16 @@ const MovieDetailPage = () => {
                 />
               </div>
               <div className="pb-8 flex-grow text-center md:text-left">
-                <h1 className="text-4xl md:text-6xl font-black tracking-tight">{movie.title}</h1>
+                <h1 className="text-4xl md:text-6xl font-black tracking-tight">
+                  {movie.title}
+                </h1>
                 <div className="flex items-center justify-center md:justify-start mt-3 text-gray-300 gap-4 flex-wrap">
                   {movie.movie_genres &&
                     movie.movie_genres.map(
-                      (mg: any) => mg.genre && <span key={mg.genre.id}>{mg.genre.name}</span>
+                      (mg: any) =>
+                        mg.genre && (
+                          <span key={mg.genre.id}>{mg.genre.name}</span>
+                        )
                     )}
                 </div>
                 <button
@@ -90,15 +104,37 @@ const MovieDetailPage = () => {
                   label="Rating"
                   value={movie.rating}
                 />
-                <InfoBox icon={<Clock />} label="Durasi" value={formatDuration(movie.duration)} />
-                <InfoBox icon={<Calendar />} label="Rilis" value={formatDate(movie.release_date)} />
-                <InfoBox icon={<Film />} label="Sutradara" value={movie.director} />
-                <InfoBox icon={<Languages />} label="Bahasa" value={movie.language} />
-                <InfoBox icon={<Captions />} label="Subtitle" value={movie.subtitle} />
+                <InfoBox
+                  icon={<Clock />}
+                  label="Durasi"
+                  value={formatDuration(movie.duration)}
+                />
+                <InfoBox
+                  icon={<Calendar />}
+                  label="Rilis"
+                  value={formatDate(movie.release_date)}
+                />
+                <InfoBox
+                  icon={<Film />}
+                  label="Sutradara"
+                  value={movie.director}
+                />
+                <InfoBox
+                  icon={<Languages />}
+                  label="Bahasa"
+                  value={movie.language}
+                />
+                <InfoBox
+                  icon={<Captions />}
+                  label="Subtitle"
+                  value={movie.subtitle}
+                />
               </div>
 
               <Section title="Sinopsis">
-                <p className="text-gray-300 leading-relaxed">{movie.synopsis}</p>
+                <p className="text-gray-300 leading-relaxed">
+                  {movie.synopsis}
+                </p>
               </Section>
 
               <Section title="Pemain">
@@ -111,7 +147,9 @@ const MovieDetailPage = () => {
                           alt={cast.actor_name}
                           className="w-24 h-24 rounded-full object-cover mx-auto mb-2 shadow-md"
                         />
-                        <p className="text-sm font-medium text-white">{cast.actor_name}</p>
+                        <p className="text-sm font-medium text-white">
+                          {cast.actor_name}
+                        </p>
                       </div>
                     ))}
                 </div>
@@ -126,7 +164,10 @@ const MovieDetailPage = () => {
       </div>
 
       {isTrailerOpen && (
-        <TrailerModal trailerUrl={movie.trailer_url} onClose={() => setIsTrailerOpen(false)} />
+        <TrailerModal
+          trailerUrl={movie.trailer_url}
+          onClose={() => setIsTrailerOpen(false)}
+        />
       )}
     </>
   )
@@ -134,7 +175,9 @@ const MovieDetailPage = () => {
 
 const Section = ({ title, children }: any) => (
   <div className="mb-10">
-    <h2 className="text-2xl font-bold text-white border-l-4 border-primary pl-4 mb-4">{title}</h2>
+    <h2 className="text-2xl font-bold text-white border-l-4 border-primary pl-4 mb-4">
+      {title}
+    </h2>
     {children}
   </div>
 )

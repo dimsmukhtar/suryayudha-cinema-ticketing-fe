@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react"
-import toast from "react-hot-toast"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 import {
   getAllUsersAdmin,
   createUserAdmin,
   updateUserAdmin,
   deleteUserAdmin,
   sendNotificationToUser,
-  getUserByIdAdmin,
-} from "../../api/apiService"
+  getUserByIdAdmin
+} from '../../api/apiService'
 import {
   Plus,
   Edit,
@@ -16,22 +16,21 @@ import {
   Send,
   Eye,
   MessageSquarePlus,
-  Loader,
-  Loader2,
-} from "lucide-react"
-import useDebounce from "../../hooks/useDebounce"
-import Pagination from "../../components/admin/Pagination"
-import UserFormModal from "../../components/admin/UserFormModal"
-import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
-import NotificationFormModal from "../../components/admin/NotificationFormModal"
-import UserDetailModal from "../../components/admin/UserDetailModal"
+  Loader2
+} from 'lucide-react'
+import useDebounce from '../../hooks/useDebounce'
+import Pagination from '../../components/admin/Pagination'
+import UserFormModal from '../../components/admin/UserFormModal'
+import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
+import NotificationFormModal from '../../components/admin/NotificationFormModal'
+import UserDetailModal from '../../components/admin/UserDetailModal'
 
 const ManageUsersPage = () => {
   const [users, setUsers] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [meta, setMeta] = useState<any>({})
 
-  const [filters, setFilters] = useState({ name: "" })
+  const [filters, setFilters] = useState({ name: '' })
   const [currentPage, setCurrentPage] = useState(1)
   const debouncedName = useDebounce(filters.name, 500)
 
@@ -49,11 +48,14 @@ const ManageUsersPage = () => {
   const fetchUsers = async () => {
     setIsLoading(true)
     try {
-      const response = await getAllUsersAdmin({ page: currentPage, name: debouncedName })
+      const response = await getAllUsersAdmin({
+        page: currentPage,
+        name: debouncedName
+      })
       setUsers(response.data)
       setMeta(response.meta)
     } catch (error) {
-      toast.error("Gagal memuat data pengguna.")
+      toast.error('Gagal memuat data pengguna.')
     } finally {
       setIsLoading(false)
     }
@@ -69,20 +71,22 @@ const ManageUsersPage = () => {
       setUserToView(userDetails)
       setIsDetailModalOpen(true)
     } catch (error) {
-      toast.error("Gagal mengambil detail pengguna.")
+      toast.error('Gagal mengambil detail pengguna.')
     }
   }
 
   const handleSaveUser = async (data: any, userId?: number) => {
-    const actionPromise = userId ? updateUserAdmin(userId, data) : createUserAdmin(data)
+    const actionPromise = userId
+      ? updateUserAdmin(userId, data)
+      : createUserAdmin(data)
     toast.promise(actionPromise, {
-      loading: "Menyimpan pengguna...",
+      loading: 'Menyimpan pengguna...',
       success: (res) => {
         fetchUsers()
         setIsFormModalOpen(false)
         return res.message
       },
-      error: (err) => err.message,
+      error: (err) => err.message
     })
   }
 
@@ -90,46 +94,46 @@ const ManageUsersPage = () => {
     if (!userToDelete) return
     const actionPromise = deleteUserAdmin(userToDelete.id)
     toast.promise(actionPromise, {
-      loading: "Menghapus pengguna...",
+      loading: 'Menghapus pengguna...',
       success: (res) => {
         fetchUsers()
         setIsDeleteModalOpen(false)
         return res.message
       },
-      error: (err) => err.message,
+      error: (err) => err.message
     })
   }
 
   const handleSendNotification = async (data: any) => {
     const payload = {
       ...data,
-      target_audience: "spesific",
-      user_id: userForNotif.id,
+      target_audience: 'spesific',
+      user_id: userForNotif.id
     }
     const actionPromise = sendNotificationToUser(payload)
     toast.promise(actionPromise, {
-      loading: "Mengirim notifikasi...",
+      loading: 'Mengirim notifikasi...',
       success: (res) => {
         setIsNotifModalOpen(false)
         return res.message
       },
-      error: (err) => err.message,
+      error: (err) => err.message
     })
   }
 
   const handleSendBroadcastNotification = async (data: any) => {
     const payload = {
       ...data,
-      target_audience: "all",
+      target_audience: 'all'
     }
     const actionPromise = sendNotificationToUser(payload)
     toast.promise(actionPromise, {
-      loading: "Mengirim notifikasi global...",
+      loading: 'Mengirim notifikasi global...',
       success: (res) => {
         setIsBroadcastModalOpen(false)
         return res.message
       },
-      error: (err) => err.message,
+      error: (err) => err.message
     })
   }
 
@@ -150,7 +154,10 @@ const ManageUsersPage = () => {
               onChange={(e) => setFilters({ ...filters, name: e.target.value })}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-black"
             />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              size={20}
+            />
           </div>
           {/* --- TOMBOL BARU DI SINI --- */}
           <button
@@ -205,10 +212,14 @@ const ManageUsersPage = () => {
               ) : (
                 users.map((user) => (
                   <tr key={user.id} className="border-b hover:bg-gray-50">
-                    <td className="px-6 py-4 font-medium text-gray-900">{user.name}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900">
+                      {user.name}
+                    </td>
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">{user.role}</td>
-                    <td className="px-6 py-4">{user.is_verified ? "Ya" : "Tidak"}</td>
+                    <td className="px-6 py-4">
+                      {user.is_verified ? 'Ya' : 'Tidak'}
+                    </td>
                     <td className="px-6 py-4 flex justify-end gap-2">
                       <button
                         onClick={() => handleOpenDetailModal(user.id)}

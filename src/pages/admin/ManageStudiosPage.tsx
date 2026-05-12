@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react"
-import toast from "react-hot-toast"
+import { useState, useEffect, useCallback } from 'react'
+import toast from 'react-hot-toast'
 import {
   getAllStudios,
   createStudio,
   updateStudio,
   deleteStudio,
-  getStudioById,
-} from "../../api/apiService"
-import { Plus, Edit, Trash2, Camera, Loader2, Armchair } from "lucide-react"
-import StudioFormModal from "../../components/admin/StudioFormModal"
-import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
-import StudioGalleryModal from "../../components/admin/StudioGalleryModal"
-import StudioSeatLayoutModal from "../../components/admin/StudioSeatLayoutModal"
+  getStudioById
+} from '../../api/apiService'
+import { Plus, Edit, Trash2, Camera, Loader2, Armchair } from 'lucide-react'
+import StudioFormModal from '../../components/admin/StudioFormModal'
+import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
+import StudioGalleryModal from '../../components/admin/StudioGalleryModal'
+import StudioSeatLayoutModal from '../../components/admin/StudioSeatLayoutModal'
 
 const ManageStudiosPage = () => {
   const [studios, setStudios] = useState<any[]>([])
@@ -25,17 +25,21 @@ const ManageStudiosPage = () => {
   const [studioToEdit, setStudioToEdit] = useState<any | null>(null)
   const [studioToDelete, setStudioToDelete] = useState<any | null>(null)
   const [studioForGallery, setStudioForGallery] = useState<any | null>(null)
-  const [studioForSeatLayout, setStudioForSeatLayout] = useState<any | null>(null)
+  const [studioForSeatLayout, setStudioForSeatLayout] = useState<any | null>(
+    null
+  )
 
   const fetchStudios = useCallback(async () => {
     setIsLoading(true)
     try {
       const data = await getAllStudios()
       // Untuk galeri, kita perlu data yang lebih detail, jadi kita ambil satu per satu
-      const detailedStudios = await Promise.all(data.map((studio) => getStudioById(studio.id)))
+      const detailedStudios = await Promise.all(
+        data.map((studio) => getStudioById(studio.id))
+      )
       setStudios(detailedStudios)
     } catch (error) {
-      toast.error("Gagal memuat data studio.")
+      toast.error('Gagal memuat data studio.')
     } finally {
       setIsLoading(false)
     }
@@ -72,16 +76,21 @@ const ManageStudiosPage = () => {
 
   const handleSaveStudio = async (data: any) => {
     const isEditing = !!studioToEdit
-    const actionPromise = isEditing ? updateStudio(studioToEdit.id, data) : createStudio(data)
+    const actionPromise = isEditing
+      ? updateStudio(studioToEdit.id, data)
+      : createStudio(data)
 
     toast.promise(actionPromise, {
       loading: `Menyimpan studio...`,
       success: (res: any) => {
         fetchStudios()
         setIsFormModalOpen(false)
-        return res.message || `Studio berhasil ${isEditing ? "diperbarui" : "ditambahkan"}!`
+        return (
+          res.message ||
+          `Studio berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}!`
+        )
       },
-      error: (err: any) => err.message || "Gagal menyimpan studio.",
+      error: (err: any) => err.message || 'Gagal menyimpan studio.'
     })
   }
 
@@ -89,13 +98,13 @@ const ManageStudiosPage = () => {
     if (!studioToDelete) return
     const actionPromise = deleteStudio(studioToDelete.id)
     toast.promise(actionPromise, {
-      loading: "Menghapus studio...",
+      loading: 'Menghapus studio...',
       success: (res: any) => {
         fetchStudios()
         setIsDeleteModalOpen(false)
-        return res.message || "Studio berhasil dihapus!"
+        return res.message || 'Studio berhasil dihapus!'
       },
-      error: (err: any) => err.message || "Gagal menghapus studio.",
+      error: (err: any) => err.message || 'Gagal menghapus studio.'
     })
   }
 
@@ -121,14 +130,22 @@ const ManageStudiosPage = () => {
       ) : studios.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {studios.map((studio) => (
-            <div key={studio.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+            <div
+              key={studio.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden"
+            >
               <div className="p-5">
-                <h2 className="text-xl font-bold text-gray-800">{studio.name}</h2>
+                <h2 className="text-xl font-bold text-gray-800">
+                  {studio.name}
+                </h2>
                 <p className="text-sm text-gray-500 font-mono">{studio.id}</p>
                 <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
                   <span>{studio.seats?.length || 0} Kursi</span>
                   <span>
-                    Layar di: <span className="font-semibold">{studio.screen_placement}</span>
+                    Layar di:{' '}
+                    <span className="font-semibold">
+                      {studio.screen_placement}
+                    </span>
                   </span>
                 </div>
               </div>

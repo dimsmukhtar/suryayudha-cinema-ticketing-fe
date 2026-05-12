@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react"
-import { X, Loader2, CreditCard, Ticket } from "lucide-react"
-import { getTicketsForUser } from "../../api/apiService"
-import { formatRupiah, formatDate, formatTime } from "../../utils/formatters"
-import toast from "react-hot-toast"
+import { useState, useEffect } from 'react'
+import { X, Loader2, CreditCard, Ticket } from 'lucide-react'
+import { getTicketsForUser } from '../../api/apiService'
+import { formatRupiah, formatDate } from '../../utils/formatters'
+import toast from 'react-hot-toast'
 
 const UserDetailModal = ({ isOpen, onClose, user }: any) => {
   // State sekarang hanya untuk tiket dan loading
   const [tickets, setTickets] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState("transactions")
+  const [activeTab, setActiveTab] = useState('transactions')
 
   useEffect(() => {
     if (isOpen && user) {
@@ -19,8 +19,8 @@ const UserDetailModal = ({ isOpen, onClose, user }: any) => {
           const ticketsRes = await getTicketsForUser(user.id)
           setTickets(ticketsRes)
         } catch (error) {
-          console.error("Gagal memuat detail tiket user:", error)
-          toast.error("Gagal memuat detail tiket user.")
+          console.error('Gagal memuat detail tiket user:', error)
+          toast.error('Gagal memuat detail tiket user.')
         } finally {
           setIsLoading(false)
         }
@@ -39,7 +39,9 @@ const UserDetailModal = ({ isOpen, onClose, user }: any) => {
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
         <div className="flex justify-between items-center mb-4 border-b pb-4">
           <div>
-            <h2 className="text-xl font-bold text-gray-800">Detail Pengguna: {user.name}</h2>
+            <h2 className="text-xl font-bold text-gray-800">
+              Detail Pengguna: {user.name}
+            </h2>
             <p className="text-sm text-gray-500">{user.email}</p>
           </div>
           <button onClick={onClose}>
@@ -50,21 +52,21 @@ const UserDetailModal = ({ isOpen, onClose, user }: any) => {
         <div className="border-b border-gray-200">
           <nav className="-mb-px flex space-x-8" aria-label="Tabs">
             <button
-              onClick={() => setActiveTab("transactions")}
+              onClick={() => setActiveTab('transactions')}
               className={`${
-                activeTab === "transactions"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500"
+                activeTab === 'transactions'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-500'
               } py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2`}
             >
               <CreditCard size={16} /> Riwayat Transaksi ({transactions.length})
             </button>
             <button
-              onClick={() => setActiveTab("tickets")}
+              onClick={() => setActiveTab('tickets')}
               className={`${
-                activeTab === "tickets"
-                  ? "border-primary text-primary"
-                  : "border-transparent text-gray-500"
+                activeTab === 'tickets'
+                  ? 'border-primary text-primary'
+                  : 'border-transparent text-gray-500'
               } py-4 px-1 border-b-2 font-medium text-sm flex items-center gap-2`}
             >
               <Ticket size={16} /> Riwayat Tiket ({tickets.length})
@@ -77,7 +79,7 @@ const UserDetailModal = ({ isOpen, onClose, user }: any) => {
             <div className="flex justify-center p-8">
               <Loader2 className="animate-spin text-primary" />
             </div>
-          ) : activeTab === "transactions" ? (
+          ) : activeTab === 'transactions' ? (
             <TransactionTable transactions={transactions} />
           ) : (
             <TicketTable tickets={tickets} />
@@ -103,24 +105,30 @@ const TransactionTable = ({ transactions }: any) => (
         {transactions.length > 0 ? (
           transactions.map((trx: any) => (
             <tr key={trx.id} className="border-b hover:bg-gray-50">
-              <td className="px-4 py-2 font-mono text-xs">{trx.order_id || "-"}</td>
-              <td className="px-4 py-2 font-semibold">{formatRupiah(trx.final_amount)}</td>
+              <td className="px-4 py-2 font-mono text-xs">
+                {trx.order_id || '-'}
+              </td>
+              <td className="px-4 py-2 font-semibold">
+                {formatRupiah(trx.final_amount)}
+              </td>
               <td className="px-4 py-2">
                 <span
                   className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${
-                    trx.status === "settlement"
-                      ? "bg-green-100 text-green-800"
-                      : trx.status === "pending"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : trx.status === "initiated"
-                      ? "bg-blue-100 text-blue-800"
-                      : "bg-red-100 text-red-800"
+                    trx.status === 'settlement'
+                      ? 'bg-green-100 text-green-800'
+                      : trx.status === 'pending'
+                        ? 'bg-yellow-100 text-yellow-800'
+                        : trx.status === 'initiated'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-red-100 text-red-800'
                   }`}
                 >
                   {trx.status}
                 </span>
               </td>
-              <td className="px-4 py-2 text-xs">{formatDate(trx.transaction_time)}</td>
+              <td className="px-4 py-2 text-xs">
+                {formatDate(trx.transaction_time)}
+              </td>
             </tr>
           ))
         ) : (

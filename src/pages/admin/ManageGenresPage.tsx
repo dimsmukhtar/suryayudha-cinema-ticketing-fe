@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getAllGenres, createGenre, updateGenre, deleteGenre } from "../../api/apiService"
-import { Plus, Edit, Trash2, Loader2 } from "lucide-react"
-import GenreFormModal from "../../components/admin/GenreFormModal"
-import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import {
+  getAllGenres,
+  createGenre,
+  updateGenre,
+  deleteGenre
+} from '../../api/apiService'
+import { Plus, Edit, Trash2, Loader2 } from 'lucide-react'
+import GenreFormModal from '../../components/admin/GenreFormModal'
+import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
 
 const ManageGenresPage = () => {
   const [genres, setGenres] = useState<any[]>([])
@@ -20,7 +25,7 @@ const ManageGenresPage = () => {
       const data = await getAllGenres()
       setGenres(data)
     } catch (error) {
-      toast.error("Gagal memuat data genre.")
+      toast.error('Gagal memuat data genre.')
     } finally {
       setIsLoading(false)
     }
@@ -46,16 +51,21 @@ const ManageGenresPage = () => {
   }
 
   const handleSaveGenre = async (data: { name: string }) => {
-    const actionPromise = genreToEdit ? updateGenre(genreToEdit.id, data) : createGenre(data)
+    const actionPromise = genreToEdit
+      ? updateGenre(genreToEdit.id, data)
+      : createGenre(data)
 
     toast.promise(actionPromise, {
-      loading: "Menyimpan...",
+      loading: 'Menyimpan...',
       success: (res: any) => {
         fetchGenres() // Muat ulang data setelah sukses
         setIsModalOpen(false)
-        return res.message || `Genre berhasil ${genreToEdit ? "diperbarui" : "ditambahkan"}!`
+        return (
+          res.message ||
+          `Genre berhasil ${genreToEdit ? 'diperbarui' : 'ditambahkan'}!`
+        )
       },
-      error: (err: any) => err.message || "Gagal menyimpan genre.",
+      error: (err: any) => err.message || 'Gagal menyimpan genre.'
     })
   }
 
@@ -64,10 +74,10 @@ const ManageGenresPage = () => {
     setIsSubmitting(true)
     try {
       const res = await deleteGenre(genreToDelete.id)
-      toast.success(res.message || "Genre berhasil dihapus!")
+      toast.success(res.message || 'Genre berhasil dihapus!')
       setGenres(genres.filter((g) => g.id !== genreToDelete.id))
     } catch (error: any) {
-      toast.error(error.message || "Gagal menghapus genre.")
+      toast.error(error.message || 'Gagal menghapus genre.')
     } finally {
       setIsSubmitting(false)
       setIsDeleteModalOpen(false)
@@ -113,9 +123,15 @@ const ManageGenresPage = () => {
                 </tr>
               ) : (
                 genres.map((genre) => (
-                  <tr key={genre.id} className="bg-white border-b hover:bg-gray-50">
+                  <tr
+                    key={genre.id}
+                    className="bg-white border-b hover:bg-gray-50"
+                  >
                     <td className="px-6 py-4">{genre.id}</td>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
                       {genre.name}
                     </th>
                     <td className="px-6 py-4 flex justify-end gap-4">

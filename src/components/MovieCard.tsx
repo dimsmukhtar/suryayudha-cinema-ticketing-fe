@@ -1,5 +1,4 @@
-import React from "react"
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 export const MovieCard = ({ movie }: any) => {
   return (
     <Link
@@ -18,7 +17,10 @@ export const MovieCard = ({ movie }: any) => {
         </h3>
         <div className="flex items-center mt-1 text-xs gap-2 flex-wrap">
           {movie.movie_genres.slice(0, 2).map(({ genre }: any) => (
-            <span key={genre.id} className="bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full">
+            <span
+              key={genre.id}
+              className="bg-white/20 backdrop-blur-sm px-2 py-1 rounded-full"
+            >
               {genre.name}
             </span>
           ))}
@@ -33,5 +35,7 @@ export const MovieCard = ({ movie }: any) => {
 
 // Komponen Skeleton untuk ditampilkan saat data sedang dimuat
 export const MovieCardSkeleton = () => {
-  return <div className="bg-gray-800 rounded-lg shadow-lg animate-pulse aspect-[2/3]"></div>
+  return (
+    <div className="bg-gray-800 rounded-lg shadow-lg animate-pulse aspect-[2/3]"></div>
+  )
 }

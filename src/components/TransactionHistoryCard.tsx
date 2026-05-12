@@ -1,22 +1,29 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { formatRupiah } from "../utils/formatters"
-import CountdownTimer from "./CountdownTimer"
-import { CheckCircle, Clock, ExternalLink } from "lucide-react"
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { formatRupiah } from '../utils/formatters'
+import CountdownTimer from './CountdownTimer'
+import { CheckCircle, Clock, ExternalLink } from 'lucide-react'
 
 const TransactionHistoryCard = ({ transaction }: any) => {
   const navigate = useNavigate()
-  const [isExpired, setIsExpired] = useState(new Date(transaction.payment_expires_at) < new Date())
+  const [isExpired, setIsExpired] = useState(
+    new Date(transaction.payment_expires_at) < new Date()
+  )
 
-  const isPending = transaction.status === "pending" && !isExpired
-  const isSettlement = transaction.status === "settlement"
+  const isPending = transaction.status === 'pending' && !isExpired
+  const isSettlement = transaction.status === 'settlement'
 
-  if (!transaction.transaction_items || transaction.transaction_items.length === 0) {
+  if (
+    !transaction.transaction_items ||
+    transaction.transaction_items.length === 0
+  ) {
     return (
       <div className="bg-gray-800/50 rounded-lg shadow-lg flex items-center p-4 border-l-4 border-red-500">
         <div className="flex-grow ml-2">
           <h3 className="font-bold text-lg text-white">Transaksi Dibatalkan</h3>
-          <p className="text-sm text-gray-400">Order ID: {transaction.order_id}</p>
+          <p className="text-sm text-gray-400">
+            Order ID: {transaction.order_id}
+          </p>
           <p className="text-sm text-gray-400 mt-1">
             Total: {formatRupiah(transaction.final_amount)}
           </p>
@@ -35,7 +42,9 @@ const TransactionHistoryCard = ({ transaction }: any) => {
   return (
     <div
       className={`bg-gray-800/50 rounded-lg shadow-lg flex items-center p-4 transition-all duration-300 ${
-        isPending ? "border-l-4 border-yellow-500" : "border-l-4 border-green-500"
+        isPending
+          ? 'border-l-4 border-yellow-500'
+          : 'border-l-4 border-green-500'
       }`}
     >
       <img
@@ -46,7 +55,10 @@ const TransactionHistoryCard = ({ transaction }: any) => {
       <div className="flex-grow ml-4">
         <h3 className="font-bold text-lg text-white">{movie?.title}</h3>
         <p className="text-sm text-gray-400">
-          Kursi: {transaction.transaction_items.map((item: any) => item.seat_label).join(", ")}
+          Kursi:{' '}
+          {transaction.transaction_items
+            .map((item: any) => item.seat_label)
+            .join(', ')}
         </p>
         <p className="text-sm text-gray-300 font-semibold mt-1">
           {formatRupiah(transaction.final_amount)}
@@ -79,7 +91,7 @@ const TransactionHistoryCard = ({ transaction }: any) => {
               <span>Pembayaran Berhasil</span>
             </div>
             <button
-              onClick={() => navigate("/my-tickets")}
+              onClick={() => navigate('/my-tickets')}
               className="mt-1 text-xs bg-gray-600 text-white font-semibold px-3 py-2 rounded-full hover:bg-gray-500 transition-colors"
             >
               Lihat Tiket

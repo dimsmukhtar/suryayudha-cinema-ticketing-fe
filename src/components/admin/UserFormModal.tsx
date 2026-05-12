@@ -1,13 +1,13 @@
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import { X, Loader2 } from "lucide-react"
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { X, Loader2 } from 'lucide-react'
 
 const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm()
   const isEditing = !!userToEdit
 
@@ -16,7 +16,13 @@ const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
       if (userToEdit) {
         reset(userToEdit)
       } else {
-        reset({ name: "", email: "", role: "user", password: "", is_verified: false })
+        reset({
+          name: '',
+          email: '',
+          role: 'user',
+          password: '',
+          is_verified: false
+        })
       }
     }
   }, [isOpen, userToEdit, reset])
@@ -28,13 +34,16 @@ const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">
-            {isEditing ? "Edit Pengguna" : "Tambah Pengguna Baru"}
+            {isEditing ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}
           </h2>
           <button onClick={onClose}>
             <X className="text-gray-500 hover:text-gray-800" />
           </button>
         </div>
-        <form onSubmit={handleSubmit((data) => onSave(data, userToEdit?.id))} className="space-y-4">
+        <form
+          onSubmit={handleSubmit((data) => onSave(data, userToEdit?.id))}
+          className="space-y-4"
+        >
           <InputField
             label="Nama Lengkap"
             name="name"
@@ -63,9 +72,11 @@ const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Peran</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Peran
+            </label>
             <select
-              {...register("role")}
+              {...register('role')}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
             >
               <option value="user">User</option>
@@ -75,13 +86,16 @@ const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
           <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
-                {...register("is_verified")}
+                {...register('is_verified')}
                 type="checkbox"
                 className="focus:ring-primary h-4 w-4 text-primary border-gray-300 rounded"
               />
             </div>
             <div className="ml-3 text-sm">
-              <label htmlFor="is_verified" className="font-medium text-gray-700">
+              <label
+                htmlFor="is_verified"
+                className="font-medium text-gray-700"
+              >
                 Sudah Terverifikasi
               </label>
             </div>
@@ -101,7 +115,7 @@ const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
               className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark flex items-center gap-2 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="animate-spin" size={16} />}
-              {isSubmitting ? "Menyimpan..." : "Simpan"}
+              {isSubmitting ? 'Menyimpan...' : 'Simpan'}
             </button>
           </div>
         </form>
@@ -110,7 +124,14 @@ const UserFormModal = ({ isOpen, onClose, onSave, userToEdit }: any) => {
   )
 }
 
-const InputField = ({ label, name, type = "text", register, errors, required = false }: any) => (
+const InputField = ({
+  label,
+  name,
+  type = 'text',
+  register,
+  errors,
+  required = false
+}: any) => (
   <div>
     <label htmlFor={name} className="block text-sm font-medium text-gray-700">
       {label}
@@ -118,10 +139,16 @@ const InputField = ({ label, name, type = "text", register, errors, required = f
     <input
       id={name}
       type={type}
-      {...register(name, { required: required && `${label} tidak boleh kosong` })}
+      {...register(name, {
+        required: required && `${label} tidak boleh kosong`
+      })}
       className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
     />
-    {errors[name] && <p className="text-red-500 text-xs mt-1">{errors[name].message as string}</p>}
+    {errors[name] && (
+      <p className="text-red-500 text-xs mt-1">
+        {errors[name].message as string}
+      </p>
+    )}
   </div>
 )
 

@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getMyNotifications, markNotificationAsRead, hideNotification } from "../../api/apiService"
-import NotificationItem from "../../components/NotificationItem"
-import { BellOff } from "lucide-react"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import {
+  getMyNotifications,
+  markNotificationAsRead,
+  hideNotification
+} from '../../api/apiService'
+import NotificationItem from '../../components/NotificationItem'
+import { BellOff } from 'lucide-react'
 
 const MyNotificationsPage = () => {
   const [notifications, setNotifications] = useState<any[]>([])
@@ -15,7 +19,7 @@ const MyNotificationsPage = () => {
       const fetchedNotifications = await getMyNotifications()
       setNotifications(fetchedNotifications || [])
     } catch (err) {
-      setError("Gagal memuat notifikasi.")
+      setError('Gagal memuat notifikasi.')
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -30,10 +34,12 @@ const MyNotificationsPage = () => {
     try {
       await markNotificationAsRead(id)
 
-      setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)))
-      toast.success("Notifikasi ditandai sebagai dibaca.")
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
+      )
+      toast.success('Notifikasi ditandai sebagai dibaca.')
     } catch (err) {
-      toast.error("Gagal menandai notifikasi.")
+      toast.error('Gagal menandai notifikasi.')
     }
   }
 
@@ -62,14 +68,14 @@ const MyNotificationsPage = () => {
         </span>
       ),
       {
-        duration: 5000,
+        duration: 5000
       }
     )
 
     try {
       await hideNotification(id)
     } catch (err) {
-      toast.error("Gagal menyembunyikan notifikasi di server.")
+      toast.error('Gagal menyembunyikan notifikasi di server.')
       setNotifications((prev) =>
         [notificationToHide, ...prev].sort(
           (a, b) => +new Date(b.created_at) - +new Date(a.created_at)
@@ -80,7 +86,11 @@ const MyNotificationsPage = () => {
 
   const renderContent = () => {
     if (isLoading) {
-      return <div className="text-center p-10 text-gray-400">Memuat notifikasi...</div>
+      return (
+        <div className="text-center p-10 text-gray-400">
+          Memuat notifikasi...
+        </div>
+      )
     }
     if (error) {
       return <div className="text-center p-10 text-red-500">{error}</div>

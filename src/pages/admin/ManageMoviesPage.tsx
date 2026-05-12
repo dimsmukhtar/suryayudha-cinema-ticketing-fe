@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getAllMoviesAdmin, createMovie, updateMovie, deleteMovie } from "../../api/apiService"
-import { Plus, Edit, Trash2, Search, Loader2 } from "lucide-react"
-import MovieFormModal from "../../components/admin/MovieFormModal"
-import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
-import { formatDate } from "../../utils/formatters"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import {
+  getAllMoviesAdmin,
+  createMovie,
+  updateMovie,
+  deleteMovie
+} from '../../api/apiService'
+import { Plus, Edit, Trash2, Search, Loader2 } from 'lucide-react'
+import MovieFormModal from '../../components/admin/MovieFormModal'
+import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
+import { formatDate } from '../../utils/formatters'
 
 const ManageMoviesPage = () => {
   const [movies, setMovies] = useState<any[]>([])
@@ -13,7 +18,7 @@ const ManageMoviesPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [movieToEdit, setMovieToEdit] = useState<any | null>(null)
   const [movieToDelete, setMovieToDelete] = useState<any | null>(null)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState('')
 
   const fetchMovies = async () => {
     setIsLoading(true)
@@ -21,7 +26,7 @@ const ManageMoviesPage = () => {
       const data = await getAllMoviesAdmin({ title: searchTerm })
       setMovies(data.data)
     } catch (error) {
-      toast.error("Gagal memuat data film.")
+      toast.error('Gagal memuat data film.')
     } finally {
       setIsLoading(false)
     }
@@ -50,16 +55,21 @@ const ManageMoviesPage = () => {
   }
 
   const handleSaveMovie = async (formData: FormData, movieId?: number) => {
-    const actionPromise = movieId ? updateMovie(movieId, formData) : createMovie(formData)
+    const actionPromise = movieId
+      ? updateMovie(movieId, formData)
+      : createMovie(formData)
 
     toast.promise(actionPromise, {
-      loading: "Menyimpan film...",
+      loading: 'Menyimpan film...',
       success: (res: any) => {
         fetchMovies()
         setIsModalOpen(false)
-        return res.message || `Film berhasil ${movieId ? "diperbarui" : "ditambahkan"}!`
+        return (
+          res.message ||
+          `Film berhasil ${movieId ? 'diperbarui' : 'ditambahkan'}!`
+        )
       },
-      error: (err: any) => err.message || "Gagal menyimpan film.",
+      error: (err: any) => err.message || 'Gagal menyimpan film.'
     })
   }
 
@@ -68,13 +78,13 @@ const ManageMoviesPage = () => {
 
     const actionPromise = deleteMovie(movieToDelete.id)
     toast.promise(actionPromise, {
-      loading: "Menghapus film...",
+      loading: 'Menghapus film...',
       success: (res: any) => {
         fetchMovies()
         setIsDeleteModalOpen(false)
-        return res.message || "Film berhasil dihapus!"
+        return res.message || 'Film berhasil dihapus!'
       },
-      error: (err: any) => err.message || "Gagal menghapus film.",
+      error: (err: any) => err.message || 'Gagal menghapus film.'
     })
   }
 
@@ -91,7 +101,10 @@ const ManageMoviesPage = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-black"
             />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+              size={20}
+            />
           </div>
           <button
             onClick={handleOpenAddModal}
@@ -134,7 +147,10 @@ const ManageMoviesPage = () => {
                 </tr>
               ) : (
                 movies.map((movie) => (
-                  <tr key={movie.id} className="bg-white border-b hover:bg-gray-50">
+                  <tr
+                    key={movie.id}
+                    className="bg-white border-b hover:bg-gray-50"
+                  >
                     <td className="px-6 py-4">
                       <img
                         src={movie.poster_url}
@@ -142,21 +158,28 @@ const ManageMoviesPage = () => {
                         className="w-12 h-16 object-cover rounded-md"
                       />
                     </td>
-                    <th scope="row" className="px-6 py-4 font-medium text-gray-900">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900"
+                    >
                       {movie.title}
                     </th>
                     <td className="px-6 py-4">
                       <span
                         className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                          movie.status === "now_showing"
-                            ? "bg-green-100 text-green-800"
-                            : "bg-yellow-100 text-yellow-800"
+                          movie.status === 'now_showing'
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-yellow-100 text-yellow-800'
                         }`}
                       >
-                        {movie.status === "now_showing" ? "Sedang Tayang" : "Akan Datang"}
+                        {movie.status === 'now_showing'
+                          ? 'Sedang Tayang'
+                          : 'Akan Datang'}
                       </span>
                     </td>
-                    <td className="px-6 py-4">{formatDate(movie.release_date)}</td>
+                    <td className="px-6 py-4">
+                      {formatDate(movie.release_date)}
+                    </td>
                     <td className="px-6 py-4 flex justify-end gap-4">
                       <button
                         onClick={() => handleOpenEditModal(movie)}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { X, Loader2, UploadCloud } from "lucide-react"
+import React, { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { X, Loader2, UploadCloud } from 'lucide-react'
 
-const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) => {
+const CastFormModal = ({ isOpen, onClose, onSave, castToEdit }: any) => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm()
   const [imagePreview, setImagePreview] = useState<string | null>(null)
 
@@ -17,7 +17,7 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
         reset(castToEdit)
         setImagePreview(castToEdit.actor_url)
       } else {
-        reset({ actor_name: "", actor_url: null })
+        reset({ actor_name: '', actor_url: null })
         setImagePreview(null)
       }
     }
@@ -31,10 +31,10 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
 
   const onSubmit = (data: any) => {
     const formData = new FormData()
-    formData.append("actor_name", data.actor_name)
+    formData.append('actor_name', data.actor_name)
     // Hanya kirim file jika ada yang dipilih
     if (data.actor_url && data.actor_url[0]) {
-      formData.append("actor_url", data.actor_url[0])
+      formData.append('actor_url', data.actor_url[0])
     }
     onSave(formData, castToEdit?.id)
   }
@@ -46,7 +46,7 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">
-            {castToEdit ? "Edit Pemain" : "Tambah Pemain Baru"}
+            {castToEdit ? 'Edit Pemain' : 'Tambah Pemain Baru'}
           </h2>
           <button onClick={onClose}>
             <X className="text-gray-500 hover:text-gray-800" />
@@ -54,7 +54,9 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Foto Aktor</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Foto Aktor
+            </label>
             <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
               <div className="space-y-1 text-center">
                 {imagePreview ? (
@@ -74,7 +76,9 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
                     <span>Unggah file</span>
                     <input
                       id="actor_url"
-                      {...register("actor_url", { onChange: handleImageChange })}
+                      {...register('actor_url', {
+                        onChange: handleImageChange
+                      })}
                       type="file"
                       className="sr-only"
                       accept="image/*"
@@ -85,13 +89,19 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Nama Aktor</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Nama Aktor
+            </label>
             <input
-              {...register("actor_name", { required: "Nama tidak boleh kosong" })}
+              {...register('actor_name', {
+                required: 'Nama tidak boleh kosong'
+              })}
               className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.actor_name && (
-              <p className="text-red-500 text-xs mt-1">{errors.actor_name.message as string}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.actor_name.message as string}
+              </p>
             )}
           </div>
           <div className="flex justify-end gap-4 pt-4">
@@ -108,7 +118,7 @@ const CastFormModal = ({ isOpen, onClose, onSave, castToEdit, movieId }: any) =>
               className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark flex items-center gap-2 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="animate-spin" size={16} />}
-              {isSubmitting ? "Menyimpan..." : "Simpan"}
+              {isSubmitting ? 'Menyimpan...' : 'Simpan'}
             </button>
           </div>
         </form>

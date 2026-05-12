@@ -1,12 +1,20 @@
-import React, { useState } from "react"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import { useState } from 'react'
+import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 
-const GalleryModal = ({ studio, onClose }: { studio: any; onClose: () => void }) => {
+const GalleryModal = ({
+  studio,
+  onClose
+}: {
+  studio: any
+  onClose: () => void
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const goToPrevious = () => {
     const isFirstSlide = currentIndex === 0
-    const newIndex = isFirstSlide ? studio.galleries.length - 1 : currentIndex - 1
+    const newIndex = isFirstSlide
+      ? studio.galleries.length - 1
+      : currentIndex - 1
     setCurrentIndex(newIndex)
   }
 

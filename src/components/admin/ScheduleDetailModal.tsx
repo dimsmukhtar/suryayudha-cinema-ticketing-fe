@@ -1,9 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react"
-import toast from "react-hot-toast"
-import { X, Loader2 } from "lucide-react"
-import { getScheduleLayout, updateScheduleSeatStatus } from "../../api/apiService"
-import SeatLayout from "../SeatLayout"
-import UpdateStatusConfirmationModal from "./UpdateStatusConfirmationModal" // Impor baru
+import { useState, useEffect, useCallback } from 'react'
+import toast from 'react-hot-toast'
+import { X, Loader2 } from 'lucide-react'
+import {
+  getScheduleLayout,
+  updateScheduleSeatStatus
+} from '../../api/apiService'
+import SeatLayout from '../SeatLayout'
+import UpdateStatusConfirmationModal from './UpdateStatusConfirmationModal' // Impor baru
 
 const ScheduleDetailModal = ({ isOpen, onClose, schedule }: any) => {
   const [layoutData, setLayoutData] = useState<any>(null)
@@ -20,7 +23,7 @@ const ScheduleDetailModal = ({ isOpen, onClose, schedule }: any) => {
       const data = await getScheduleLayout(schedule.id)
       setLayoutData(data)
     } catch (error) {
-      toast.error("Gagal memuat denah kursi.")
+      toast.error('Gagal memuat denah kursi.')
     } finally {
       setIsLoading(false)
     }
@@ -34,8 +37,8 @@ const ScheduleDetailModal = ({ isOpen, onClose, schedule }: any) => {
 
   // Fungsi ini sekarang HANYA membuka modal konfirmasi
   const handleAdminSeatSelect = (seat: any) => {
-    if (seat.status !== "available") {
-      toast.error("Hanya kursi yang tersedia yang bisa diubah menjadi Dipesan.")
+    if (seat.status !== 'available') {
+      toast.error('Hanya kursi yang tersedia yang bisa diubah menjadi Dipesan.')
       return
     }
     setSeatToUpdate(seat)
@@ -44,7 +47,7 @@ const ScheduleDetailModal = ({ isOpen, onClose, schedule }: any) => {
 
   const confirmUpdateStatus = async () => {
     if (!seatToUpdate) return
-    await updateScheduleSeatStatus(seatToUpdate.scheduleSeatId, "booked")
+    await updateScheduleSeatStatus(seatToUpdate.scheduleSeatId, 'booked')
     fetchLayout()
   }
 
@@ -56,7 +59,9 @@ const ScheduleDetailModal = ({ isOpen, onClose, schedule }: any) => {
         <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col">
           <div className="flex justify-between items-center mb-4 border-b pb-4">
             <div>
-              <h2 className="text-xl font-bold text-gray-800">Detail Kursi Jadwal</h2>
+              <h2 className="text-xl font-bold text-gray-800">
+                Detail Kursi Jadwal
+              </h2>
               <p className="text-sm text-gray-600">
                 {schedule?.movie.title} - {schedule?.studio.name}
               </p>
@@ -81,7 +86,9 @@ const ScheduleDetailModal = ({ isOpen, onClose, schedule }: any) => {
                 />
               </div>
             ) : (
-              <p className="text-center text-gray-600">Gagal memuat denah kursi.</p>
+              <p className="text-center text-gray-600">
+                Gagal memuat denah kursi.
+              </p>
             )}
           </div>
         </div>

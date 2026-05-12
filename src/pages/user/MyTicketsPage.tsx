@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react"
-import toast from "react-hot-toast"
-import { getMyTickets, getTicketById } from "../../api/apiService"
-import { Ticket as TicketIcon } from "lucide-react"
-import { TicketCard } from "../../components/TicketCard"
+import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
+import { getMyTickets, getTicketById } from '../../api/apiService'
+import { Ticket as TicketIcon } from 'lucide-react'
+import { TicketCard } from '../../components/TicketCard'
 
 const MyTicketsPage = () => {
   const [detailedTickets, setDetailedTickets] = useState<any[]>([])
@@ -20,13 +20,15 @@ const MyTicketsPage = () => {
           return
         }
 
-        const ticketDetailPromises = simpleTickets.map((ticket) => getTicketById(ticket.id))
+        const ticketDetailPromises = simpleTickets.map((ticket) =>
+          getTicketById(ticket.id)
+        )
         const resolvedTickets = await Promise.all(ticketDetailPromises)
 
         setDetailedTickets(resolvedTickets)
       } catch (err) {
-        setError("Gagal memuat tiket Anda.")
-        toast.error("Gagal memuat tiket Anda.")
+        setError('Gagal memuat tiket Anda.')
+        toast.error('Gagal memuat tiket Anda.')
         console.error(err)
       } finally {
         setIsLoading(false)

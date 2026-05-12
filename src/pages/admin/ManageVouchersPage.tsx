@@ -1,10 +1,15 @@
-import React, { useState, useEffect, useCallback } from "react"
-import toast from "react-hot-toast"
-import { getAllVouchers, createVoucher, updateVoucher, deleteVoucher } from "../../api/apiService"
-import { Plus, Edit, Trash2, Loader2, Tag } from "lucide-react"
-import VoucherFormModal from "../../components/admin/VoucherFormModal"
-import DeleteConfirmationModal from "../../components/admin/DeleteConfirmationModal"
-import { formatRupiah, formatDate } from "../../utils/formatters"
+import { useState, useEffect, useCallback } from 'react'
+import toast from 'react-hot-toast'
+import {
+  getAllVouchers,
+  createVoucher,
+  updateVoucher,
+  deleteVoucher
+} from '../../api/apiService'
+import { Plus, Edit, Trash2, Loader2, Tag } from 'lucide-react'
+import VoucherFormModal from '../../components/admin/VoucherFormModal'
+import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
+import { formatRupiah, formatDate } from '../../utils/formatters'
 
 const ManageVouchersPage = () => {
   const [vouchers, setVouchers] = useState<any[]>([])
@@ -22,7 +27,7 @@ const ManageVouchersPage = () => {
       const response = await getAllVouchers()
       setVouchers(response.data)
     } catch (error) {
-      toast.error("Gagal memuat data voucher.")
+      toast.error('Gagal memuat data voucher.')
     } finally {
       setIsLoading(false)
     }
@@ -49,16 +54,21 @@ const ManageVouchersPage = () => {
 
   const handleSaveVoucher = async (data: any, voucherId?: number) => {
     const isEditing = !!voucherId
-    const actionPromise = isEditing ? updateVoucher(voucherId!, data) : createVoucher(data)
+    const actionPromise = isEditing
+      ? updateVoucher(voucherId!, data)
+      : createVoucher(data)
 
     toast.promise(actionPromise, {
-      loading: "Menyimpan voucher...",
+      loading: 'Menyimpan voucher...',
       success: (res: any) => {
         fetchVouchers()
         setIsFormModalOpen(false)
-        return res.message || `Voucher berhasil ${isEditing ? "diperbarui" : "ditambahkan"}!`
+        return (
+          res.message ||
+          `Voucher berhasil ${isEditing ? 'diperbarui' : 'ditambahkan'}!`
+        )
       },
-      error: (err: any) => err.message || "Gagal menyimpan voucher.",
+      error: (err: any) => err.message || 'Gagal menyimpan voucher.'
     })
   }
 
@@ -66,13 +76,13 @@ const ManageVouchersPage = () => {
     if (!voucherToDelete) return
     const actionPromise = deleteVoucher(voucherToDelete.id)
     toast.promise(actionPromise, {
-      loading: "Menghapus voucher...",
+      loading: 'Menghapus voucher...',
       success: (res: any) => {
         fetchVouchers()
         setIsDeleteModalOpen(false)
-        return res.message || "Voucher berhasil dihapus!"
+        return res.message || 'Voucher berhasil dihapus!'
       },
-      error: (err: any) => err.message || "Gagal menghapus voucher.",
+      error: (err: any) => err.message || 'Gagal menghapus voucher.'
     })
   }
 
@@ -128,27 +138,34 @@ const ManageVouchersPage = () => {
                 vouchers.map((voucher) => {
                   const isExpired = new Date(voucher.expires_at) < new Date()
                   return (
-                    <tr key={voucher.id} className="bg-white border-b hover:bg-gray-50">
+                    <tr
+                      key={voucher.id}
+                      className="bg-white border-b hover:bg-gray-50"
+                    >
                       <td className="px-6 py-4 font-mono font-semibold text-gray-900">
                         {voucher.code}
                       </td>
                       <td className="px-6 py-4 capitalize">{voucher.type}</td>
                       <td className="px-6 py-4 font-semibold">
-                        {voucher.type === "percentage"
+                        {voucher.type === 'percentage'
                           ? `${voucher.value}%`
                           : formatRupiah(voucher.value)}
                       </td>
                       <td className="px-6 py-4">
                         {voucher.usage_count} / {voucher.usage_limit}
                       </td>
-                      <td className="px-6 py-4">{formatDate(voucher.expires_at)}</td>
+                      <td className="px-6 py-4">
+                        {formatDate(voucher.expires_at)}
+                      </td>
                       <td className="px-6 py-4">
                         <span
                           className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                            isExpired ? "bg-red-100 text-red-800" : "bg-green-100 text-green-800"
+                            isExpired
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-green-100 text-green-800'
                           }`}
                         >
-                          {isExpired ? "Kadaluarsa" : "Aktif"}
+                          {isExpired ? 'Kadaluarsa' : 'Aktif'}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-right flex justify-end gap-4">
@@ -175,7 +192,9 @@ const ManageVouchersPage = () => {
                   <td colSpan={7} className="text-center py-20 text-gray-500">
                     <Tag size={40} className="mx-auto mb-2" />
                     <p className="font-semibold">Belum ada voucher.</p>
-                    <p className="text-xs">Klik "Tambah Voucher" untuk membuat yang baru.</p>
+                    <p className="text-xs">
+                      Klik "Tambah Voucher" untuk membuat yang baru.
+                    </p>
                   </td>
                 </tr>
               )}

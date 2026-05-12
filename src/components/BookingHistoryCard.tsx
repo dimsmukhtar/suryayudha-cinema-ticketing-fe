@@ -1,15 +1,17 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { formatRupiah } from "../utils/formatters"
-import CountdownTimer from "./CountdownTimer"
-import { AlertCircle, CheckCircle, Clock, Film } from "lucide-react"
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { formatRupiah } from '../utils/formatters'
+import CountdownTimer from './CountdownTimer'
+import { AlertCircle, CheckCircle, Clock, Film } from 'lucide-react'
 
 const BookingHistoryCard = ({ booking }: any) => {
   const navigate = useNavigate()
-  const [isExpired, setIsExpired] = useState(new Date(booking.booking_expires_at) < new Date())
+  const [isExpired, setIsExpired] = useState(
+    new Date(booking.booking_expires_at) < new Date()
+  )
 
-  const isCancelled = booking.status === "cancelled"
-  const isActive = booking.status === "initiated" && !isExpired
+  const isCancelled = booking.status === 'cancelled'
+  const isActive = booking.status === 'initiated' && !isExpired
 
   // --- KARTU UNTUK BOOKING YANG DIBATALKAN ---
   if (isCancelled) {
@@ -19,7 +21,9 @@ const BookingHistoryCard = ({ booking }: any) => {
           <Film className="w-10 h-10 text-gray-500" />
         </div>
         <div className="flex-grow ml-4">
-          <h3 className="font-bold text-lg text-gray-500 line-through">Booking Dibatalkan</h3>
+          <h3 className="font-bold text-lg text-gray-500 line-through">
+            Booking Dibatalkan
+          </h3>
           <p className="text-sm text-gray-400">ID Transaksi: {booking.id}</p>
           <p className="text-sm text-gray-300 font-semibold mt-1">
             {formatRupiah(booking.total_amount)}
@@ -48,7 +52,7 @@ const BookingHistoryCard = ({ booking }: any) => {
     <div
       onClick={handleCardClick}
       className={`bg-gray-800/50 rounded-lg shadow-lg flex items-center p-4 transition-all duration-300 ${
-        isActive ? "hover:bg-gray-700/70 cursor-pointer" : "opacity-100"
+        isActive ? 'hover:bg-gray-700/70 cursor-pointer' : 'opacity-100'
       }`}
     >
       <img
@@ -59,7 +63,10 @@ const BookingHistoryCard = ({ booking }: any) => {
       <div className="flex-grow ml-4">
         <h3 className="font-bold text-lg text-white">{movie?.title}</h3>
         <p className="text-sm text-gray-400">
-          Kursi: {booking.transaction_items.map((item: any) => item.seat_label).join(", ")}
+          Kursi:{' '}
+          {booking.transaction_items
+            .map((item: any) => item.seat_label)
+            .join(', ')}
         </p>
         <p className="text-sm text-gray-300 font-semibold mt-1">
           {formatRupiah(booking.total_amount)}

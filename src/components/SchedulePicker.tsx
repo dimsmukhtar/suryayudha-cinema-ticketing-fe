@@ -1,7 +1,7 @@
-import React, { useState, useMemo, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
-import { formatRupiah } from "../utils/formatters"
-import { Ticket, Minus, Plus } from "lucide-react"
+import { useState, useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { formatRupiah } from '../utils/formatters'
+import { Ticket, Minus, Plus } from 'lucide-react'
 
 const SchedulePicker = ({ schedules }: any) => {
   const navigate = useNavigate()
@@ -13,7 +13,7 @@ const SchedulePicker = ({ schedules }: any) => {
     if (!schedules) return {}
     const groups: Record<string, any[]> = {}
     schedules.forEach((schedule: any) => {
-      const date = new Date(schedule.start_time).toISOString().split("T")[0]
+      const date = new Date(schedule.start_time).toISOString().split('T')[0]
       if (!groups[date]) {
         groups[date] = []
       }
@@ -47,7 +47,9 @@ const SchedulePicker = ({ schedules }: any) => {
     if (selectedSchedule) {
       // --- PERBAIKAN DI SINI ---
       // Kirim 'ticketCount' di dalam state navigasi
-      navigate(`/schedules/${selectedSchedule.id}/seats`, { state: { ticketCount: ticketCount } })
+      navigate(`/schedules/${selectedSchedule.id}/seats`, {
+        state: { ticketCount: ticketCount }
+      })
     }
   }
 
@@ -70,14 +72,14 @@ const SchedulePicker = ({ schedules }: any) => {
             onClick={() => handleDateSelect(date)}
             className={`px-4 py-2 rounded-md text-sm font-semibold transition-colors whitespace-nowrap ${
               selectedDate === date
-                ? "bg-primary text-white"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                ? 'bg-primary text-white'
+                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
             }`}
           >
-            {new Date(date).toLocaleDateString("id-ID", {
-              weekday: "long",
-              day: "numeric",
-              month: "short",
+            {new Date(date).toLocaleDateString('id-ID', {
+              weekday: 'long',
+              day: 'numeric',
+              month: 'short'
             })}
           </button>
         ))}
@@ -91,15 +93,15 @@ const SchedulePicker = ({ schedules }: any) => {
               onClick={() => handleScheduleSelect(schedule)}
               className={`p-3 rounded-lg text-center transition-all duration-200 border-2 ${
                 selectedSchedule?.id === schedule.id
-                  ? "bg-primary border-primary-light scale-105"
-                  : "bg-gray-700 border-gray-600 hover:border-primary"
+                  ? 'bg-primary border-primary-light scale-105'
+                  : 'bg-gray-700 border-gray-600 hover:border-primary'
               }`}
             >
               <p className="font-bold text-lg text-white">
-                {new Date(schedule.start_time).toLocaleTimeString("id-ID", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  timeZone: "Asia/Jakarta",
+                {new Date(schedule.start_time).toLocaleTimeString('id-ID', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  timeZone: 'Asia/Jakarta'
                 })}
               </p>
               <p className="text-xs text-gray-400">{schedule.studio.name}</p>
@@ -119,7 +121,9 @@ const SchedulePicker = ({ schedules }: any) => {
               >
                 <Minus size={16} />
               </button>
-              <span className="text-xl font-bold text-white w-8 text-center">{ticketCount}</span>
+              <span className="text-xl font-bold text-white w-8 text-center">
+                {ticketCount}
+              </span>
               <button
                 onClick={() => handleTicketCountChange(1)}
                 className="p-2 bg-gray-700 rounded-full text-white hover:bg-gray-600"

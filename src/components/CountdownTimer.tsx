@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from 'react'
 
-const CountdownTimer = ({ expiryTime, onExpire }: { expiryTime: string; onExpire: () => void }) => {
+const CountdownTimer = ({
+  expiryTime,
+  onExpire
+}: {
+  expiryTime: string
+  onExpire: () => void
+}) => {
   const calculateTimeLeft = () => {
     const difference = +new Date(expiryTime) - +new Date()
     if (difference > 0) {
       return {
         minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
       }
     }
     return { minutes: 0, seconds: 0 }
@@ -36,10 +42,11 @@ const CountdownTimer = ({ expiryTime, onExpire }: { expiryTime: string; onExpire
   return (
     <div
       className={`font-mono text-2xl font-bold ${
-        isTimeRunningOut ? "text-red-500 animate-pulse" : "text-yellow-400"
+        isTimeRunningOut ? 'text-red-500 animate-pulse' : 'text-yellow-400'
       }`}
     >
-      {String(timeLeft.minutes).padStart(2, "0")}:{String(timeLeft.seconds).padStart(2, "0")}
+      {String(timeLeft.minutes).padStart(2, '0')}:
+      {String(timeLeft.seconds).padStart(2, '0')}
     </div>
   )
 }

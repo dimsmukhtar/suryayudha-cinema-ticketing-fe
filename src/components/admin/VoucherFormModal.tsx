@@ -1,13 +1,13 @@
-import React, { useEffect } from "react"
-import { useForm } from "react-hook-form"
-import { X, Loader2 } from "lucide-react"
+import { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { X, Loader2 } from 'lucide-react'
 
 const VoucherFormModal = ({ isOpen, onClose, onSave, voucherToEdit }: any) => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting }
   } = useForm()
   const isEditing = !!voucherToEdit
 
@@ -18,12 +18,18 @@ const VoucherFormModal = ({ isOpen, onClose, onSave, voucherToEdit }: any) => {
         const formattedData = {
           ...voucherToEdit,
           expires_at: voucherToEdit.expires_at
-            ? new Date(voucherToEdit.expires_at).toISOString().split("T")[0]
-            : "",
+            ? new Date(voucherToEdit.expires_at).toISOString().split('T')[0]
+            : ''
         }
         reset(formattedData)
       } else {
-        reset({ code: "", type: "fixed", value: 0, usage_limit: 1, min_purchase_amount: 0 })
+        reset({
+          code: '',
+          type: 'fixed',
+          value: 0,
+          usage_limit: 1,
+          min_purchase_amount: 0
+        })
       }
     }
   }, [isOpen, voucherToEdit, reset])
@@ -35,7 +41,7 @@ const VoucherFormModal = ({ isOpen, onClose, onSave, voucherToEdit }: any) => {
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-gray-800">
-            {isEditing ? "Edit Voucher" : "Tambah Voucher Baru"}
+            {isEditing ? 'Edit Voucher' : 'Tambah Voucher Baru'}
           </h2>
           <button onClick={onClose}>
             <X className="text-gray-500 hover:text-gray-800" />
@@ -54,9 +60,11 @@ const VoucherFormModal = ({ isOpen, onClose, onSave, voucherToEdit }: any) => {
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-700">Tipe Diskon</label>
+              <label className="block text-sm font-medium text-gray-700">
+                Tipe Diskon
+              </label>
               <select
-                {...register("type")}
+                {...register('type')}
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="fixed">Potongan Tetap (Rp)</option>
@@ -115,7 +123,7 @@ const VoucherFormModal = ({ isOpen, onClose, onSave, voucherToEdit }: any) => {
               className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark flex items-center gap-2 disabled:opacity-50"
             >
               {isSubmitting && <Loader2 className="animate-spin" size={16} />}
-              {isSubmitting ? "Menyimpan..." : "Simpan"}
+              {isSubmitting ? 'Menyimpan...' : 'Simpan'}
             </button>
           </div>
         </form>
@@ -125,7 +133,14 @@ const VoucherFormModal = ({ isOpen, onClose, onSave, voucherToEdit }: any) => {
 }
 
 // Helper komponen yang bisa digunakan kembali
-const InputField = ({ label, name, type = "text", register, errors, required = false }: any) => (
+const InputField = ({
+  label,
+  name,
+  type = 'text',
+  register,
+  errors,
+  required = false
+}: any) => (
   <div>
     <label htmlFor={name} className="block text-sm font-medium text-gray-700">
       {label}
@@ -135,11 +150,15 @@ const InputField = ({ label, name, type = "text", register, errors, required = f
       type={type}
       {...register(name, {
         required: required && `${label} tidak boleh kosong`,
-        valueAsNumber: type === "number",
+        valueAsNumber: type === 'number'
       })}
       className="mt-1 block w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:outline-none focus:ring-2 focus:ring-primary"
     />
-    {errors[name] && <p className="text-red-500 text-xs mt-1">{errors[name].message as string}</p>}
+    {errors[name] && (
+      <p className="text-red-500 text-xs mt-1">
+        {errors[name].message as string}
+      </p>
+    )}
   </div>
 )
 

@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react"
-import { useSearchParams } from "react-router-dom"
-import toast from "react-hot-toast"
-import { getAllMovies, getAllGenres } from "../../api/apiService"
-import { MovieCard, MovieCardSkeleton } from "../../components/MovieCard"
-import FilterControls from "../../components/FilterControls"
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { getAllMovies, getAllGenres } from '../../api/apiService'
+import { MovieCard, MovieCardSkeleton } from '../../components/MovieCard'
+import FilterControls from '../../components/FilterControls'
 
 const AllMoviesPage = () => {
   const [movies, setMovies] = useState<any[]>([])
@@ -14,9 +14,9 @@ const AllMoviesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const [filters, setFilters] = useState({
-    title: searchParams.get("title") || "",
-    genre: searchParams.get("genre") || "",
-    status: searchParams.get("status") || "now_showing",
+    title: searchParams.get('title') || '',
+    genre: searchParams.get('genre') || '',
+    status: searchParams.get('status') || 'now_showing'
   })
   useEffect(() => {
     const fetchGenres = async () => {
@@ -24,8 +24,8 @@ const AllMoviesPage = () => {
         const genreData = await getAllGenres()
         setGenres(genreData)
       } catch (err) {
-        console.error("Gagal mengambil genre:", err)
-        toast.error("Gagal memuat filter genre.")
+        console.error('Gagal mengambil genre:', err)
+        toast.error('Gagal memuat filter genre.')
       }
     }
     fetchGenres()
@@ -37,11 +37,12 @@ const AllMoviesPage = () => {
       setError(null)
       try {
         const movieData = await getAllMovies(filters)
+        console.log(movieData)
         setMovies(movieData)
       } catch (err) {
-        console.error("Gagal mengambil film:", err)
-        setError("Tidak dapat memuat film. Silakan coba lagi nanti.")
-        toast.error("Gagal memuat film.")
+        console.error('Gagal mengambil film:', err)
+        setError('Tidak dapat memuat film. Silakan coba lagi nanti.')
+        toast.error('Gagal memuat film.')
       } finally {
         setIsLoading(false)
       }
@@ -61,18 +62,26 @@ const AllMoviesPage = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-4xl font-bold mb-6 text-center">Semua Film</h1>
 
-        <FilterControls genres={genres} filters={filters} setFilters={setFilters} />
+        <FilterControls
+          genres={genres}
+          filters={filters}
+          setFilters={setFilters}
+        />
 
         {error && <p className="text-center text-red-400 py-10">{error}</p>}
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {isLoading ? (
-            Array.from({ length: 10 }).map((_, index) => <MovieCardSkeleton key={index} />)
+            Array.from({ length: 10 }).map((_, index) => (
+              <MovieCardSkeleton key={index} />
+            ))
           ) : movies.length > 0 ? (
             movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
           ) : (
             <div className="col-span-full text-center py-20 text-gray-400">
-              <h3 className="text-2xl font-semibold">Tidak ada film yang ditemukan</h3>
+              <h3 className="text-2xl font-semibold">
+                Tidak ada film yang ditemukan
+              </h3>
               <p>Coba ubah filter pencarian Anda.</p>
             </div>
           )}
