@@ -5,7 +5,7 @@ const statusOptions = [
   { label: 'Semua', value: '' },
   { label: 'Sedang Tayang', value: 'now_showing' },
   { label: 'Akan Datang', value: 'coming_soon' },
-  { label: 'Sudah Tayang', value: 'ended' }
+  { label: 'Selesai Tayang', value: 'ended' }
 ]
 
 const FilterControls = ({ genres, filters, setFilters }: any) => {
