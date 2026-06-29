@@ -1,17 +1,17 @@
-import React, { useState } from "react"
-import { useAuth } from "../hooks/useAuth"
-import { useNavigate, useLocation } from "react-router-dom"
-import toast from "react-hot-toast"
-import { Eye, EyeOff, ShieldCheck } from "lucide-react"
+import React, { useState } from 'react'
+import { useAuth } from '../hooks/useAuth'
+import { useNavigate, useLocation } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import { Eye, EyeOff, ShieldCheck } from 'lucide-react'
 
 const AdminLoginPage = () => {
   const { adminLogin } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
-  const from = location.state?.from?.pathname || "/admin"
+  const from = location.state?.from?.pathname || '/admin'
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -20,10 +20,11 @@ const AdminLoginPage = () => {
     setIsLoading(true)
     try {
       const response = await adminLogin({ email, password })
-      toast.success(response.message || "Login admin berhasil!")
+      toast.success(response.message || 'Login admin berhasil!')
       navigate(from, { replace: true })
     } catch (error: any) {
-      const errorMessage = error.message || "Email atau password salah, atau Anda bukan admin."
+      const errorMessage =
+        error.message || 'Email atau password salah, atau Anda bukan admin.'
       toast.error(errorMessage)
     } finally {
       setIsLoading(false)
@@ -41,7 +42,9 @@ const AdminLoginPage = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-300">Email</label>
+            <label className="block text-sm font-medium text-gray-300">
+              Email
+            </label>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -51,12 +54,14 @@ const AdminLoginPage = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-300">Password</label>
+            <label className="block text-sm font-medium text-gray-300">
+              Password
+            </label>
             <div className="relative mt-1">
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 required
                 className="block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm py-2 px-3 text-white focus:outline-none focus:ring-primary focus:border-primary"
               />
@@ -74,7 +79,7 @@ const AdminLoginPage = () => {
             disabled={isLoading}
             className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50"
           >
-            {isLoading ? "Loading..." : "Masuk sebagai Admin"}
+            {isLoading ? 'Loading...' : 'Masuk sebagai Admin'}
           </button>
         </form>
       </div>

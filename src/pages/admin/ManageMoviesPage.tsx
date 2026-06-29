@@ -10,6 +10,7 @@ import { Plus, Edit, Trash2, Search, Loader2 } from 'lucide-react'
 import MovieFormModal from '../../components/admin/MovieFormModal'
 import DeleteConfirmationModal from '../../components/admin/DeleteConfirmationModal'
 import { formatDate } from '../../utils/formatters'
+import Pagination from '../../components/admin/Pagination'
 
 const ManageMoviesPage = () => {
   const [movies, setMovies] = useState<any[]>([])
@@ -19,12 +20,19 @@ const ManageMoviesPage = () => {
   const [movieToEdit, setMovieToEdit] = useState<any | null>(null)
   const [movieToDelete, setMovieToDelete] = useState<any | null>(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [meta, setMeta] = useState<any>({})
+  const [currentPage, setCurrentPage] = useState(1)
 
   const fetchMovies = async () => {
     setIsLoading(true)
     try {
-      const data = await getAllMoviesAdmin({ title: searchTerm })
+      const data = await getAllMoviesAdmin({
+        title: searchTerm,
+        page: currentPage,
+        limit: 10
+      })
       setMovies(data.data)
+      setMeta(data.meta)
     } catch (error) {
       toast.error('Gagal memuat data film.')
     } finally {
@@ -33,12 +41,20 @@ const ManageMoviesPage = () => {
   }
 
   useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm])
+
+  useEffect(() => {
+    fetchMovies()
+  }, [currentPage])
+
+  useEffect(() => {
     const debounceTimer = setTimeout(() => {
       fetchMovies()
     }, 500)
+
     return () => clearTimeout(debounceTimer)
   }, [searchTerm])
-
   const handleOpenAddModal = () => {
     setMovieToEdit(null)
     setIsModalOpen(true)
@@ -203,6 +219,12 @@ const ManageMoviesPage = () => {
           </table>
         </div>
       </div>
+
+      <Pagination
+        currentPage={meta.page}
+        totalPages={meta.totalPages}
+        onPageChange={(page) => setCurrentPage(page)}
+      />
 
       <MovieFormModal
         isOpen={isModalOpen}

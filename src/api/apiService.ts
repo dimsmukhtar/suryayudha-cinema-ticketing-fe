@@ -84,6 +84,7 @@ export const getAllMovies = async (filters: MovieFilters): Promise<any[]> => {
   if (filters.title) params.append('title', filters.title)
   if (filters.genre) params.append('genre', filters.genre)
   if (filters.status) params.append('status', filters.status)
+  params.append('limit', '100')
 
   const response = await api.get(`/movies?${params.toString()}`)
   return response.data.data
@@ -315,6 +316,8 @@ export const deleteGenre = async (id: number): Promise<any> => {
 export const getAllMoviesAdmin = async (filters: any): Promise<any> => {
   const params = new URLSearchParams()
   if (filters.title) params.append('title', filters.title)
+  if (filters.page) params.append('page', filters.page.toString())
+  if (filters.limit) params.append('limit', filters.limit.toString())
   const response = await api.get(`/movies?${params.toString()}`)
   return response.data
 }

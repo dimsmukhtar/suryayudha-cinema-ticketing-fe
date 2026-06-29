@@ -16,7 +16,7 @@ const AllMoviesPage = () => {
   const [filters, setFilters] = useState({
     title: searchParams.get('title') || '',
     genre: searchParams.get('genre') || '',
-    status: searchParams.get('status') || 'now_showing'
+    status: searchParams.get('status') || ''
   })
   useEffect(() => {
     const fetchGenres = async () => {
