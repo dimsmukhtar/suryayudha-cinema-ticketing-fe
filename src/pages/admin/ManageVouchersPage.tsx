@@ -145,7 +145,11 @@ const ManageVouchersPage = () => {
                       <td className="px-6 py-4 font-mono font-semibold text-gray-900">
                         {voucher.code}
                       </td>
-                      <td className="px-6 py-4 capitalize">{voucher.type}</td>
+                      <td className="px-6 py-4 capitalize">
+                        {voucher.type == 'percentage'
+                          ? 'Persentase (%)'
+                          : 'Potongan Tetap (Rp)'}
+                      </td>
                       <td className="px-6 py-4 font-semibold">
                         {voucher.type === 'percentage'
                           ? `${voucher.value}%`
